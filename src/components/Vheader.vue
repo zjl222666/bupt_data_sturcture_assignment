@@ -1,9 +1,23 @@
 <template>
-    <a-input-search placeholder="输入搜索地址"/>
+    <sinput v-model="searchPlace"/>
 </template>
 <script>
+import sinput from "./searchInput.vue";
 export default{
-    name: "myheader"
+    name: "myheader",
+    components: {
+        sinput
+    },
+    data() {
+        return {
+            searchPlace: "我的位置",
+        }
+    },
+    watch: {
+        searchPlace (newVal, oldVal){
+            console.log(newVal + '+' +oldVal);
+        }
+    }
 }
 </script>
 <style scoped>
