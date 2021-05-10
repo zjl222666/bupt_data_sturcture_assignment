@@ -1,9 +1,19 @@
 <template>
 <div>
     <div class="searchPart"  align="center">
-        <sinput v-model="initialPlace"/>
-        <a-icon type="swap" class="trigger" @click="() => {tmp=initialPlace; initialPlace=distPlace; distPlace=tmp;}"/>
-        <sinput v-model="distPlace"/>
+        <div>
+            <a-row type="flex" justify="space-around">
+                <a-col span="3"> <a-icon type="environment"/> 起点 </a-col>
+                <a-col span="20"> <sinput :myPlace="initialPlace" @input="(val) => {initialPlace = val}"/> </a-col>
+            </a-row>
+        </div>
+        <a-icon type="swap" class="trigger" @click="changeValue"/>
+        <div>
+            <a-row type="flex" justify="space-around">
+                <a-col span="3"> <a-icon type="environment"/> 终点 </a-col>
+                <a-col span="20"> <sinput :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
+            </a-row>
+        </div>
         <div class="searchButton"> <a-button type="primary" icon="search" > 规划路径 </a-button> </div>
     </div>
     <div>
@@ -39,6 +49,17 @@ export default {
     components: {
         sinput,
         sinputmuti
+    },
+    watch: {
+    },
+    methods: {
+        changeValue() {
+            console.log(this.initialPlace + ' and ' + this.distPlace); 
+            let tmp = this.initialPlace; 
+            this.initialPlace = this.distPlace; 
+            this.distPlace=tmp;
+            console.log(this.initialPlace + ' and ' + this.distPlace); 
+        }
     }
 
 }

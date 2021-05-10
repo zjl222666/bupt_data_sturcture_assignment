@@ -13,31 +13,34 @@
         </a-menu-item>
         <a-menu-item key="3">
           <a-icon type="environment" />
-          <span>关于我们</span>
+          <span>楼内导航</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
-          <a-row type="flex" justify="space-around" align="middle">
-            <a-col span="9">
-              <a-icon
+          <a-row type="flex" justify="start"> 
+            <a-col span="2">
+            <a-icon
                 class="trigger"
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'"
                 @click="() => (collapsed = !collapsed)"
-              />
+            />
             </a-col>
-            <a-col span="7">  <vheader/></a-col>
-            <a-col span="4">  <a-icon type="ellipsis" class="trigger" @click="() => (drawopened = !drawopened)"/> </a-col>
+            <a-col span="2">     物理位置搜索 </a-col>
+            <a-col span="5"> <sinput /> </a-col>
+            <a-col span="1"> &nbsp; </a-col>
+            <a-col span="2">     逻辑位置搜索 </a-col>
+            <a-col span="5"> <sinput/> </a-col>
           </a-row>
         </a-layout-header>
         <a-layout>
         <a-layout-content
           :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
           >
-          Content
+          <vcard v-if="cardShow"/>
         </a-layout-content>
-        <a-layout-sider width=300 v-model="collapsed1" collapsible theme="light">       <vguide/>     </a-layout-sider>
+        <a-layout-sider width=350 v-model="collapsed1" collapsible theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
@@ -45,19 +48,21 @@
 </template>
 <script>
 import Vfooter from './components/Vfooter.vue'
-import Vheader from './components/Vheader.vue'
 import Vguide from './components/guide.vue'
+import Vcard from './components/Vcard.vue'
+import sinput from './components/searchInput.vue'
 export default{
   components: {
     Vfooter,
-    Vheader,
+    sinput,
     Vguide,
+    Vcard,
   },
   data() {
     return {
       collapsed: false, // 左侧边栏缩放
       collapsed1: false, //右侧边栏缩放
-      drawopened: false,
+      cardShow: true, //卡片是否显示
     };
   },
 }
