@@ -1,4 +1,5 @@
 <template>
+<div >
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <div class="logo"></div>
@@ -18,6 +19,11 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
+        <div  class="card">
+    <a-affix  :offset-top="100">
+            <vcard v-if="cardShow" @closeIt="()=>{cardShow = false}"/>
+    </a-affix>
+  </div>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
           <a-row type="flex" justify="start"> 
             <a-col span="2">
@@ -27,44 +33,52 @@
                 @click="() => (collapsed = !collapsed)"
             />
             </a-col>
-            <a-col span="2">     物理位置搜索 </a-col>
-            <a-col span="5"> <sinput /> </a-col>
+            <a-col span="5"> <sinput v-model=" searchValue" @handleChange1="handleChange"/> </a-col>
+            <a-col span="2">  <a-button type="link" icon="search" @click="handleChange"/>  </a-col>
             <a-col span="1"> &nbsp; </a-col>
-            <a-col span="2">     逻辑位置搜索 </a-col>
-            <a-col span="5"> <sinput/> </a-col>
           </a-row>
         </a-layout-header>
         <a-layout>
         <a-layout-content
           :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
           >
-          <vcard v-if="cardShow"/>
+          <mymap/>
         </a-layout-content>
-        <a-layout-sider width=350 v-model="collapsed1" collapsible theme="light">       <vguide/>     </a-layout-sider>
+        <a-layout-sider width=350 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
   </a-layout>
+</div>
 </template>
 <script>
 import Vfooter from './components/Vfooter.vue'
 import Vguide from './components/guide.vue'
 import Vcard from './components/Vcard.vue'
 import sinput from './components/searchInput.vue'
+import mymap from './components/Map.vue'
 export default{
   components: {
     Vfooter,
     sinput,
     Vguide,
     Vcard,
+    mymap
   },
   data() {
     return {
       collapsed: false, // 左侧边栏缩放
       collapsed1: false, //右侧边栏缩放
-      cardShow: true, //卡片是否显示
+      cardShow: false, //卡片是否显示
+      searchValue: ""
     };
   },
+  methods: {
+    handleChange(val) {
+      this.cardShow = true;
+      console.log(`okk${val}`);
+    }
+  }
 }
 </script>
 <style>
@@ -84,6 +98,12 @@ export default{
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
+}
+.card {
+  z-index: 16; 
+  position: 'absolute'; 
+  top: 100;
+  left: 100
 }
 </style>
 

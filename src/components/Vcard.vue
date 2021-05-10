@@ -1,5 +1,5 @@
 <template>
-    <a-affix :offset-top="100">
+
         <a-card hoverable style="width: 300px">
             <img
                 slot="cover"
@@ -12,31 +12,38 @@
                 <div> <a-icon key="ellipsis" type="ellipsis" /> 人流量 </div>
             </template>
             <template slot="extra">
-                <a-button type="link">
+                <a-button type="link" @click="closeIt">
                     关闭
                 </a-button>
             </template>
             <template slot="title">
                 <strong> 食堂一 </strong>
             </template>
-            <a-card-meta title="楼内设施：">
-                <a-select
-                    v-model="myPlace"
-                    style="width: 100%"
-                    @change="handleChange"
-                >
+            <a-card-meta title="选择位置：">
+                <template slot="description">
+                    <sinput/>
+                    对应的逻辑位置：
+                </template>
 
-                </a-select>
             </a-card-meta>
+            
         </a-card>
-    </a-affix>
 </template>
     
 <script>
+import sinput from "./searchInput.vue"
 export default{
     data() {
         return {
             myPlace: ''
+        }
+    },
+    components: {
+        sinput
+    },
+    methods: {
+        closeIt (){
+            this.$emit("closeIt");
         }
     }
 }

@@ -1,7 +1,9 @@
 <template>
+  <div>
   <a-select
     show-search
-    placeholder="请输入地点"
+    :showArrow="false"
+    placeholder="Select a person"
     option-filter-prop="children"
     v-model="myPlace2"
     style="width: 100%"
@@ -12,7 +14,9 @@
       {{ item }}
     </a-select-option>
   </a-select>
+  </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -25,7 +29,7 @@ export default {
               '宿舍二',
               '教学楼'
           ],
-          myPlace2: null,
+          myPlace2: this.myPlace,
       }
   },
   props: {
@@ -37,7 +41,7 @@ export default {
   methods: {
     handleChange(value) {
       console.log(`selected ${value}`);  
-      this.$emit("handleChange",value);
+      this.$emit("handleChange1",value);
     },
     filterOption(input, option) {
       return (
