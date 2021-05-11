@@ -70,14 +70,23 @@ export default{
       collapsed: false, // 左侧边栏缩放
       collapsed1: false, //右侧边栏缩放
       cardShow: false, //卡片是否显示
-      searchValue: ""
+      searchValue: "",
+      posID: {},
     };
   },
   methods: {
     handleChange(val) {
       this.cardShow = true;
-      console.log(`okk${val}`);
+      console.log(this.posID[val]);
+    },
+    getID(){
+      this.$http.get('/test2.json').then(res => {
+        this.posID = res.data
+      })
     }
+  },
+  mounted() {
+    this.getID();
   }
 }
 </script>

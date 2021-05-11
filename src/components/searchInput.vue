@@ -21,14 +21,7 @@
 export default {
   data() {
       return{
-          placeSet:[
-              '我的位置',
-              '食堂一',
-              '食堂二',
-              '宿舍一',
-              '宿舍二',
-              '教学楼'
-          ],
+          placeSet:[],
           myPlace2: this.myPlace,
       }
   },
@@ -40,7 +33,7 @@ export default {
   },
   methods: {
     handleChange(value) {
-      console.log(`selected ${value}`);  
+    //  console.log(`selected ${value}`);  
       this.$emit("handleChange1",value);
     },
     filterOption(input, option) {
@@ -48,16 +41,24 @@ export default {
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       );
     },
+    getItems () {
+      this.$http.get('/test.json').then(res => {
+        this.placeSet = res.data
+      })
+    }
   },
   watch: {
       myPlace(newVal) {
-        console.log('myPlace update and the value is ' + newVal);
+      //  console.log('myPlace update and the value is ' + newVal);
         this.myPlace2 = newVal;
       },
       myPlace2(newVal){
-        console.log('new myPlace2 is' + newVal)
+      //  console.log('new myPlace2 is' + newVal)
         this.$emit("input",newVal);
       }
+  },
+  mounted() {
+    this.getItems()
   }
 };
 </script>

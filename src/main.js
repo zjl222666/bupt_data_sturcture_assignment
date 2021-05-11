@@ -5,7 +5,8 @@ import store from './store'
 import 'ant-design-vue/dist/antd.css'
 import Antd from 'ant-design-vue'
 import echarts from 'echarts'
-
+import axios from 'axios'
+Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.use(Antd)
