@@ -80,7 +80,7 @@ export default{
       console.log(this.posID[val]);
     },
     getID(){
-      this.$http.get('/test2.json').then(res => {
+      this.$http.get('/ItemsToid.json').then(res => {
         this.posID = res.data
       })
     }

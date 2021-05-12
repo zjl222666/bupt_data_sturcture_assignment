@@ -42,7 +42,7 @@ export default {
       );
     },
     getItems () {
-      this.$http.get('/test.json').then(res => {
+      this.$http.get('/searchItem.json').then(res => {
         this.placeSet = res.data
       })
     }

@@ -1,12 +1,12 @@
 <template>
-    <div id="myChart" :style="{width: '1000px', height: '600px'}"></div>
+    <div id="myChart" :style="{width: '800px', height: '600px'}"></div>
 </template>
 <script>
 export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
     }
   },
   mounted(){
@@ -19,22 +19,44 @@ export default {
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
         myChart.setOption({
-            title: { text: '在Vue中使用echarts' },
-            tooltip: {},
+            grid: {
+              top: '8%',
+              bottom: '12%',
+            },
             xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+              min: -100,
+              max: 70,
+              type: 'value',
+              axisLine: {onZero: true}
             },
-            yAxis: {},
-            datazoom:
-            {
-              type : 'datazoom',
-              start
+            yAxis: {
+              min: -30,
+              max: 60,
+              type: 'value',
+              axisLine: {onZero: true}
             },
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
+            dataZoom: [
+              {
+                type: 'slider',
+                xAxisIndex: 0,
+                filterMode: 'none'
+              },
+              {
+                type: 'slider',
+                yAxisIndex: 0,
+                filterMode: 'none'
+              },
+              {
+                type: 'inside',
+                xAxisIndex: 0,
+                filterMode: 'none'
+              },
+              {
+                type: 'inside',
+                yAxisIndex: 0,
+                filterMode: 'none'
+              }
+            ],
         });
     }
   }
