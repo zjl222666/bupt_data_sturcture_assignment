@@ -17,7 +17,7 @@
                 </a-button>
             </template>
             <template slot="title">
-                <strong> 食堂一 </strong>
+                <strong> {{nowCard.name}} </strong>
             </template>
             <a-card-meta title="选择位置：">
                 <template slot="description">
@@ -31,11 +31,14 @@
 </template>
     
 <script>
-import sinput from "./searchInput.vue"
+import sinput from "./searchInput.vue";
+
 export default{
     data() {
         return {
-            myPlace: ''
+            myPlace: '',
+            IDtoCard: {},
+            nowCard: {}
         }
     },
     components: {
@@ -44,7 +47,27 @@ export default{
     methods: {
         closeIt (){
             this.$emit("closeIt");
+        },
+        getCard(){
+            this.$http.get('/IDtoCard.json').then(res => {
+                this.IDtoCard = res.data
+                this.nowCard = this.IDtoCard[this.nowID]
+            });
         }
+    },
+    props: {
+        nowID: {
+            type: String,
+            default: "--",
+        }
+    },
+    watch: {
+        nowID(newVal) {
+            this.nowCard = this.IDtoCard[newVal];
+        }
+    },
+    mounted() {
+        this.getCard();
     }
 }
 </script>

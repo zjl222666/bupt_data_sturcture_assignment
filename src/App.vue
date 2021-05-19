@@ -21,7 +21,7 @@
     <a-layout>
         <div  class="card">
     <a-affix  :offset-top="100">
-            <vcard v-if="cardShow" @closeIt="()=>{cardShow = false}"/>
+            <vcard :nowID="nowID"  v-if="cardShow" @closeIt="()=>{cardShow = false}"/>
     </a-affix>
   </div>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
@@ -71,13 +71,14 @@ export default{
       collapsed1: false, //右侧边栏缩放
       cardShow: false, //卡片是否显示
       searchValue: "",
-      posID: {},
+      posID: {}, //存储物理位置（逻辑位置）对应的建筑物ID
+      nowID: ""
     };
   },
   methods: {
     handleChange(val) {
       this.cardShow = true;
-      console.log(this.posID[val]);
+      this.nowID = this.posID[val].toString();
     },
     getID(){
       this.$http.get('/ItemsToid.json').then(res => {
