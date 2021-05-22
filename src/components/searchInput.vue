@@ -54,7 +54,7 @@ export default {
       },
       myPlace2(newVal){
       //  console.log('new myPlace2 is' + newVal)
-        this.$emit("input",newVal.toString());
+        this.$emit("input",newVal);
       }
   },
   mounted() {
