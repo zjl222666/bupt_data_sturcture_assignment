@@ -1,4 +1,7 @@
 <template>
+
+  <div id="app">
+    <a-layout>
 <div >
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
@@ -20,10 +23,10 @@
     </a-layout-sider>
     <a-layout>
         <div  class="card">
-    <a-affix  :offset-top="100">
+          <a-affix  :offset-top="100">
             <vcard :nowID="nowID"  v-if="cardShow" @closeIt="()=>{cardShow = false}"/>
-    </a-affix>
-  </div>
+          </a-affix>
+        </div>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
           <a-row type="flex" justify="start"> 
             <a-col span="2">
@@ -40,14 +43,17 @@
         </a-layout-header>
         <a-layout>
         <a-layout-content
-          :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
+          :style="{  background: '#fff', minHeight: '280px' }"
           >
-          <mymap/>
+          <mymap @handleChange1="handleChange"/>
         </a-layout-content>
         <a-layout-sider width=350 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
+    <router-view/>
+  </a-layout>
+  </div>
   </a-layout>
 </div>
 </template>

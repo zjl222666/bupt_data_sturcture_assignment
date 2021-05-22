@@ -1,8 +1,8 @@
 <template>
     <div class="footer">
         <a-row type="flex" justify="space-around" align="middle">
-            <a-col span="2">
-                <img src="@/assets/logo_white.png" class="logo"/>
+            <a-col span="6">
+                <img src="@/assets/logo_white.png" width="300"/>
             </a-col>
             <a-col span="12">
                 <h3> 团队介绍：郑金亮&nbsp;|邓翔玮&nbsp;| 陈明硕  </h3>
@@ -28,9 +28,6 @@ export default{
     background: rgb(46, 46, 46);
     width: 100%;
     color: white;
-}
-.logo{
-    width: 200px;
 }
 h4{
       color: rgb(199, 199, 199);
