@@ -1,0 +1,53 @@
+{
+    "dist":[
+        {
+            "type": 1,
+            "id": 1,
+            "dist": 100,
+            "total_time": 100,
+            "move_model": "步行",
+            "time":[
+                50,
+                50
+            ],
+            "path":[
+                [
+                    5,
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    5,
+                    1
+                ]
+            ]
+        },
+        {
+            "type": 1,
+            "id": 1,
+            "dist": 100,
+            "total_time": 100,
+            "move_model": "步行",
+            "time":[
+                50,
+                50
+            ],
+            "path":[
+                [
+                    5,
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    5,
+                    1
+                ]
+            ]
+        }
+    ],
+    "time":[],
+    "transportation":[],
+    "approach":[]
+}

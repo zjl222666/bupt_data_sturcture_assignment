@@ -1,0 +1,59 @@
+{
+    "node": [{
+        "name": "教学综合楼N",
+        "x": 1,
+        "y": 1,
+        "value": 1,
+        "symbol": "circle",  
+        "symbolSize": [10,10]
+    },
+    {
+        "name": "教学楼34566",
+        "x": 3,
+        "y": 4,
+        "value": 0,
+        "symbol": "diamond",  
+        "symbolSize": [100,100]
+    },
+    {
+        "name": "教学楼3",
+        "x": 1,
+        "y": 9,
+        "value": 3,
+        "symbol": "rect",  
+        "symbolSize": [50,20]
+    },{
+        "name": "教学楼4",
+        "x": 2,
+        "y": 8,
+        "value": 4,
+        "symbol": "pin",  
+        "symbolSize": [30,30]
+    }],
+    "links": [
+        {
+            "source": "教学楼3",
+            "target": "教学楼4"
+        },
+        {
+            "source": "教学楼2",
+            "target": "教学楼4"
+        },
+        {
+            "source": "教学楼3",
+            "target": "教学综合楼N"
+        },
+        {
+            "source": "教学楼2",
+            "target": "教学综合楼N"
+        },
+        {
+            "source": "教学楼3",
+            "target": "教学楼2"
+        },
+        {
+            "source": "教学综合楼N",
+            "target": "教学楼4"
+        }
+    ]
+}
