@@ -3,15 +3,15 @@
     <div class="searchPart"  align="center">
         <div>
             <a-row type="flex" justify="space-around">
-                <a-col span="3"> <a-icon type="environment"/> 起点 </a-col>
-                <a-col span="20"> <sinput :myPlace="initialPlace" @input="(val) => {initialPlace = val}"/> </a-col>
+                <a-col span="4"> <a-icon type="environment"/> 起点 </a-col>
+                <a-col span="18"> <sinput :myPlace="initialPlace" @input="(val) => {initialPlace = val}"/> </a-col>
             </a-row>
         </div>
         <a-icon type="swap" class="trigger" @click="changeValue"/>
         <div>
             <a-row type="flex" justify="space-around">
-                <a-col span="3"> <a-icon type="environment"/> 终点 </a-col>
-                <a-col span="20"> <sinput :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
+                <a-col span="4"> <a-icon type="environment"/> 终点 </a-col>
+                <a-col span="18"> <sinput :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
             </a-row>
         </div>
         <div @click="searchPath"  class="searchButton"> <a-button type="primary" icon="search" > 规划路径 </a-button> </div>

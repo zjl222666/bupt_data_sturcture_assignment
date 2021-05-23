@@ -47,7 +47,7 @@
           >
           <mymap @handleChange1="handleChange"/>
         </a-layout-content>
-        <a-layout-sider width=350 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
+        <a-layout-sider width=400 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
