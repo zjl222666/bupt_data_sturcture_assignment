@@ -15,13 +15,14 @@ export default {
       links: [],
       searchNode: [],
       searchLinks: [],
+      nowPoint: 0,
       mypos:[],
       minx: 0,
       maxx: 30,
       miny: 0,
       maxy: 30,
       inGuide: false,
-      count: 0
+      rate: 0.05
     }
   },
   mounted(){
@@ -31,13 +32,44 @@ export default {
   },
   methods: {
     startGuide() {
-        console.log(this.count++);
+        if(this.nowPoint==0) {
+            this.mypos = this.searchNode[0].value;
+            this.nowPoint++;
+        }
+        if(this.nowPoint>=this.searchNode.length) {
+            console.log("over!");
+            return;
+        }
+        let tmpX = this.searchNode[this.nowPoint].value[0];
+        let tmpY = this.searchNode[this.nowPoint].value[1];
+        let lastx = this.mypos[0];
+        let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
+        this.mypos[0] += this.rate * (tmpX>this.mypos[0]);
+        this.mypos[1] += (this.rate) * slope;
+        if((this.mypos[0] - tmpX)*(tmpX - lastx)>0) this.nowPoint++;
+        this.myChart.setOption({
+            series:[
+                {
+                    id: 'myPos',
+
+                    data:[
+                        {
+                            name: "我的位置",
+                            value: this.mypos,
+                            symbol: "pin",  
+                            symbolSize: [20,20]
+                        }
+                    ]
+                }
+            ]
+        })
         if (this.inGuide) {
-            setTimeout(()=>{this.startGuide()}, 1000);
+            setTimeout(()=>{this.startGuide()}, 100);
         }
     },
     drawGuide() {
         this.inGuide = true;
+        this.nowPoint = 0;
         this.$http.get('/guideRoute.json').then(res =>{
             this.searchNode = res.data.node
             this.searchLinks = res.data.links
@@ -154,6 +186,7 @@ export default {
                         {
                             id: 'myPos',
                             type: 'graph',
+                            z:3,
                             data: [{
                                 name: "我的位置",
                                 value: [5,5],
@@ -170,6 +203,7 @@ export default {
                             type: 'graph',
                             data: this.node,
                             links: this.links,
+                            z: 1,
                             coordinateSystem: 'cartesian2d',
                             label: {
                                 show: true,
@@ -188,6 +222,7 @@ export default {
                             type: "graph",
                             data: this.searchNode,
                             links: this.searchLinks,
+                            z: 2,
                             coordinateSystem: 'cartesian2d',
                             lineStyle: {
                                 color: '#FFF',
