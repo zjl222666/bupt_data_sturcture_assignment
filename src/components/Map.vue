@@ -22,7 +22,9 @@ export default {
       miny: 0,
       maxy: 30,
       inGuide: false, //是否正在导航
-      rate: 0.2 //导航的速率
+      rate: 0.2, //导航的速率
+      Lx: 100,
+      Ly: 100,
     }
   },
   props: {
@@ -35,20 +37,50 @@ export default {
     this.getMap();
   },
   watch: {
+      Lx(newVal, oldVal){
+          let bili = newVal/oldVal
+          this.node.forEach(node => { 
+              let t1 = node.symbolSize[0]
+              node.symbolSize[0] = t1/bili
+            })
+          this.myChart.setOption({
+              series: [
+                  {
+                       id: 'MapContent',
+                       data: this.node
+                  }
+              ]
+          })
+      },
+      Ly(newVal, oldVal){
+          let bili = newVal/oldVal
+          this.node.forEach(node => { 
+              let t1 = node.symbolSize[1]
+              node.symbolSize[1] = t1/bili
+            })
+            this.myChart.setOption({
+              series: [
+                  {
+                       id: 'MapContent',
+                       data: this.node
+                  }
+              ]
+          })
+      },
       nodeValue(newVal) {
           this.searchNode=[]
           this.searchLinks=[]
           this.inGuide = 1
           let count = -1
           newVal.forEach(nodeVal => {
-              console.log(nodeVal)
+            //  console.log(nodeVal)
               this.searchNode.push({
                   name: (++count).toString(),
                   symbol: "none",
                   value: nodeVal
               })
           })
-          console.log(this.searchNode)
+        //  console.log(this.searchNode)
           for(let i = 0; i< count; i++) {
               this.searchLinks.push({
                   source: i.toString(),
@@ -121,26 +153,28 @@ export default {
              dataZoom: [
                 {
                     id: "sliderX",
-                    startValue: newx-1,
-                    endValue: newx+1
+                    startValue: newx-5,
+                    endValue: newx+5
                 },
                 {
                     id: "sliderY",
-                    startValue: newy-1,
-                    endValue: newy+1
+                    startValue: newy-5,
+                    endValue: newy+5
                 },
                 {
                     id: "insideX",
-                    startValue: newx-1,
-                    endValue: newx+1
+                    startValue: newx-5,
+                    endValue: newx+5
                 },
                 {
                     id: "insideY",
-                    startValue: newy-1,
-                    endValue: newy+1
+                    startValue: newy-5,
+                    endValue: newy+5
                 }
              ]
         })
+        this.Lx = 10
+        this.Ly = 10
     },
     getMap(){
         this.$http.get('/Map.json').then(res => {
@@ -150,8 +184,8 @@ export default {
                 this.myChart.setOption({
                     title: {
                         text: this.mapName ,
-                        left: '5%',
-                        top: '3%'
+                        left: '45%',
+                        top: '1%'
                     },
                     backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
                             offset: 0,
@@ -161,35 +195,17 @@ export default {
                             color: '#cdd0d5'
                     }]),
                     xAxis: [{
-                        show: true,
+                        show: false,
                         min:this.minx,
                         max:this.maxx
                     }],
                     yAxis: [{
-                        show: true,
+                        show: false,
                         min:this.miny,
                         max:this.maxy
                     }],
                     dataZoom: [
-                        {
-                            id: "sliderX",
-                            type: 'slider',
-                            show: true,
-                            xAxisIndex: [0],
-                            filterMode :'none',
-                            startValue: this.minx,
-                            endValue: this.maxx
-                        },
-                        {
-                            id: "sliderY",
-                            type: 'slider',
-                            show: true,
-                            yAxisIndex: [0],
-                            filterMode :'none',
-                            left: '93%',
-                            startValue: this.miny,
-                            endValue: this.maxy
-                        },
+                        
                         {
                             id: "insideX",
                             type: 'inside',
@@ -216,7 +232,7 @@ export default {
                                 name: "我的位置",
                                 value: [5,5],
                                 symbol: "pin",  
-                                symbolSize: [20,20]
+                                symbolSize: [10,10]
                             }],
                             coordinateSystem: 'cartesian2d',
                             label: {
@@ -257,10 +273,17 @@ export default {
                         }
                     ]
                 });
-                this.myChart.on('click',{datatype: 'node'},parmas=> {
+                this.myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
                   //  this.$emit("handleChange1",parmas.data.name);
                     this.changeCenter(parmas.data.value[0],parmas.data.value[1]);
                    // console.log("point test  ",parmas.data.value[0])
+                })
+                this.myChart.on('datazoom',parmas=>{
+                    let xB = parmas.batch
+                    if(xB.length<2) return
+                    console.log(xB)
+                    this.Lx = xB[0].end - xB[0].start
+                    this.Ly = xB[1].end - xB[1].start
                 })
             });
             
