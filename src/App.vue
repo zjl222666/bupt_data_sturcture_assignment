@@ -45,7 +45,7 @@
         <a-layout-content
           :style="{  background: '#fff', minHeight: '280px' }"
           >
-          <mymap @handleChange1="handleChange"/>
+          <mymap @handleChange1="handleChange" :nodeValue="nodeValue"/>
         </a-layout-content>
         <a-layout-sider width=400 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
@@ -78,10 +78,17 @@ export default{
       cardShow: false, //卡片是否显示
       searchValue: "",
       posID: {}, //存储物理位置（逻辑位置）对应的建筑物ID
-      nowID: ""
+      nowID: "",
+      nodeValue: []
     };
   },
   methods: {
+    test(){
+        console.log('test')
+        this.$http.get('/guideRoute.json').then(res =>{
+            this.nodeValue = res.data.node
+        })
+    },
     handleChange(val) {
       this.cardShow = true;
       this.nowID = this.posID[val].toString();
@@ -94,6 +101,7 @@ export default{
   },
   mounted() {
     this.getID();
+    this.test();
   }
 }
 </script>

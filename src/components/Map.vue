@@ -22,11 +22,13 @@ export default {
       miny: 0,
       maxy: 30,
       inGuide: false, //是否正在导航
-      rate: 0.05 //导航的速率
+      rate: 0.2 //导航的速率
     }
   },
   props: {
-       nodeValue:[], //导航路径点
+       nodeValue:{
+           type: Array
+       } //导航路径点
   },
   mounted(){
     this.myChart = this.$echarts.init(document.getElementById('myChart'));
@@ -36,21 +38,24 @@ export default {
       nodeValue(newVal) {
           this.searchNode=[]
           this.searchLinks=[]
+          this.inGuide = 1
           let count = -1
           newVal.forEach(nodeVal => {
+              console.log(nodeVal)
               this.searchNode.push({
-                  name: (++count).toString,
+                  name: (++count).toString(),
                   symbol: "none",
                   value: nodeVal
               })
           })
+          console.log(this.searchNode)
           for(let i = 0; i< count; i++) {
               this.searchLinks.push({
-                  source: i.toString,
-                  target: (i+1).toString
+                  source: i.toString(),
+                  target: (i+1).toString()
               })
           }
-          this.drawGuide()
+          if(newVal.length>1) this.drawGuide()
       }
   },
   methods: {
@@ -171,6 +176,7 @@ export default {
                             type: 'slider',
                             show: true,
                             xAxisIndex: [0],
+                            filterMode :'none',
                             startValue: this.minx,
                             endValue: this.maxx
                         },
@@ -179,6 +185,7 @@ export default {
                             type: 'slider',
                             show: true,
                             yAxisIndex: [0],
+                            filterMode :'none',
                             left: '93%',
                             startValue: this.miny,
                             endValue: this.maxy
@@ -187,6 +194,7 @@ export default {
                             id: "insideX",
                             type: 'inside',
                             xAxisIndex: [0],
+                            filterMode :'none',
                             startValue: this.minx,
                             endValue: this.maxx
                         },
@@ -194,6 +202,7 @@ export default {
                             id: "insideY",
                             type: 'inside',
                             yAxisIndex: [0],
+                            filterMode :'none',
                             startValue: this.miny,
                             endValue: this.maxy
                         }
@@ -220,6 +229,7 @@ export default {
                             data: this.node,
                             links: this.links,
                             z: 1,
+                            nodeScaleRatio: 1,
                             coordinateSystem: 'cartesian2d',
                             label: {
                                 show: true,

@@ -1,17 +1,7 @@
 {
-    "node": [{
-        "name": "n1",
-        "value": [3,3],
-        "symbol": "circle",  
-        "symbolSize": [10,10]
-    },
-    {
-        "name": "n2",
-        "value": [10,11],
-        "symbol": "circle",  
-        "symbolSize": [10,10]
-    }],
-    "links": [
-        {"source": "n1","target": "n2"}
+    "node": [ 
+        [3,3],
+        [10,11],
+        [10,10]
     ]
 }
