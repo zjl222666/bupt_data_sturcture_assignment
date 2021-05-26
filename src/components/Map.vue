@@ -1,7 +1,5 @@
 <template>
-    <div> <a-button @click="startGuide"/> 
     <div id="myChart" :style="{width: '960px', height: '540px'}"></div>
-    </div>
 </template>
 <script>
 import echarts from 'echarts';
@@ -10,7 +8,6 @@ export default {
   name: 'hello',
   data () {
     return {
-      mapName: "校区一",
       node: [], //地图点
       links: [], //地图边
       searchNode: [], //导航路径被加载的点
@@ -18,9 +15,9 @@ export default {
       nowPoint: 0, //模拟导航当前走到的点
       mypos:[], //我的位置
       minx: 0, //视图范围
-      maxx: 500,
+      maxx: 30,
       miny: 0,
-      maxy: 500,
+      maxy: 30,
       inGuide: false, //是否正在导航
       rate: 0.1, //导航的速率
       flashTime: 50, //地图导航刷新时间间隔
@@ -30,15 +27,44 @@ export default {
     }
   },
   props: {
-       nodeValue:{
+       mapNode: {
            type: Array
-       } //导航路径点
+       },
+       mapLinks: {
+           type: Array
+       },
+       GuideNode:{
+           type: Array
+       }, //导航路径点
   },
   mounted(){
     this.myChart = this.$echarts.init(document.getElementById('myChart'));
-    this.getMap();
+    this.drawMap();
   },
   watch: {
+      nowMap(newVal) {
+          this.mapName = newVal
+      },
+      mapNode(newVal) {
+          this.node = newVal
+          this.myChart.setOption({
+              series:[{
+                  id: 'MapContent',
+                  data: this.node,
+              }]
+          })
+      },
+      mapLinks(newVal) {
+          this.links = newVal
+          this.myChart.setOption({
+              series:[
+                  {
+                      id: 'MapContent',
+                      links: this.links,
+                  }
+              ]
+          })
+      },
       Lx(newVal, oldVal){
           this.node.forEach(node => { 
               node.symbolSize[0] = node.symbolSize[0]*oldVal/newVal
@@ -65,7 +91,7 @@ export default {
               ]
           })
       },
-      nodeValue(newVal) {
+      GuideNode(newVal) {
           this.searchNode=[]
           this.searchLinks=[]
           this.inGuide = 1
@@ -109,7 +135,7 @@ export default {
         } else {
             this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
         }
-        console.log(this.mypos,this.nowPoint)  
+        //console.log(this.mypos,this.nowPoint)  
         if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
         this.myChart.setOption({
             series:[
@@ -168,17 +194,8 @@ export default {
             ]
         })
     },
-    getMap(){
-        this.$http.get('/Map.json').then(res => {
-                this.node = res.data.node
-                this.node.forEach(node => { node.label = {show: node.x>0}})
-                this.links = res.data.links
+    drawMap(){
                 this.myChart.setOption({
-                    title: {
-                        text: this.mapName ,
-                        left: '45%',
-                        top: '1%'
-                    },
                     backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
                             offset: 0,
                             color: '#f7f8fa'
@@ -234,8 +251,6 @@ export default {
                         {
                             id: 'MapContent',
                             type: 'graph',
-                            data: this.node,
-                            links: this.links,
                             z: 1,
                             nodeScaleRatio: 1,
                             coordinateSystem: 'cartesian2d',
@@ -266,13 +281,13 @@ export default {
                     ]
                 });
                 this.myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
-                  //  this.$emit("handleChange1",parmas.data.name);
+                    this.$emit("showCard",parmas.data.x);
                     this.changeCenter(parmas.data.value[0],parmas.data.value[1]);
                    // console.log("point test  ",parmas.data.value[0])
                 })
                 this.myChart.on('datazoom',parmas=>{
                     if(parmas.batch != undefined){
-                        console.log(parmas)
+                        //console.log(parmas)
                         let xB = parmas.batch
                         xB.forEach(node=> {
                             if(node.dataZoomId == "insideX")  this.Lx = node.end - node.start
@@ -282,7 +297,6 @@ export default {
                     }
 
                 })
-            });
             
     }
 }

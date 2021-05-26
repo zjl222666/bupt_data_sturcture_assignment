@@ -6,7 +6,7 @@
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <div class="logo"></div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
+      <a-menu theme="dark" mode="inline" v-model="selected_key">
         <a-menu-item key="1">
           <a-icon type="layout" theme="filled" />
           <span>校区一</span>
@@ -36,8 +36,8 @@
                 @click="() => (collapsed = !collapsed)"
             />
             </a-col>
-            <a-col span="5"> <sinput v-model=" searchValue" @handleChange1="handleChange"/> </a-col>
-            <a-col span="2">  <a-button type="link" icon="search" @click="handleChange"/>  </a-col>
+            <a-col span="5"> <sinput  @handleChange1="updataNowID"/> </a-col>
+            <a-col span="2">  <a-button type="link" icon="search" @click="showCard"/>  </a-col>
             <a-col span="1"> &nbsp; </a-col>
           </a-row>
         </a-layout-header>
@@ -45,9 +45,17 @@
         <a-layout-content
           :style="{  background: '#fff', minHeight: '280px' }"
           >
-          <mymap @handleChange1="handleChange" :nodeValue="nodeValue"/>
+          <div v-if="selected_key[0] == '3'">
+            <span> <strong> 当前选择建筑物 </strong> </span>
+            <span> 
+            </span>
+            <span> <strong> 当前楼层 </strong> </span>
+            <span>
+            </span>
+          </div>
+          <mymap @showCard="updataNowID2" :GuideNode="GuideNode" :mapNode="mapNode[nowMapID_show]" :mapLinks="mapLinks[nowMapID_show]"/>
         </a-layout-content>
-        <a-layout-sider width=400 v-model="collapsed1"  theme="light">       <vguide/>     </a-layout-sider>
+        <a-layout-sider width=400  theme="light">       <vguide/>     </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
@@ -74,33 +82,59 @@ export default{
   data() {
     return {
       collapsed: false, // 左侧边栏缩放
-      collapsed1: false, //右侧边栏缩放
+      selected_key: ['1'], //现在选择的左边侧边栏的key数组
       cardShow: false, //卡片是否显示
-      searchValue: "",
       posID: {}, //存储物理位置（逻辑位置）对应的建筑物ID
-      nowID: "",
-      nodeValue: []
+      nowID: "", //card显示的id
+      mapNode:[], //地图点，所有地图的点均先缓存在这个数组里
+      mapLinks:[], //地图边，所有地图的边均线缓存在这个数组里
+      GuideNode: [], //要导航的点的数组，对于所有地图，按顺序缓存在这个数组里
+      nowMapID_show: 0, //现在显示的地图的ID
+      nowMapID_person: 0,  //现在人所在的地图ID
     };
+  },
+  watch: {
+    selected_key(newVal) {
+      console.log(newVal[0])
+      let now = Number(newVal[0])
+      if(now<=2) this.nowMapID_show = now-1
+    }
   },
   methods: {
     test(){
-        console.log('test')
         this.$http.get('/guideRoute.json').then(res =>{
-            this.nodeValue = res.data.node
+            this.GuideNode = res.data.node
         })
     },
-    handleChange(val) {
-      this.cardShow = true;
+    updataNowID2(val) {
+      this.nowID = val.toString();
+      this.showCard()
+    },
+    updataNowID(val) {
       this.nowID = this.posID[val].toString();
+      this.showCard()
+    },
+    showCard() {
+      this.cardShow = true;
     },
     getID(){
       this.$http.get('/ItemsToid.json').then(res => {
         this.posID = res.data
       })
+    },
+    getMapContent(path,id){
+      this.$http.get(path).then(res =>{
+        this.mapNode[id-1] = (res.data.node)
+        this.mapLinks[id-1] = (res.data.links)
+      })
     }
   },
-  mounted() {
+  beforeMount() {
+    this.getMapContent('/Map.json',2)
+    this.getMapContent('/Map1.json',1)
     this.getID();
+  },
+  mounted() {
     this.test();
   }
 }
