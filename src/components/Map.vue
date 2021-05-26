@@ -22,7 +22,8 @@ export default {
       miny: 0,
       maxy: 30,
       inGuide: false, //是否正在导航
-      rate: 0.2, //导航的速率
+      rate: 0.1, //导航的速率
+      flashTime: 50, //地图导航刷新时间间隔
       Lx: 100,
       Ly: 100,
     }
@@ -103,15 +104,20 @@ export default {
         let tmpX = this.searchNode[this.nowPoint].value[0];
         let tmpY = this.searchNode[this.nowPoint].value[1];
         let lastx = this.mypos[0];
+        let lastY = this.mypos[1];
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
-        this.mypos[0] += this.rate * (tmpX>this.mypos[0]);
-        this.mypos[1] += (this.rate) * slope;
-        if((this.mypos[0] - tmpX)*(tmpX - lastx)>0) this.nowPoint++;
+        if(Math.abs(tmpX-this.mypos[0])>this.rate){
+            this.mypos[0] += this.rate * (tmpX>this.mypos[0]?1:-1);
+            this.mypos[1] += this.rate * (tmpX>this.mypos[0]?1:-1) * slope;
+        } else {
+            this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
+        }
+        console.log(this.mypos,this.nowPoint)  
+        if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
         this.myChart.setOption({
             series:[
                 {
                     id: 'myPos',
-
                     data:[
                         {
                             name: "我的位置",
@@ -124,7 +130,7 @@ export default {
             ]
         })
         if (this.inGuide) {
-            setTimeout(()=>{this.startGuide()}, 100);
+            setTimeout(()=>{this.startGuide()}, this.flashTime);
         }
     },
     drawGuide() {
@@ -151,16 +157,6 @@ export default {
     changeCenter(newx,newy) {
         this.myChart.setOption({
              dataZoom: [
-                {
-                    id: "sliderX",
-                    startValue: newx-5,
-                    endValue: newx+5
-                },
-                {
-                    id: "sliderY",
-                    startValue: newy-5,
-                    endValue: newy+5
-                },
                 {
                     id: "insideX",
                     startValue: newx-5,
@@ -281,7 +277,7 @@ export default {
                 this.myChart.on('datazoom',parmas=>{
                     let xB = parmas.batch
                     if(xB.length<2) return
-                    console.log(xB)
+                //    console.log(xB)
                     this.Lx = xB[0].end - xB[0].start
                     this.Ly = xB[1].end - xB[1].start
                 })

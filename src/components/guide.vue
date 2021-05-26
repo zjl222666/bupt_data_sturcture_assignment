@@ -14,20 +14,33 @@
                 <a-col span="18"> <sinput :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
             </a-row>
         </div>
-        <div @click="searchPath"  class="searchButton"> <a-button type="primary" icon="search" > 规划路径 </a-button> </div>
     </div>
     <div>
-        <a-tabs :tabBarGutter="1" size="small" tabPosition="top" default-active-key="1">
+        <a-tabs  :tabBarGutter="1" size="small" tabPosition="top" default-active-key="1">
             <a-tab-pane key="1" tab="步行时间最短">
-                <guidecontent :data="resultDist"/>
+                <div align="center">
+                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+                    <guidecontent :data="resultDist"/>
+                </div>
             </a-tab-pane>
             <a-tab-pane key="2" tab="步行距离最短">
+                <div align="center">
+                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+                    <guidecontent :data="resultDist"/>
+                </div>
             </a-tab-pane>
             <a-tab-pane key="3" tab="自行车最优策略">
+                <div align="center">
+                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button> 
+                    <guidecontent :data="resultDist"/>
+                </div>
             </a-tab-pane>
             <a-tab-pane key="4" tab="有途径点策略">
-                <div style="padding:10px">
-                    <sinputmuti v-model="passBy"/>
+                <div align="center">
+                        <span> 选择途径点：</span>
+                        <span> <sinputmuti v-model="passBy"/> </span>
+                <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+                <guidecontent :data="resultDist"/>
                 </div>
             </a-tab-pane>
         </a-tabs>
