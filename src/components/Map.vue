@@ -18,9 +18,9 @@ export default {
       nowPoint: 0, //模拟导航当前走到的点
       mypos:[], //我的位置
       minx: 0, //视图范围
-      maxx: 30,
+      maxx: 500,
       miny: 0,
-      maxy: 30,
+      maxy: 500,
       inGuide: false, //是否正在导航
       rate: 0.1, //导航的速率
       flashTime: 50, //地图导航刷新时间间隔

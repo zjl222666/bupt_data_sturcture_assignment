@@ -16,13 +16,13 @@
         "name": "教学楼2",
         "value": [2,2],
         "symbol": "diamond",  
-        "symbolSize": [100,100]
+        "symbolSize": [10,10]
     },
     {
         "name": "教学楼3",
         "value": [3,4],
         "symbol": "rect",  
-        "symbolSize": [50,20]
+        "symbolSize": [10,10]
     },{
         "name": "教学楼4",
         "value": [7,9],
