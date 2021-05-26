@@ -26,6 +26,7 @@ export default {
       flashTime: 50, //地图导航刷新时间间隔
       Lx: 100,
       Ly: 100,
+      focusSize: 5, //点击点后要缩放的大小
     }
   },
   props: {
@@ -39,10 +40,8 @@ export default {
   },
   watch: {
       Lx(newVal, oldVal){
-          let bili = newVal/oldVal
           this.node.forEach(node => { 
-              let t1 = node.symbolSize[0]
-              node.symbolSize[0] = t1/bili
+              node.symbolSize[0] = node.symbolSize[0]*oldVal/newVal
             })
           this.myChart.setOption({
               series: [
@@ -54,10 +53,8 @@ export default {
           })
       },
       Ly(newVal, oldVal){
-          let bili = newVal/oldVal
           this.node.forEach(node => { 
-              let t1 = node.symbolSize[1]
-              node.symbolSize[1] = t1/bili
+              node.symbolSize[1] = node.symbolSize[1]*oldVal/newVal
             })
             this.myChart.setOption({
               series: [
@@ -155,22 +152,21 @@ export default {
         return x<y?x:y
     },
     changeCenter(newx,newy) {
-        this.myChart.setOption({
-             dataZoom: [
+        this.myChart.dispatchAction({
+            type: 'dataZoom',
+            batch: [
                 {
-                    id: "insideX",
-                    startValue: newx-5,
-                    endValue: newx+5
+                    dataZoomId: "insideX",
+                    start: 100*this.max((newx-this.focusSize-this.minx),0)/(this.maxx-this.minx),
+                    end: 100*this.min((newx+this.focusSize-this.minx)/(this.maxx-this.minx),100)
                 },
                 {
-                    id: "insideY",
-                    startValue: newy-5,
-                    endValue: newy+5
+                    dataZoomId: "insideY",
+                    start: 100*this.max((newy-this.focusSize-this.miny),0)/(this.maxy-this.miny),
+                    end: 100*this.min((newy+this.focusSize-this.miny)/(this.maxy-this.miny),100)
                 }
-             ]
+            ]
         })
-        this.Lx = 10
-        this.Ly = 10
     },
     getMap(){
         this.$http.get('/Map.json').then(res => {
@@ -275,11 +271,16 @@ export default {
                    // console.log("point test  ",parmas.data.value[0])
                 })
                 this.myChart.on('datazoom',parmas=>{
-                    let xB = parmas.batch
-                    if(xB.length<2) return
-                //    console.log(xB)
-                    this.Lx = xB[0].end - xB[0].start
-                    this.Ly = xB[1].end - xB[1].start
+                    if(parmas.batch != undefined){
+                        console.log(parmas)
+                        let xB = parmas.batch
+                        xB.forEach(node=> {
+                            if(node.dataZoomId == "insideX")  this.Lx = node.end - node.start
+                            else  this.Ly = node.end - node.start
+                        })
+
+                    }
+
                 })
             });
             
