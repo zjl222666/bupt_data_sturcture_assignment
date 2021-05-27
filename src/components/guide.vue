@@ -20,7 +20,7 @@
             <a-tab-pane key="1" tab="步行时间最短">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
-                    <guidecontent :data="resultDist"/>
+                    <guidecontent :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
             <a-tab-pane key="2" tab="步行距离最短">
@@ -71,6 +71,15 @@ export default {
     watch: {
     },
     methods: {
+        startGuide() {
+            this.$emit("startGuide")
+        },
+        endGuide() {
+            this.$emit("endGuide")
+        },
+        changeMap(nowMap,nowMapz) {
+            this.$emit("changeMap",nowMap,nowMapz)
+        },
         handlePassby(val) {
             this.passBy = val
         //    console.log(val)

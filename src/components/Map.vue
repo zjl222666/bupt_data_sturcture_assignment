@@ -22,7 +22,6 @@ export default {
       maxx: 30,
       miny: 0,
       maxy: 30,
-      inGuide: false, //是否正在导航
       rate: 0.1, //导航的速率
       flashTime: 50, //地图导航刷新时间间隔
       Lx: 100,
@@ -31,6 +30,9 @@ export default {
     }
   },
   props: {
+       inGuide: {
+           type: Boolean
+       }, //是否正在导航
        mapNode: {
            type: Array
        },
@@ -148,7 +150,7 @@ export default {
           })
       },
       GuideNode(newVal) {
-          console.log("JIINLAI!!",newVal)
+        //  console.log("JIINLAI!!",newVal)
           if(newVal == undefined){
               this.searchNode = []
               this.searchLinks = []
@@ -163,7 +165,6 @@ export default {
           }
           this.searchNode=[]
           this.searchLinks=[]
-          this.inGuide = 1
           let count = -1
           newVal.forEach(nodeVal => {
             //  console.log(nodeVal)
@@ -187,10 +188,12 @@ export default {
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调，可通过inGuide来实现暂停
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
+            this.nowPoint = 0
+            this.$emit("guideOver");
             return;
         }
         if(this.nowPoint==0) {
-            this.mypos = this.searchNode[0].value;
+        //    this.mypos = this.searchNode[0].value;
             this.nowPoint++;
         }
         let tmpX = this.searchNode[this.nowPoint].value[0];
@@ -204,9 +207,9 @@ export default {
         } else {
             this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
         }
-        //console.log(this.mypos,this.nowPoint)  
+       // console.log(this.mypos,this.nowPoint)  
         if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
-        this.$emit("updataMypos",this.mypos)
+        this.$emit("updataMypos",this.mypos[0],this.mypos[1])
         if (this.inGuide) {
             setTimeout(()=>{this.startGuide()}, this.flashTime);
         }

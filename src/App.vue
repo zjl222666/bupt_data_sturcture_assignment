@@ -64,17 +64,27 @@
             </span>
           </div>
           <mymap 
+            ref="map"
             @showCard="updataNowID2" 
             @updataMypos="updataMypos"
+            @guideOver="()=>{this.guideOver=true}"
             :GuideNode="GuideNode[[nowMapID_show,nowMapID_Z]]" 
             :GuideTime="GuideTime[[nowMapID_show,nowMapID_Z]]"
             :mapNode="mapNode[[nowMapID_show,nowMapID_Z]]" 
             :mapLinks="mapLinks[[nowMapID_show,nowMapID_Z]]"
             :mypos_in="mypos_in"
             :myposd="mypos"
+            :inGuide="inGuide"
             />
         </a-layout-content>
-        <a-layout-sider width=400  theme="light">       <vguide @updataGuide="updataGuide"/>     </a-layout-sider>
+        <a-layout-sider width=400  theme="light">       
+            <vguide 
+              @updataGuide="updataGuide"
+              @changeMap="changeMap"
+              @startGuide="()=>{this.inGuide=true; this.startGuide()}"
+              @endGuide="()=>{this.inGuide=false}"
+            />     
+        </a-layout-sider>
         </a-layout>
         <a-layout-footer style=" background: rgb(46, 46, 46);"> <vfooter/></a-layout-footer>
     </a-layout>
@@ -117,11 +127,20 @@ export default{
       selected_Map: 4, //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [4,4], //当前人的坐标
+      guideOrder: [], //模拟导航地图加载的顺序
+      guideOver: true, //模拟导航当前地图是否导航完毕
+      inGuide: true, //导航是否处于暂停状态
     };
   },
   watch: {
-    nowMapID_show() {
+    nowMapID_show(newVal) {
       this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
+      if(newVal<=2) {
+        this.selected_key = [newVal.toString()]
+      }
+      else{
+        this.selected_key = ['3']
+      }
     },
     nowMapID_Z() {
       this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
@@ -156,12 +175,53 @@ export default{
     }
   },
   methods: {
-    updataMypos(val) {
-      this.mypos = val
+    startGuide() {
+      while(this.guideOrder.length>1){
+        if(this.guideOver == true){
+          this.guideOrder.shift()
+          let node = this.guideOrder[0]
+          this.guideOver = false
+          this.nowMapID_person = node[0]
+          this.nowMapID_person_z = node[1]
+          this.$set(this.mypos,0,this.GuideNode[[node[0],node[1]]][0][0])
+          this.$set(this.mypos,1,this.GuideNode[[node[0],node[1]]][0][1])
+          console.log("Nowpos",this.GuideNode[[node[0],node[1]]][0],this.mypos)
+          this.nowMapID_show = node[0]
+          this.nowMapID_Z = node[1]
+          this.$refs.map.startGuide()
+        }
+        else{
+          console.log('deng')
+          setTimeout(() => {
+            this.startGuide()
+          }, 1000);
+          return
+        }
+      }
+    },
+    changeMap(newMap,newMapz) {
+      if(newMap<=2) {
+        this.selected_key = [newMap.toString()]
+      }
+      else{
+        this.selected_key = newMap
+        this.selected_Z = newMapz
+        this.selected_key = ['3']
+      }
+    },
+    updataMypos(val1,val2) {
+      console.log("ceshi",val1,val2)
+      this.mypos = [val1,val2]
+      this.$set(this.mypos,0,val1)
+      this.$set(this.mypos,1,val2)
+      console.log("ceshi2",this.mypos)
     },
     updataGuide(val) {
     //  console.log(this.GuideNode)
+      this.guideOrder = [[1,0]]
+      this.inGuide = true
       val.forEach(node=>{
+        this.guideOrder.push([node.id,node.z])
         this.$set(this.GuideNode,[node.id,node.z],node.path)
         this.$set(this.GuideTime,[node.id,node.z], node.time)
       })

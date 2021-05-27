@@ -14,9 +14,9 @@
               <h4>距离：{{item.dist}}</h4>
               <h4>交通方式：{{item.move_model}}</h4>
           </template>
-          <template slot="title">{{ arhName[item.id] }}-部分</template>
+          <template slot="title">{{ arhName[[item.id,item.z]] }}-部分</template>
         </a-list-item-meta>
-        <div><a-button type="link"> 查看路线 </a-button></div>
+        <div><a-button type="link" @click="changeMap(item.id,item.z)"> 查看路线 </a-button></div>
       </a-list-item>
     </a-list>
   </div>
@@ -28,7 +28,7 @@ export default {
   directives: { infiniteScroll },
   data() {
     return {  
-        arhName: ["校区0","校区1","校区2","教学楼1"],
+        arhName: [],
         inGuide: false,
     };
   },
@@ -37,13 +37,24 @@ export default {
         type: Array
     },
   },
+  mounted() {
+    this.arhName[[1,0]] = "校区一"
+    this.arhName[[2,0]] = "校区二"
+  },
   methods: {
       startGuide() {
-          this.inGuide = true;
-      },
+            this.inGuide = true
+            this.$emit("startGuide")
+        },
       endGuide() {
-          this.inGuide = false;
+            this.inGuide = false
+            this.$emit("endGuide")
+      },
+      changeMap(Map,Mapz){
+     //   console.log(Map,Mapz)
+        this.$emit("changeMap",Map,Mapz)
       }
+
     },
 };
 </script>
