@@ -1,5 +1,9 @@
 <template>
-    <div id="myChart" :style="{width: '960px', height: '540px'}"></div>
+    <div style="postion: absolute">
+        <div class="showYJ"> <a-button type="primary"> 查看道路拥挤情况 </a-button> </div>
+        <div id="myChart" :style="{width: '960px', height: '540px'}"></div>
+
+    </div>
 </template>
 <script>
 import echarts from 'echarts';
@@ -36,17 +40,69 @@ export default {
        GuideNode:{
            type: Array
        }, //导航路径点
+       mypos_in :{
+           type: Boolean,
+           default: false
+       }, //人是否在这张地图中
+       myposd: {
+           type: Array,
+       },
+       GuideTime:{
+            type: Array
+        },
+        MapID: { //当前这张地图的ID
+            type: Number
+        }
   },
   mounted(){
     this.myChart = this.$echarts.init(document.getElementById('myChart'));
     this.drawMap();
   },
   watch: {
-      nowMap(newVal) {
-          this.mapName = newVal
+      myposd(newVal) {
+          this.mypos = newVal
+          this.myChart.setOption({
+            series:[
+                {
+                    id: 'myPos',
+                    data:[
+                        {
+                            name: "我的位置",
+                            value: this.mypos,
+                            symbol: "pin",  
+                            symbolSize: [20,20]
+                        }
+                    ]
+                }
+            ]
+        })
+      },
+      mypos_in(newVal) {
+        //  console.log("test!")
+          if(newVal == true) {
+              this.myChart.setOption({
+                  series:[{
+                      id: 'myPos',
+                      data: [{
+                            name: "我的位置",
+                            value: this.mypos,
+                            symbol: "pin",  
+                            symbolSize: [20,20]
+                        }],
+                  }]
+              })
+          } else {
+              this.myChart.setOption({
+                  series: [{
+                      id: 'myPos',
+                      data:[]
+                  }]
+              })
+          }
       },
       mapNode(newVal) {
           this.node = newVal
+       //   console.log(newVal)
           this.myChart.setOption({
               series:[{
                   id: 'MapContent',
@@ -92,6 +148,19 @@ export default {
           })
       },
       GuideNode(newVal) {
+          console.log("JIINLAI!!",newVal)
+          if(newVal == undefined){
+              this.searchNode = []
+              this.searchLinks = []
+              this.drawGuide()
+              return
+          }
+          if(newVal.length<=1) {
+              this.searchNode = []
+              this.searchLinks = []
+              this.drawGuide()
+              return
+          }
           this.searchNode=[]
           this.searchLinks=[]
           this.inGuide = 1
@@ -111,7 +180,7 @@ export default {
                   target: (i+1).toString()
               })
           }
-          if(newVal.length>1) this.drawGuide()
+          this.drawGuide()
       }
   },
   methods: {
@@ -137,21 +206,7 @@ export default {
         }
         //console.log(this.mypos,this.nowPoint)  
         if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
-        this.myChart.setOption({
-            series:[
-                {
-                    id: 'myPos',
-                    data:[
-                        {
-                            name: "我的位置",
-                            value: this.mypos,
-                            symbol: "pin",  
-                            symbolSize: [20,20]
-                        }
-                    ]
-                }
-            ]
-        })
+        this.$emit("updataMypos",this.mypos)
         if (this.inGuide) {
             setTimeout(()=>{this.startGuide()}, this.flashTime);
         }
@@ -237,12 +292,6 @@ export default {
                             id: 'myPos',
                             type: 'graph',
                             z:3,
-                            data: [{
-                                name: "我的位置",
-                                value: [5,5],
-                                symbol: "pin",  
-                                symbolSize: [10,10]
-                            }],
                             coordinateSystem: 'cartesian2d',
                             label: {
                                 show: true
@@ -252,6 +301,8 @@ export default {
                             id: 'MapContent',
                             type: 'graph',
                             z: 1,
+                            data: this.node,
+                            links: this.links,
                             nodeScaleRatio: 1,
                             coordinateSystem: 'cartesian2d',
                             label: {
@@ -302,3 +353,11 @@ export default {
 }
 }
 </script>
+<style scoped>
+.showYJ{
+    position: absolute;
+    left: 60%;
+    top: 10%;
+    z-index: 100;
+}
+</style>

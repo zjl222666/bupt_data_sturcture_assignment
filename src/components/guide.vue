@@ -38,7 +38,7 @@
             <a-tab-pane key="4" tab="有途径点策略">
                 <div align="center">
                         <span> 选择途径点：</span>
-                        <span> <sinputmuti v-model="passBy"/> </span>
+                        <span> <sinputmuti @handlePassby="handlePassby" /> </span>
                 <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
                 <guidecontent :data="resultDist"/>
                 </div>
@@ -55,9 +55,9 @@ export default {
     name: "Vguide",
     data(){
         return{
-            initialPlace: '我的位置',
-            distPlace: '',
-            passBy: null,
+            initialPlace: '我的位置', //起点
+            distPlace: '', //终点
+            passBy: null, //途径点
             tmp: '',
             resultDist: [],
             resultTime: []
@@ -71,17 +71,58 @@ export default {
     watch: {
     },
     methods: {
+        handlePassby(val) {
+            this.passBy = val
+        //    console.log(val)
+        },
         changeValue() {
             let tmp = this.initialPlace; 
             this.initialPlace = this.distPlace; 
             this.distPlace=tmp;
         },
         searchPath() {
-            this.$http.get('/searchResult.json').then(res => {
-                this.resultDist = res.data["dist"]
-            })
-            console.log("test_search")
-        }
+            if(this.initialPlace == '' ||this.distPlace =='') {
+                this.$message.warn("请正确选择出发地和目的地")
+                return
+            }
+            if(this.initialPlace == this.distPlace) {
+                this.$message.warn("目的地与起始地址相同，请重新选择")
+                return
+            }
+            if(this.distPlace == '我的位置') {
+                this.$message.warn("很抱歉，目的地不能是自己的位置哦，请重新选择")
+                return
+            }
+            if(this.initialPlace != '我的位置') {
+                this.$confirm({
+                    title: '你的出发点不是当前我的位置',
+                    content: '是否确认将我的位置更新至出发点？',
+                    okText: '确认并导航',
+                    okType: '取消导航',
+                    cancelText: 'No',
+                    onCancel: () =>{
+                       return
+                    },
+                    onOk: ()=> {
+                        this.updataMypos()
+                        this.getGuide()
+                    }
+                });
+            }
+            else{
+                this.getGuide()
+            }
+        },
+        updataMypos() {
+            
+        },
+        getGuide() {
+                this.$http.get('/searchResult.json').then(res => {
+                    this.resultDist = res.data
+                  //  console.log(this.resultDist)
+                    this.$emit("updataGuide",this.resultDist)
+                })
+            }
     }
 
 }

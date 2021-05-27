@@ -1,12 +1,11 @@
-{
-    "dist":[
+[
         {
             "type": 1,
             "id": 1,
             "dist": 100,
             "total_time": 100,
             "move_model": "步行",
-            "z":1,
+            "z":0,
             "time":[
                 50,
                 50
@@ -44,8 +43,4 @@
                 ]
             ]
         }
-    ],
-    "time":[],
-    "transportation":[],
-    "approach":[]
-}
+]

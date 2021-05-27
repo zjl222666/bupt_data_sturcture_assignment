@@ -63,10 +63,15 @@ export default{
     },
     watch: {
         nowID(newVal) {
+            if(this.IDtoCard[newVal] === undefined) {
+                this.$message.warning("未找到相关建筑物，请检查输入")
+                this.closeIt()
+                return
+            }
             this.nowCard = this.IDtoCard[newVal];
         }
     },
-    mounted() {
+    beforeMount() {
         this.getCard();
     }
 }

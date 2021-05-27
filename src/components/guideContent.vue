@@ -5,7 +5,7 @@
     <h3> 共<strong> {{data.length}} </strong>部分导航</h3>
     <span> <a-button :disabled="inGuide" @click="startGuide"> 开始模拟导航 </a-button></span>
     &nbsp; &nbsp;&nbsp;
-    <span> <a-button :disabled="!inGuide" type="danger" @click="endGuide"> 终止模拟导航 </a-button></span>
+    <span> <a-button :disabled="!inGuide" type="danger" @click="endGuide"> 暂停模拟导航 </a-button></span>
     <a-list :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-list-item-meta>
