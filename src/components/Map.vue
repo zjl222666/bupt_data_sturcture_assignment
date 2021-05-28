@@ -55,7 +55,7 @@ export default {
   mounted(){
     myChart = this.$echarts.init(document.getElementById('myChart'));
     this.drawMap();
-    this.updataCrowd();
+  //  this.updataCrowd();
   },
   watch: {
       inGuide(newVal) {
@@ -108,7 +108,7 @@ export default {
       },
       mapNode(newVal) {
           this.node = newVal
-       //   console.log(newVal)
+          console.log(newVal)
          myChart.setOption({
               series:[{
                   id: 'MapContent',
@@ -260,9 +260,21 @@ export default {
                     }]),
                     xAxis: [{
                         show: false,
+                        min: function (value) {
+                            return value.min - 20;
+                        },
+                        max: function (value) {
+                            return value.max + 20;
+                        }
                     }],
                     yAxis: [{
                         show: false,
+                        min: function (value) {
+                            return value.min - 20;
+                        },
+                        max: function (value) {
+                            return value.max + 20;
+                        }
                     }],
                     dataZoom: [
                         

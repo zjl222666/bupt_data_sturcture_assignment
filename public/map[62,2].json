@@ -1,0 +1,210 @@
+{
+    "node": [
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-207",
+            "value": [
+                200,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "none14",
+            "value": [
+                250,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 250
+        },
+        {
+            "name": "\u697c\u68af2",
+            "value": [
+                300,
+                100
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 300
+        },
+        {
+            "name": "none16",
+            "value": [
+                250,
+                200
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 250
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-205",
+            "value": [
+                200,
+                200
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-206",
+            "value": [
+                300,
+                200
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "none19",
+            "value": [
+                250,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 250
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-203",
+            "value": [
+                200,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-204",
+            "value": [
+                300,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "none22",
+            "value": [
+                250,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 250
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-201",
+            "value": [
+                200,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": [
+                "2019211302\u73ed-\u6570\u636e\u7ed3\u6784\u8bfe-\u5468\u4e948\u70b9"
+            ]
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-202",
+            "value": [
+                300,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": [
+                "2019211302\u73ed-\u6570\u636e\u7ed3\u6784\u8bfe-\u8003\u573a"
+            ]
+        }
+    ],
+    "links": [
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-207",
+            "target": "none14"
+        },
+        {
+            "source": "none14",
+            "target": "\u697c\u68af2"
+        },
+        {
+            "source": "none14",
+            "target": "none16"
+        },
+        {
+            "source": "none16",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-205"
+        },
+        {
+            "source": "none16",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-206"
+        },
+        {
+            "source": "none16",
+            "target": "none19"
+        },
+        {
+            "source": "none19",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-203"
+        },
+        {
+            "source": "none19",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-204"
+        },
+        {
+            "source": "none19",
+            "target": "none22"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-201"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-202"
+        }
+    ]
+}

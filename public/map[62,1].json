@@ -1,0 +1,257 @@
+{
+    "node": [
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-101",
+            "value": [
+                50,
+                350
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": [
+                "2019211302\u73ed-\u6570\u636e\u7ed3\u6784-\u5468\u4e948\u70b9"
+            ]
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
+            "value": [
+                100,
+                350
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 100
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-102",
+            "value": [
+                150,
+                350
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "none4",
+            "value": [
+                100,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 100
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-103",
+            "value": [
+                50,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-104",
+            "value": [
+                150,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "none7",
+            "value": [
+                100,
+                150
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 100
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-105",
+            "value": [
+                50,
+                150
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-106",
+            "value": [
+                150,
+                150
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": [
+                "2019211302\u73ed-\u8ba1\u7b97\u673a\u7f51\u7edc-\u5468\u4e8c8\u70b9"
+            ]
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
+            "value": [
+                100,
+                50
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 100
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-107",
+            "value": [
+                50,
+                50
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                30,
+                30
+            ],
+            "x": []
+        },
+        {
+            "name": "\u697c\u68af1",
+            "value": [
+                150,
+                50
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 150
+        },
+        {
+            "name": "none37",
+            "value": [
+                100,
+                200
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": 100
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e00",
+            "value": [
+                50,
+                200
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 50
+        },
+        {
+            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e09",
+            "value": [
+                150,
+                200
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                8,
+                8
+            ],
+            "x": 150
+        }
+    ],
+    "links": [
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-101",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db"
+        },
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-102"
+        },
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
+            "target": "none4"
+        },
+        {
+            "source": "none4",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-103"
+        },
+        {
+            "source": "none4",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-104"
+        },
+        {
+            "source": "none7",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-105"
+        },
+        {
+            "source": "none7",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-106"
+        },
+        {
+            "source": "none7",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c"
+        },
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-107"
+        },
+        {
+            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
+            "target": "\u697c\u68af1"
+        },
+        {
+            "source": "none4",
+            "target": "none7"
+        },
+        {
+            "source": "none37",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e00"
+        },
+        {
+            "source": "none37",
+            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e09"
+        }
+    ]
+}

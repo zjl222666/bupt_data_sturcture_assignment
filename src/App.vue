@@ -52,8 +52,8 @@
             <span> <strong> 当前选择建筑物 </strong> </span>
             <span> 
               <a-select v-model="selected_Map" style="width: 120px">
-                <a-select-option value=3>
-                  test
+                <a-select-option value=62>
+                  教学综合实验楼
                 </a-select-option>
                 <a-select-option value=4>
                   test
@@ -78,8 +78,8 @@
             <span> <strong> 当前楼层 </strong> </span>
             <span>
               <a-select v-model="selected_Z" style="width: 120px">
-                <a-select-option value=1>
-                  1
+                <a-select-option v-for="items in 4" :key="items" :value="items">
+                  {{items}}
                 </a-select-option>
               </a-select>
             </span>
@@ -188,6 +188,7 @@ export default{
     //  console.log(newVal)
     },
     selected_Z(newVal) {
+      console.log(newVal)
       this.nowMapID_Z = newVal
     },
     selected_key(newVal) {
@@ -343,6 +344,9 @@ export default{
       this.mypos = [0,130]
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
+      this.getMapContent('/Map[62,1].json',62,1)
+      this.getMapContent('/Map[62,2].json',62,2)
+      this.getMapContent('/Map[62,3].json',62,3)
       this.getID();
       this.getCard();
   }
