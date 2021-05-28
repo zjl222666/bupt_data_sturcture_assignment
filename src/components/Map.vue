@@ -281,16 +281,6 @@ export default {
                     ],
                     series: [
                         {
-                            id: 'showCrowd',
-                            type: 'graph',
-                            z: 3,
-                            coordinateSystem: 'cartesian2d',
-                            edgeLabel: {
-                                formatter: '拥挤度: {c}',
-                                show: true
-                            }
-                        },
-                        {
                             id: 'myPos',
                             type: 'graph',
                             z:4,
@@ -330,11 +320,21 @@ export default {
                                 color: '#FFF',
                                 width: 5
                             }
-                        }
+                        },
+                        {
+                            id: 'showCrowd',
+                            type: 'graph',
+                            z: 3,
+                            coordinateSystem: 'cartesian2d',
+                            edgeLabel: {
+                                formatter: '拥挤度: {c}',
+                                show: true
+                            }
+                        },
                     ]
                 });
                 myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
-                 //   console.log(parmas)
+                    console.log(parmas)
                     if(parmas.data.x!=undefined&&(this.mapID==2||this.mapID==1))this.$emit("showCard",parmas.data.x);
                 })
             
