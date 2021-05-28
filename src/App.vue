@@ -24,7 +24,10 @@
     <a-layout>
         <div  class="card">
           <a-affix  :offset-top="100">
-            <vcard :nowID="nowID"  v-if="cardShow" @closeIt="()=>{nowID=''; cardShow = false;  }"/>
+            <vcard               
+              :nowCard="nowCard"  
+              v-if="cardShow" 
+              @closeIt="()=>{nowID=''; cardShow = false;  }"/>
           </a-affix>
         </div>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
@@ -79,9 +82,11 @@
         </a-layout-content>
         <a-layout-sider width=400  theme="light">       
             <vguide 
+              ref="guide"
               @updataGuide="updataGuide"
+              @updataMypos="updataMypos2"
               @changeMap="changeMap"
-              @startGuide="()=>{this.inGuide=true; this.startGuide()}"
+              @startGuide="()=>{this.inGuide=true; this.startGuide(); }"
               @endGuide="()=>{this.inGuide=false}"
             />     
         </a-layout-sider>
@@ -115,6 +120,8 @@ export default{
       cardShow: false, //卡片是否显示
       posID: {}, //存储物理位置（逻辑位置）对应的建筑物ID
       nowID: "", //card显示的id
+      IDtoCard: {}, //建筑物id对应的信息
+      nowCard: {}, //当前卡片显示的内容
       mapNode:[], //地图点，所有地图的点均先缓存在这个数组里
       mapLinks:[], //地图边，所有地图的边均线缓存在这个数组里
       GuideNode: [], //要导航的点的数组，对于所有地图，按顺序缓存在这个数组里
@@ -133,6 +140,11 @@ export default{
     };
   },
   watch: {
+    nowID(newVal) {
+      this.nowCard = this.IDtoCard[newVal]
+    //  console.log(this.nowCard)
+      this.$forceUpdate()
+    },
     nowMapID_show(newVal) {
       this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
       if(newVal<=2) {
@@ -170,12 +182,24 @@ export default{
       }
 
     },
-    GuideNode(newVal) {
-      console.log(newVal)
-    }
   },
   methods: {
     startGuide() {
+      if(this.guideOrder.length==1) {
+        if(this.guideOver) {
+            this.$success({
+            title: '导航结束啦！',
+            content: '已经将你的位置更新为目的地',
+            okText: '确认',
+          });
+          return
+        } else {
+          setTimeout(() => {
+            this.startGuide()
+          }, 1500);
+        }
+        return
+      }
       while(this.guideOrder.length>1){
         if(this.guideOver == true){
           this.guideOrder.shift()
@@ -183,12 +207,18 @@ export default{
           this.guideOver = false
           this.nowMapID_person = node[0]
           this.nowMapID_person_z = node[1]
-          this.$set(this.mypos,0,this.GuideNode[[node[0],node[1]]][0][0])
-          this.$set(this.mypos,1,this.GuideNode[[node[0],node[1]]][0][1])
-          console.log("Nowpos",this.GuideNode[[node[0],node[1]]][0],this.mypos)
+          this.$set(this.mypos,[0],this.GuideNode[[node[0],node[1]]][0][0])
+          this.$set(this.mypos,[1],this.GuideNode[[node[0],node[1]]][0][1])
           this.nowMapID_show = node[0]
           this.nowMapID_Z = node[1]
-          this.$refs.map.startGuide()
+          if(this.guideOrder.length == 1) {
+            setTimeout(() => {
+            this.startGuide()
+          }, 1000);
+          }
+          setTimeout(() => {
+            this.$refs.map.startGuide()
+            }, 200);
         }
         else{
           console.log('deng')
@@ -210,11 +240,16 @@ export default{
       }
     },
     updataMypos(val1,val2) {
-      console.log("ceshi",val1,val2)
-      this.mypos = [val1,val2]
-      this.$set(this.mypos,0,val1)
-      this.$set(this.mypos,1,val2)
-      console.log("ceshi2",this.mypos)
+   //   console.log("ceshi",val1,val2)
+      this.$set(this.mypos,[0],val1)
+      this.$set(this.mypos,[1],val2)
+    //  console.log("ceshi2",this.mypos)
+    },
+    updataMypos2(val){
+      let tmpID = this.posID[val]
+      this.nowMapID_person = this.IDtoCard[tmpID.toString()].campus
+      this.nowMapID_Z = this.IDtoCard[tmpID.toString()].z
+      this.updataMypos(this.IDtoCard[tmpID.toString()].x,this.IDtoCard[tmpID.toString()].y)
     },
     updataGuide(val) {
     //  console.log(this.GuideNode)
@@ -240,6 +275,7 @@ export default{
       this.showCard()
     },
     showCard() {
+     // console.log(this.IDtoCard[this.nowID])
       if(this.nowID!="") this.cardShow = true;
       else this.$message.warning("未找到相关建筑物，请检查输入")
     },
@@ -247,6 +283,12 @@ export default{
       this.$http.get('/ItemsToid.json').then(res => {
         this.posID = res.data
       })
+    },
+    getCard(){
+      this.$http.get('/IDtoCard.json').then(res => {
+        this.IDtoCard = res.data
+      //  console.log(this.IDtoCard)
+      });
     },
     getMapContent(path,id,z){
       this.$http.get(path).then(res =>{
@@ -262,6 +304,7 @@ export default{
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
       this.getID();
+      this.getCard();
   }
 }
 </script>

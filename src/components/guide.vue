@@ -60,7 +60,6 @@ export default {
             passBy: null, //途径点
             tmp: '',
             resultDist: [],
-            resultTime: []
         }
     },
     components: {
@@ -123,7 +122,7 @@ export default {
             }
         },
         updataMypos() {
-            
+            this.$emit("updataMypos",this.initialPlace)
         },
         getGuide() {
                 this.$http.get('/searchResult.json').then(res => {

@@ -36,9 +36,6 @@ import sinput from "./searchInput.vue";
 export default{
     data() {
         return {
-            myPlace: '',
-            IDtoCard: {},
-            nowCard: {}
         }
     },
     components: {
@@ -48,31 +45,19 @@ export default{
         closeIt (){
             this.$emit("closeIt");
         },
-        getCard(){
-            this.$http.get('/IDtoCard.json').then(res => {
-                this.IDtoCard = res.data
-                this.nowCard = this.IDtoCard[this.nowID]
-            });
-        }
+
     },
     props: {
-        nowID: {
-            type: String,
-            default: "--",
+        nowCard: {
+            type: Object
         }
     },
     watch: {
-        nowID(newVal) {
-            if(this.IDtoCard[newVal] === undefined) {
-                this.$message.warning("未找到相关建筑物，请检查输入")
-                this.closeIt()
-                return
-            }
-            this.nowCard = this.IDtoCard[newVal];
+        nowCard(newVal) {
+            console.log(newVal)
         }
     },
     beforeMount() {
-        this.getCard();
     }
 }
 </script>

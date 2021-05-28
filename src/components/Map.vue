@@ -22,8 +22,8 @@ export default {
       maxx: 30,
       miny: 0,
       maxy: 30,
-      rate: 0.1, //导航的速率
-      flashTime: 50, //地图导航刷新时间间隔
+      rate: 0.05, //导航的速率
+      flashTime: 25, //地图导航刷新时间间隔
       Lx: 100,
       Ly: 100,
       focusSize: 5, //点击点后要缩放的大小
@@ -61,9 +61,15 @@ export default {
     this.drawMap();
   },
   watch: {
+      inGuide(newVal) {
+          if(newVal == true) {
+              this.startGuide()
+          }
+      },
       myposd(newVal) {
-          this.mypos = newVal
-          this.myChart.setOption({
+            this.mypos = newVal
+            console.log("I updata!!",newVal[0],newVal[1])
+            this.myChart.setOption({
             series:[
                 {
                     id: 'myPos',
@@ -78,6 +84,7 @@ export default {
                 }
             ]
         })
+        
       },
       mypos_in(newVal) {
         //  console.log("test!")
@@ -188,6 +195,7 @@ export default {
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调，可通过inGuide来实现暂停
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
+            this.$emit("updataMypos",this.mypos[0],this.mypos[1])
             this.nowPoint = 0
             this.$emit("guideOver");
             return;
@@ -208,10 +216,26 @@ export default {
             this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
         }
        // console.log(this.mypos,this.nowPoint)  
+       this.myChart.setOption({
+            series:[
+                {
+                    id: 'myPos',
+                    data:[
+                        {
+                            name: "我的位置",
+                            value: this.mypos,
+                            symbol: "pin",  
+                            symbolSize: [20,20]
+                        }
+                    ]
+                }
+            ]
+        })
         if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
-        this.$emit("updataMypos",this.mypos[0],this.mypos[1])
         if (this.inGuide) {
             setTimeout(()=>{this.startGuide()}, this.flashTime);
+        }else {
+            this.$emit("updataMypos",this.mypos[0],this.mypos[1])
         }
     },
     drawGuide() {
