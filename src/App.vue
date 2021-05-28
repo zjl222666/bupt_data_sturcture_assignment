@@ -133,7 +133,7 @@ export default{
       selected_Z: 1, //下拉框选择的楼层
       selected_Map: 4, //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
-      mypos: [4,4], //当前人的坐标
+      mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
       guideOver: true, //模拟导航当前地图是否导航完毕
       inGuide: true, //导航是否处于暂停状态
@@ -295,12 +295,12 @@ export default{
         this.$set(this.mapNode,[id,z],(res.data.node))
         this.$set(this.mapLinks,[id,z],(res.data.links))
       })
-    }
+    },
   },
   beforeMount() {
   },
   mounted() {
-      this.mypos = [4,4]
+      this.mypos = [0,130]
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
       this.getID();

@@ -7,7 +7,7 @@
 </template>
 <script>
 import echarts from 'echarts';
-
+let myChart = null
 export default {
   name: 'hello',
   data () {
@@ -18,14 +18,8 @@ export default {
       searchLinks: [], //导航路径被加载的边
       nowPoint: 0, //模拟导航当前走到的点
       mypos:[], //我的位置
-      minx: 0, //视图范围
-      maxx: 30,
-      miny: 0,
-      maxy: 30,
-      rate: 0.05, //导航的速率
-      flashTime: 25, //地图导航刷新时间间隔
-      Lx: 100,
-      Ly: 100,
+      rate: 0.1, //导航的速率
+      flashTime: 100, //地图导航刷新时间间隔
       focusSize: 5, //点击点后要缩放的大小
     }
   },
@@ -57,7 +51,7 @@ export default {
         }
   },
   mounted(){
-    this.myChart = this.$echarts.init(document.getElementById('myChart'));
+    myChart = this.$echarts.init(document.getElementById('myChart'));
     this.drawMap();
   },
   watch: {
@@ -69,7 +63,7 @@ export default {
       myposd(newVal) {
             this.mypos = newVal
             console.log("I updata!!",newVal[0],newVal[1])
-            this.myChart.setOption({
+            myChart.setOption({
             series:[
                 {
                     id: 'myPos',
@@ -89,7 +83,7 @@ export default {
       mypos_in(newVal) {
         //  console.log("test!")
           if(newVal == true) {
-              this.myChart.setOption({
+              myChart.setOption({
                   series:[{
                       id: 'myPos',
                       data: [{
@@ -101,7 +95,7 @@ export default {
                   }]
               })
           } else {
-              this.myChart.setOption({
+              myChart.setOption({
                   series: [{
                       id: 'myPos',
                       data:[]
@@ -112,7 +106,7 @@ export default {
       mapNode(newVal) {
           this.node = newVal
        //   console.log(newVal)
-          this.myChart.setOption({
+         myChart.setOption({
               series:[{
                   id: 'MapContent',
                   data: this.node,
@@ -120,38 +114,12 @@ export default {
           })
       },
       mapLinks(newVal) {
-          this.links = newVal
-          this.myChart.setOption({
+         this.links = newVal
+         myChart.setOption({
               series:[
                   {
                       id: 'MapContent',
                       links: this.links,
-                  }
-              ]
-          })
-      },
-      Lx(newVal, oldVal){
-          this.node.forEach(node => { 
-              node.symbolSize[0] = node.symbolSize[0]*oldVal/newVal
-            })
-          this.myChart.setOption({
-              series: [
-                  {
-                       id: 'MapContent',
-                       data: this.node
-                  }
-              ]
-          })
-      },
-      Ly(newVal, oldVal){
-          this.node.forEach(node => { 
-              node.symbolSize[1] = node.symbolSize[1]*oldVal/newVal
-            })
-            this.myChart.setOption({
-              series: [
-                  {
-                       id: 'MapContent',
-                       data: this.node
                   }
               ]
           })
@@ -216,7 +184,7 @@ export default {
             this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
         }
        // console.log(this.mypos,this.nowPoint)  
-       this.myChart.setOption({
+       myChart.setOption({
             series:[
                 {
                     id: 'myPos',
@@ -239,7 +207,8 @@ export default {
         }
     },
     drawGuide() {
-        this.myChart.setOption({
+        
+        myChart.setOption({
         series: [{
             id: "guideContent",
             type: "graph",
@@ -259,25 +228,8 @@ export default {
     min(x,y) {
         return x<y?x:y
     },
-    changeCenter(newx,newy) {
-        this.myChart.dispatchAction({
-            type: 'dataZoom',
-            batch: [
-                {
-                    dataZoomId: "insideX",
-                    start: 100*this.max((newx-this.focusSize-this.minx),0)/(this.maxx-this.minx),
-                    end: 100*this.min((newx+this.focusSize-this.minx)/(this.maxx-this.minx),100)
-                },
-                {
-                    dataZoomId: "insideY",
-                    start: 100*this.max((newy-this.focusSize-this.miny),0)/(this.maxy-this.miny),
-                    end: 100*this.min((newy+this.focusSize-this.miny)/(this.maxy-this.miny),100)
-                }
-            ]
-        })
-    },
     drawMap(){
-                this.myChart.setOption({
+                myChart.setOption({
                     backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
                             offset: 0,
                             color: '#f7f8fa'
@@ -287,13 +239,9 @@ export default {
                     }]),
                     xAxis: [{
                         show: false,
-                        min:this.minx,
-                        max:this.maxx
                     }],
                     yAxis: [{
                         show: false,
-                        min:this.miny,
-                        max:this.maxy
                     }],
                     dataZoom: [
                         
@@ -302,16 +250,12 @@ export default {
                             type: 'inside',
                             xAxisIndex: [0],
                             filterMode :'none',
-                            startValue: this.minx,
-                            endValue: this.maxx
                         },
                         {
                             id: "insideY",
                             type: 'inside',
                             yAxisIndex: [0],
                             filterMode :'none',
-                            startValue: this.miny,
-                            endValue: this.maxy
                         }
                     ],
                     series: [
@@ -328,19 +272,19 @@ export default {
                             id: 'MapContent',
                             type: 'graph',
                             z: 1,
-                            data: this.node,
-                            links: this.links,
                             nodeScaleRatio: 1,
                             coordinateSystem: 'cartesian2d',
                             label: {
-                                show: true,
-                                position: 'top',
-                                formatter: '{b}: {@[0]}'
+                                color: "white",
+                                position: 'inside',
+                            },
+                            lineStyle: {
+                                width: 6
                             },
                             emphasis: {
                                 focus: 'self',
-                                lineStyle: {
-                                    width: 10
+                                label: {
+                                    show:true
                                 }
                             }
                         },
@@ -358,22 +302,9 @@ export default {
                         }
                     ]
                 });
-                this.myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
-                    this.$emit("showCard",parmas.data.x);
-                    this.changeCenter(parmas.data.value[0],parmas.data.value[1]);
-                   // console.log("point test  ",parmas.data.value[0])
-                })
-                this.myChart.on('datazoom',parmas=>{
-                    if(parmas.batch != undefined){
-                        //console.log(parmas)
-                        let xB = parmas.batch
-                        xB.forEach(node=> {
-                            if(node.dataZoomId == "insideX")  this.Lx = node.end - node.start
-                            else  this.Ly = node.end - node.start
-                        })
-
-                    }
-
+                myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
+                    console.log(parmas)
+                    if(parmas.data.x!=undefined)this.$emit("showCard",parmas.data.x);
                 })
             
     }
