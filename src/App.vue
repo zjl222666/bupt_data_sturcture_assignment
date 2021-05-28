@@ -48,7 +48,7 @@
         <a-layout-content
           :style="{  background: '#fff', minHeight: '280px' }"
           >
-          <div v-if="selected_key[0] == '3'">
+          <div v-if="selected_key[0] == '3'" style="z: 20">
             <span> <strong> 当前选择建筑物 </strong> </span>
             <span> 
               <a-select v-model="selected_Map" style="width: 120px">
@@ -84,6 +84,7 @@
               </a-select>
             </span>
           </div>
+          <div>
           <mymap 
             ref="map"
             @showCard="updataNowID2" 
@@ -98,8 +99,9 @@
             :inGuide="inGuide"
             :mapID="nowMapID_show"
             />
+          </div>
         </a-layout-content>
-        <a-layout-sider width=400  theme="light">       
+        <a-layout-sider width=30%  theme="light">       
             <vguide 
               ref="guide"
               @updataGuide="updataGuide"
