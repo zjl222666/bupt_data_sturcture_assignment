@@ -37,6 +37,8 @@ export default {
         type: Array
     },
   },
+  watch: {
+  },
   mounted() {
     this.arhName[[1,0]] = "校区一"
     this.arhName[[2,0]] = "校区二"

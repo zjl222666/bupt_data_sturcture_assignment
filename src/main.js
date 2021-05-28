@@ -9,7 +9,10 @@ import axios from 'axios'
 Vue.prototype.$http = axios
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
+Vue.prototype.$BaseUrl = "http://127.0.0.1:8000/"
 Vue.use(Antd)
+
+//axios.defaults.baseURL = 'http://127.0.0.1:8000/'
 new Vue({
   router,
   store,

@@ -1,12 +1,13 @@
 <template>
     <div style="postion: absolute">
-        <div class="showYJ"> <a-button type="primary"> 查看道路拥挤情况 </a-button> </div>
+        <div v-if="mapID==2||mapID==1?true:false" class="showYJ"> <a-button :type="isLook==false?'primary':'danger'" @click="seeCrowd"> {{isLook==true?"关闭道路拥挤度":"查看道路拥挤度"}} </a-button> </div>
         <div id="myChart" :style="{width: '960px', height: '540px'}"></div>
 
     </div>
 </template>
 <script>
 import echarts from 'echarts';
+import Qs from 'qs'
 let myChart = null
 export default {
   name: 'hello',
@@ -18,9 +19,13 @@ export default {
       searchLinks: [], //导航路径被加载的边
       nowPoint: 0, //模拟导航当前走到的点
       mypos:[], //我的位置
-      rate: 0.1, //导航的速率
+      rate: 1, //导航的速率
       flashTime: 100, //地图导航刷新时间间隔
       focusSize: 5, //点击点后要缩放的大小
+      mapID: 1, //当前的地图编号
+      isLook: false, //当前是否正在查看道路拥挤度
+      crowdLinks: [],
+      crowdNode: [],
     }
   },
   props: {
@@ -46,13 +51,11 @@ export default {
        GuideTime:{
             type: Array
         },
-        MapID: { //当前这张地图的ID
-            type: Number
-        }
   },
   mounted(){
     myChart = this.$echarts.init(document.getElementById('myChart'));
     this.drawMap();
+    this.updataCrowd();
   },
   watch: {
       inGuide(newVal) {
@@ -160,6 +163,24 @@ export default {
       }
   },
   methods: {
+    updataCrowd() {
+        if(this.mapID!=1&&this.mapID!=2){
+            this.isLook = false
+            return
+        }
+        this.$http.post(`${this.$BaseUrl}map/map/`,Qs.stringify({
+            id: this.mapID
+        }))
+        .then(res=>{
+            console.log('res=>',res);            
+        })
+        /*setTimeout(() => {
+            this.updataCrowd()
+        }, 10000);*/
+    },
+    seeCrowd() {
+        this.isLook = !this.isLook
+    },
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调，可通过inGuide来实现暂停
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
@@ -260,9 +281,19 @@ export default {
                     ],
                     series: [
                         {
+                            id: 'showCrowd',
+                            type: 'graph',
+                            z: 3,
+                            coordinateSystem: 'cartesian2d',
+                            edgeLabel: {
+                                formatter: '拥挤度: {c}',
+                                show: true
+                            }
+                        },
+                        {
                             id: 'myPos',
                             type: 'graph',
-                            z:3,
+                            z:4,
                             coordinateSystem: 'cartesian2d',
                             label: {
                                 show: true
@@ -303,8 +334,8 @@ export default {
                     ]
                 });
                 myChart.on('click',{seriesIndex: 1,dataType: 'node'},parmas=> {
-                    console.log(parmas)
-                    if(parmas.data.x!=undefined)this.$emit("showCard",parmas.data.x);
+                 //   console.log(parmas)
+                    if(parmas.data.x!=undefined&&(this.mapID==2||this.mapID==1))this.$emit("showCard",parmas.data.x);
                 })
             
     }

@@ -16,23 +16,23 @@
         </div>
     </div>
     <div>
-        <a-tabs  :tabBarGutter="1" size="small" tabPosition="top" default-active-key="1">
+        <a-tabs  :tabBarGutter="1" size="small" tabPosition="top" v-model="selected_Model">
             <a-tab-pane key="1" tab="步行时间最短">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
-                    <guidecontent :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
+                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
             <a-tab-pane key="2" tab="步行距离最短">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
-                    <guidecontent :data="resultDist"/>
+                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
             <a-tab-pane key="3" tab="自行车最优策略">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button> 
-                    <guidecontent :data="resultDist"/>
+                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
             <a-tab-pane key="4" tab="有途径点策略">
@@ -40,7 +40,7 @@
                         <span> 选择途径点：</span>
                         <span> <sinputmuti @handlePassby="handlePassby" /> </span>
                 <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
-                <guidecontent :data="resultDist"/>
+                <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
         </a-tabs>
@@ -59,7 +59,20 @@ export default {
             distPlace: '', //终点
             passBy: null, //途径点
             tmp: '',
-            resultDist: [],
+            resultDist: null,
+            showGuide: false,
+            selected_Model : '1'
+        }
+    },
+    props: {
+        nowMapID_person: {
+            type: Number
+        },  //现在人所在的地图ID
+        nowMapID_person_z: {
+            type: Number
+        }, //现在人所在的楼层
+        nowMypos: {
+            type: Array
         }
     },
     components: {
@@ -68,6 +81,37 @@ export default {
         guidecontent
     },
     watch: {
+        resultDist(newVal) {
+            if(newVal == null) this.showGuide = false
+            else this.showGuide = true
+        },
+        selected_Model(newVal,oldVal) {
+            if(this.showGuide == true) this.showGuide = false
+            else  if(this.resultDist != null){
+                this.showGuide = true
+                return
+            }
+            if(this.resultDist != null){
+                    this.$confirm({
+                        title: "本次导航还未到达终点哦",
+                        content: "是否确认重新导航？",
+                        okText: "确认并导航",
+                        okType: 'danger',
+                        cancelText: '取消',
+                        onOk: ()=> {
+                            this.$emit("forceStop")
+                            setTimeout(() => {
+                                this.resultDist = null
+                                this.$emit("updataGuide",this.resultDist)
+                            }, 1500);
+                        },
+                        onCancel: () => {
+                            console.log(newVal,oldVal)
+                            this.selected_Model = oldVal
+                        }
+                    })
+                }
+        }
     },
     methods: {
         startGuide() {
@@ -106,13 +150,13 @@ export default {
                     title: '你的出发点不是当前我的位置',
                     content: '是否确认将我的位置更新至出发点？',
                     okText: '确认并导航',
-                    okType: '取消导航',
-                    cancelText: 'No',
+                    cancelText: '取消',
                     onCancel: () =>{
                        return
                     },
                     onOk: ()=> {
                         this.updataMypos()
+                        this.initialPlace = '我的位置'
                         this.getGuide()
                     }
                 });
@@ -125,12 +169,30 @@ export default {
             this.$emit("updataMypos",this.initialPlace)
         },
         getGuide() {
-                this.$http.get('/searchResult.json').then(res => {
+                if(this.resultDist != null){
+                    this.$confirm({
+                        title: "本次导航还未到达终点哦",
+                        content: "是否确认重新导航？",
+                        okText: "确认并导航",
+                        okType: 'danger',
+                        cancelText: '取消',
+                        onOk: ()=> {
+                            this.$emit("forceStop")
+                            setTimeout(() => {
+                                this.resultDist = null
+                                this.getGuide()
+                            }, 1500);
+                        }
+                    })
+                }else{
+                    this.$http.get('/searchResult.json').then(res => {
                     this.resultDist = res.data
                   //  console.log(this.resultDist)
                     this.$emit("updataGuide",this.resultDist)
                 })
-            }
+                }
+                
+            },
     }
 
 }

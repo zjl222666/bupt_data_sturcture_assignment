@@ -52,7 +52,25 @@
             <span> <strong> 当前选择建筑物 </strong> </span>
             <span> 
               <a-select v-model="selected_Map" style="width: 120px">
-                <a-select-option value=1>
+                <a-select-option value=3>
+                  test
+                </a-select-option>
+                <a-select-option value=4>
+                  test
+                </a-select-option>
+                <a-select-option value=5>
+                  test
+                </a-select-option>
+                <a-select-option value=6>
+                  test
+                </a-select-option>
+                <a-select-option value=7>
+                  test
+                </a-select-option>
+                <a-select-option value=8>
+                  test
+                </a-select-option>
+                <a-select-option value=9>
                   test
                 </a-select-option>
               </a-select>
@@ -75,9 +93,10 @@
             :GuideTime="GuideTime[[nowMapID_show,nowMapID_Z]]"
             :mapNode="mapNode[[nowMapID_show,nowMapID_Z]]" 
             :mapLinks="mapLinks[[nowMapID_show,nowMapID_Z]]"
-            :mypos_in="mypos_in"
+            :mypos_in="(nowMapID_show==nowMapID_person&&nowMapID_person_z==nowMapID_Z)?true:false"
             :myposd="mypos"
             :inGuide="inGuide"
+            :mapID="nowMapID_show"
             />
         </a-layout-content>
         <a-layout-sider width=400  theme="light">       
@@ -88,6 +107,10 @@
               @changeMap="changeMap"
               @startGuide="()=>{this.inGuide=true; this.startGuide(); }"
               @endGuide="()=>{this.inGuide=false}"
+              @forceStop="forceStop"
+              :nowMapID_person="nowMapID_person"
+              :nowMapID_person_z="nowMapID_person_z"
+              :nowMypos="mypos"
             />     
         </a-layout-sider>
         </a-layout>
@@ -118,7 +141,7 @@ export default{
       collapsed: false, // 左侧边栏缩放
       selected_key: ['1'], //现在选择的左边侧边栏的key数组
       cardShow: false, //卡片是否显示
-      posID: {}, //存储物理位置（逻辑位置）对应的建筑物ID
+      posID: {}, //存储物理位置（逻辑位置）对应的信息
       nowID: "", //card显示的id
       IDtoCard: {}, //建筑物id对应的信息
       nowCard: {}, //当前卡片显示的内容
@@ -131,7 +154,7 @@ export default{
       nowMapID_person: 1,  //现在人所在的地图ID
       nowMapID_person_z: 0, //现在人所在的楼层
       selected_Z: 1, //下拉框选择的楼层
-      selected_Map: 4, //下拉框选择的建筑物ID 
+      selected_Map: null, //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
@@ -140,43 +163,45 @@ export default{
     };
   },
   watch: {
+    inGuide(newVal) {
+      if(newVal==true && this.guideOver==false &&this.guideOver!=null) {
+          this.$refs.map.startGuide()
+      }
+    },
     nowID(newVal) {
       this.nowCard = this.IDtoCard[newVal]
-    //  console.log(this.nowCard)
+      console.log(newVal,this.nowCard)
       this.$forceUpdate()
     },
     nowMapID_show(newVal) {
+      this.$refs.map.mapID = newVal
       this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
-      if(newVal<=2) {
+      if(newVal==2||newVal==1) {
         this.selected_key = [newVal.toString()]
       }
       else{
         this.selected_key = ['3']
       }
     },
-    nowMapID_Z() {
-      this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
-    },
-    nowMapID_person() {
-      this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
-    },
-    nowMapID_person_z() {
-      this.mypos_in = this.nowMapID_show==this.nowMapID_person&&this.nowMapID_person_z==this.nowMapID_Z
-    },
     selected_Map(newVal) {
       this.nowMapID_show = newVal
+    //  console.log(newVal)
     },
     selected_Z(newVal) {
       this.nowMapID_Z = newVal
     },
     selected_key(newVal) {
-     // console.log(newVal[0])
+    //  console.log(newVal)
       let now = Number(newVal[0])
       if(now<=2) {
         this.nowMapID_show = now
         this.nowMapID_Z = 0
       }
       else {
+        if(this.selected_Map == null) {
+          this.nowMapID_show = 0
+          return
+        }  
         this.nowMapID_show = this.selected_Map
         this.nowMapID_Z = this.selected_Z
       }
@@ -184,9 +209,19 @@ export default{
     },
   },
   methods: {
+    forceStop() {
+      this.inGuide = false
+      this.guideOrder = null
+    },
     startGuide() {
-      if(this.guideOrder.length==1) {
+      if(this.guideOrder==null) return
+      if(this.guideOrder.length<=1) {
         if(this.guideOver) {
+            this.guideOrder= null
+            this.GuideNode= []
+            this.$refs.guide.distPlace = ''
+            this.$refs.guide.resultDist = null
+            this.$refs.guide.passby = null
             this.$success({
             title: '导航结束啦！',
             content: '已经将你的位置更新为目的地',
@@ -196,7 +231,7 @@ export default{
         } else {
           setTimeout(() => {
             this.startGuide()
-          }, 1500);
+          }, 1000);
         }
         return
       }
@@ -211,17 +246,16 @@ export default{
           this.$set(this.mypos,[1],this.GuideNode[[node[0],node[1]]][0][1])
           this.nowMapID_show = node[0]
           this.nowMapID_Z = node[1]
+          this.$refs.map.startGuide()
           if(this.guideOrder.length == 1) {
             setTimeout(() => {
             this.startGuide()
           }, 1000);
           }
-          setTimeout(() => {
-            this.$refs.map.startGuide()
-            }, 200);
+
         }
         else{
-          console.log('deng')
+         // console.log('deng')
           setTimeout(() => {
             this.startGuide()
           }, 1000);
@@ -246,7 +280,8 @@ export default{
     //  console.log("ceshi2",this.mypos)
     },
     updataMypos2(val){
-      let tmpID = this.posID[val]
+      let tmpID = this.posID[val].id
+    //  console.log(this.IDtoCard[tmpID.toString()])
       this.nowMapID_person = this.IDtoCard[tmpID.toString()].campus
       this.nowMapID_Z = this.IDtoCard[tmpID.toString()].z
       this.updataMypos(this.IDtoCard[tmpID.toString()].x,this.IDtoCard[tmpID.toString()].y)
@@ -254,7 +289,9 @@ export default{
     updataGuide(val) {
     //  console.log(this.GuideNode)
       this.guideOrder = [[1,0]]
-      this.inGuide = true
+      this.guideOver = true
+      this.inGuide = false
+      this.stopIt = false
       val.forEach(node=>{
         this.guideOrder.push([node.id,node.z])
         this.$set(this.GuideNode,[node.id,node.z],node.path)
@@ -271,7 +308,7 @@ export default{
         this.$message.warning("未找到相关建筑物，请检查输入")
         return 
       }
-      this.nowID = this.posID[val].toString();
+      this.nowID = this.posID[val].id.toString();
       this.showCard()
     },
     showCard() {
@@ -280,7 +317,7 @@ export default{
       else this.$message.warning("未找到相关建筑物，请检查输入")
     },
     getID(){
-      this.$http.get('/ItemsToid.json').then(res => {
+      this.$http.get('/ItemsContent.json').then(res => {
         this.posID = res.data
       })
     },
@@ -292,6 +329,9 @@ export default{
     },
     getMapContent(path,id,z){
       this.$http.get(path).then(res =>{
+        for(let i = 0;i < res.data.node.length; i++) {
+          if(res.data.node[i].x>=2) res.data.node[i].label = {show: true}
+        }
         this.$set(this.mapNode,[id,z],(res.data.node))
         this.$set(this.mapLinks,[id,z],(res.data.links))
       })
