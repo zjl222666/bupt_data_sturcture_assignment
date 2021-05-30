@@ -261,8 +261,6 @@ export default{
           this.guideOver = false
           this.nowMapID_person = node[0]
           this.nowMapID_person_z = node[1]
-          this.$set(this.mypos,[0],this.GuideNode[[node[0],node[1]]][0][0])
-          this.$set(this.mypos,[1],this.GuideNode[[node[0],node[1]]][0][1])
           this.nowMapID_show = node[0]
           this.nowMapID_Z = node[1]
           this.$refs.map.startGuide()

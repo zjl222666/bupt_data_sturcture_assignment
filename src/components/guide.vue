@@ -173,7 +173,7 @@ export default {
                 if(this.resultDist != null){
                     this.$confirm({
                         title: "本次导航还未到达终点哦",
-                        content: "是否确认重新导航？",
+                        content: "是否确认更换目的地并重新导航？",
                         okText: "确认并导航",
                         okType: 'danger',
                         cancelText: '取消',
