@@ -51,6 +51,7 @@
 import sinput from "./searchInput.vue";
 import sinputmuti from "./searchInput_muti.vue";
 import guidecontent from "./guideContent.vue";
+import Qs from 'qs'
 export default {
     name: "Vguide",
     data(){
@@ -185,11 +186,21 @@ export default {
                         }
                     })
                 }else{
-                    this.$http.get('/searchResult.json').then(res => {
-                    this.resultDist = res.data
-                  //  console.log(this.resultDist)
-                    this.$emit("updataGuide",this.resultDist)
-                })
+                    console.log(this.nowMypos,this.nowMapID_person,this.nowMapID_person_z)
+                    this.$http.post(`${this.$BaseUrl}map/search-path/`,Qs.stringify({
+                            dest: this.distPlace,
+                            approach: this.passBy,
+                            x: this.nowMypos[0],
+                            y: this.nowMypos[1],
+                            id: this.nowMapID_person,
+                            z: this.nowMapID_person_z,
+                            model: this.selected_Model-1
+                        }))
+                    .then(res=>{
+                        this.resultDist = res.data.solution
+                        console.log(res)
+                        this.$emit("updataGuide",this.resultDist)        
+                    })
                 }
                 
             },
