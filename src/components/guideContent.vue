@@ -14,7 +14,7 @@
               <h4>距离：{{item.dist}}</h4>
               <h4>交通方式：{{item.move_model}}</h4>
           </template>
-          <template slot="title">{{ arhName[[item.id,item.z]] }}-部分</template>
+          <template slot="title">{{ arhName[item.id,item.z] }}-部分</template>
         </a-list-item-meta>
         <div><a-button type="link" @click="changeMap(item.id,item.z)"> 查看路线 </a-button></div>
       </a-list-item>

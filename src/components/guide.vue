@@ -17,13 +17,13 @@
     </div>
     <div>
         <a-tabs  :tabBarGutter="1" size="small" tabPosition="top" v-model="selected_Model">
-            <a-tab-pane key="1" tab="步行时间最短">
+            <a-tab-pane key="1" tab="距离最短">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="步行距离最短">
+            <a-tab-pane key="2" tab="时间最短">
                 <div align="center">
                     <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
@@ -95,7 +95,7 @@ export default {
             if(this.resultDist != null){
                     this.$confirm({
                         title: "本次导航还未到达终点哦",
-                        content: "是否确认重新导航？",
+                        content: "是否确认切换导航策略并重新导航？",
                         okText: "确认并导航",
                         okType: 'danger',
                         cancelText: '取消',

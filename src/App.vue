@@ -161,7 +161,8 @@ export default{
         "西土城图书馆": 5
       },
       supportPlace: ["沙河教学综合楼N","沙河燕南园S4","沙河实验楼","西土城教二楼","西土城学一公寓","沙河图书馆","西土城图书馆"],
-      PlaceID:{"沙河教学综合楼N": 62,"沙河燕南园S4" :29,"沙河实验楼" :71,"西土城教二楼": 167,"西土城学一公寓": 144,"沙河图书馆":58,"西土城图书馆":179}
+      PlaceID:{"沙河教学综合楼N": 62,"沙河燕南园S4" :29,"沙河实验楼" :71,"西土城教二楼": 167,"西土城学一公寓": 144,"沙河图书馆":58,"西土城图书馆":179},
+      IDplace:{62: "沙河教学综合楼N" ,29: "沙河燕南园S4" ,71: "沙河实验楼",167: "西土城教二楼",144: "西土城学一公寓",58: "沙河图书馆",179: "西土城图书馆"}
     };
   },
   watch: {
@@ -286,7 +287,7 @@ export default{
         this.selected_key = [newMap.toString()]
       }
       else{
-        this.selected_key = newMap
+        this.selected_Map = this.IDplace[newMap]
         this.selected_Z = newMapz
         this.selected_key = ['3']
       }
@@ -312,6 +313,11 @@ export default{
       this.guideOver = true
       this.inGuide = false
       this.stopIt = false
+      if(val==null) {
+          this.GuideNode = []
+          this.GuideTime = []
+          return
+      }
       val.forEach(node=>{
         this.guideOrder.push([node.id,node.z])
         this.$set(this.GuideNode,[node.id,node.z],node.path)
@@ -363,9 +369,33 @@ export default{
       this.mypos = [0,130]
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
+      this.getMapContent('/Map[29,1].json',29,1)
+      this.getMapContent('/Map[29,2].json',29,2)
+      this.getMapContent('/Map[29,3].json',29,3)
+      this.getMapContent('/Map[58,1].json',58,1)
+      this.getMapContent('/Map[58,2].json',58,2)
+      this.getMapContent('/Map[58,3].json',58,3)
+      this.getMapContent('/Map[58,4].json',58,4)
+      this.getMapContent('/Map[58,5].json',58,5)
       this.getMapContent('/Map[62,1].json',62,1)
       this.getMapContent('/Map[62,2].json',62,2)
       this.getMapContent('/Map[62,3].json',62,3)
+      this.getMapContent('/Map[62,4].json',62,4)
+      this.getMapContent('/Map[62,5].json',62,5)
+      this.getMapContent('/Map[71,1].json',71,1)
+      this.getMapContent('/Map[71,2].json',71,2)
+      this.getMapContent('/Map[71,3].json',71,3)
+      this.getMapContent('/Map[144,1].json',144,1)
+      this.getMapContent('/Map[144,2].json',144,1)
+      this.getMapContent('/Map[144,3].json',144,3)
+      this.getMapContent('/Map[167,1].json',167,1)
+      this.getMapContent('/Map[167,2].json',167,2)
+      this.getMapContent('/Map[167,3].json',167,3)
+      this.getMapContent('/Map[179,1].json',179,1)
+      this.getMapContent('/Map[179,2].json',179,2)
+      this.getMapContent('/Map[179,3].json',179,3)
+      this.getMapContent('/Map[179,4].json',179,4)
+      this.getMapContent('/Map[179,5].json',179,5)
       this.getID();
       this.getCard();
   }
