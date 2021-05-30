@@ -27,7 +27,8 @@
             <vcard               
               :nowCard="nowCard"  
               v-if="cardShow" 
-              @closeIt="()=>{nowID=''; cardShow = false;  }"/>
+              @closeIt="()=>{nowID=''; cardShow = false;  }"
+              />
           </a-affix>
         </div>
         <a-layout-header style="background: #fff; padding: 10px; width=100%">
@@ -156,12 +157,21 @@ export default{
       nowMapID_person: 1,  //现在人所在的地图ID
       nowMapID_person_z: 0, //现在人所在的楼层
       selected_Z: 1, //下拉框选择的楼层
-      selected_Map: null, //下拉框选择的建筑物ID 
+      selected_Map: 62, //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
       guideOver: true, //模拟导航当前地图是否导航完毕
       inGuide: true, //导航是否处于暂停状态
+      zNumber: {
+        62: 3,
+        29: 3,
+        71: 3,
+        167: 3,
+        144: 3,
+        58: 5,
+        179: 5
+      }
     };
   },
   watch: {

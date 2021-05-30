@@ -1,257 +1,230 @@
 {
     "node": [
         {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-101",
+            "name": "\u697c\u68af3\u4e00",
             "value": [
-                50,
-                350
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": [
-                "2019211302\u73ed-\u6570\u636e\u7ed3\u6784-\u5468\u4e948\u70b9"
-            ]
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
-            "value": [
-                100,
-                350
-            ],
-            "symbol": "pin",
-            "symbolSize": [
-                8,
-                8
-            ],
-            "x": 100
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-102",
-            "value": [
-                150,
-                350
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": []
-        },
-        {
-            "name": "none4",
-            "value": [
-                100,
-                250
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                0,
-                0
-            ],
-            "x": 100
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-103",
-            "value": [
-                50,
-                250
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": []
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-104",
-            "value": [
-                150,
-                250
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": []
-        },
-        {
-            "name": "none7",
-            "value": [
-                100,
-                150
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                0,
-                0
-            ],
-            "x": 100
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-105",
-            "value": [
-                50,
-                150
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": []
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-106",
-            "value": [
-                150,
-                150
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": [
-                "2019211302\u73ed-\u8ba1\u7b97\u673a\u7f51\u7edc-\u5468\u4e8c8\u70b9"
-            ]
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
-            "value": [
-                100,
-                50
-            ],
-            "symbol": "pin",
-            "symbolSize": [
-                8,
-                8
-            ],
-            "x": 100
-        },
-        {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-107",
-            "value": [
-                50,
-                50
-            ],
-            "symbol": "rect",
-            "symbolSize": [
-                30,
-                30
-            ],
-            "x": []
-        },
-        {
-            "name": "\u697c\u68af1",
-            "value": [
-                150,
-                50
+                10,
+                16
             ],
             "symbol": "circle",
             "symbolSize": [
-                8,
-                8
+                50,
+                50
             ],
-            "x": 150
+            "x": [],
+            "z": 3,
+            "y": 1
         },
         {
-            "name": "none37",
+            "name": "none12",
             "value": [
-                100,
-                200
+                10,
+                22
             ],
             "symbol": "rect",
             "symbolSize": [
                 0,
                 0
             ],
-            "x": 100
+            "x": [],
+            "z": 0,
+            "y": 0
         },
         {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e00",
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4301",
             "value": [
+                12,
+                22
+            ],
+            "symbol": "rect",
+            "symbolSize": [
                 50,
-                200
+                40
             ],
-            "symbol": "pin",
-            "symbolSize": [
-                8,
-                8
-            ],
-            "x": 50
+            "x": [],
+            "z": 0,
+            "y": 1
         },
         {
-            "name": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e09",
+            "name": "none21",
             "value": [
-                150,
-                200
+                10,
+                24
             ],
-            "symbol": "pin",
+            "symbol": "rect",
             "symbolSize": [
-                8,
-                8
+                0,
+                0
             ],
-            "x": 150
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none22",
+            "value": [
+                10,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none23",
+            "value": [
+                10,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none24",
+            "value": [
+                10,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4305",
+            "value": [
+                12,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4304",
+            "value": [
+                12,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4303",
+            "value": [
+                12,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4302",
+            "value": [
+                12,
+                24
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c",
+            "value": [
+                10,
+                18
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
         }
     ],
     "links": [
         {
-            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-101",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db"
+            "source": "none12",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4301"
         },
         {
-            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-102"
+            "source": "none12",
+            "target": "none21"
         },
         {
-            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u56db",
-            "target": "none4"
+            "source": "none21",
+            "target": "none22"
         },
         {
-            "source": "none4",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-103"
+            "source": "none22",
+            "target": "none23"
         },
         {
-            "source": "none4",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-104"
+            "source": "none23",
+            "target": "none24"
         },
         {
-            "source": "none7",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-105"
+            "source": "none24",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4305"
         },
         {
-            "source": "none7",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-106"
+            "source": "none23",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4304"
         },
         {
-            "source": "none7",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c"
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4303"
         },
         {
-            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN-107"
+            "source": "none21",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4302"
         },
         {
-            "source": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e8c",
-            "target": "\u697c\u68af1"
+            "source": "\u697c\u68af3\u4e00",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c"
         },
         {
-            "source": "none4",
-            "target": "none7"
-        },
-        {
-            "source": "none37",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e00"
-        },
-        {
-            "source": "none37",
-            "target": "\u6c99\u6cb3\u6559\u5b66\u7efc\u5408\u697cN\u95e8\u4e09"
+            "source": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c",
+            "target": "none12"
         }
     ]
 }

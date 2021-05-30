@@ -21,8 +21,15 @@
             </template>
             <a-card-meta title="选择位置：">
                 <template slot="description">
-                    <sinput/>
-                    对应的逻辑位置：
+                    <a-select 
+                        v-model="selected_Place" 
+                        style="width: 240px"
+                        show-search
+                        :showArrow="false">
+                        <a-select-option v-for="items in nowCard.items" :key="items" :value="items">
+                            {{items}}
+                        </a-select-option>
+                    </a-select>
                 </template>
 
             </a-card-meta>
@@ -31,15 +38,12 @@
 </template>
     
 <script>
-import sinput from "./searchInput.vue";
 
 export default{
     data() {
         return {
+            selected_Place: "",
         }
-    },
-    components: {
-        sinput
     },
     methods: {
         closeIt (){
@@ -50,6 +54,9 @@ export default{
     props: {
         nowCard: {
             type: Object
+        },
+        choosePlace: {
+            type: String
         }
     },
     watch: {

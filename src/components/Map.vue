@@ -10,7 +10,6 @@ import echarts from 'echarts';
 import Qs from 'qs'
 let myChart = null
 export default {
-  name: 'hello',
   data () {
     return {
       node: [], //地图点
@@ -21,7 +20,6 @@ export default {
       mypos:[], //我的位置
       rate: 1, //导航的速率
       flashTime: 100, //地图导航刷新时间间隔
-      focusSize: 5, //点击点后要缩放的大小
       mapID: 1, //当前的地图编号
       isLook: false, //当前是否正在查看道路拥挤度
       crowdLinks: [],
@@ -55,7 +53,7 @@ export default {
   mounted(){
     myChart = this.$echarts.init(document.getElementById('myChart'));
     this.drawMap();
-  //  this.updataCrowd();
+    this.updataCrowd();
   },
   watch: {
       inGuide(newVal) {
@@ -259,34 +257,40 @@ export default {
                             color: '#cdd0d5'
                     }]),
                     xAxis: [{
-                        show: false,
+                        show: true,
+                        scale: true,
                         min: function (value) {
-                            return value.min - 20;
+                            return value.min;
                         },
                         max: function (value) {
-                            return value.max + 20;
+                            return value.max;
                         }
                     }],
                     yAxis: [{
-                        show: false,
+                        show: true,
+                        scale: true,
                         min: function (value) {
-                            return value.min - 20;
+                            return value.min;
                         },
                         max: function (value) {
-                            return value.max + 20;
+                            return value.max;
                         }
                     }],
                     dataZoom: [
                         
                         {
                             id: "insideX",
-                            type: 'inside',
+                            start: 0,
+                            type: "inside",
+                            end: 100,
                             xAxisIndex: [0],
                             filterMode :'none',
                         },
                         {
                             id: "insideY",
-                            type: 'inside',
+                            start: 0,
+                            type: "inside",
+                            end: 100,
                             yAxisIndex: [0],
                             filterMode :'none',
                         }
