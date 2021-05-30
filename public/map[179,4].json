@@ -1,0 +1,230 @@
+{
+    "node": [
+        {
+            "name": "\u697c\u68af4\u4e00",
+            "value": [
+                6,
+                18
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "none11",
+            "value": [
+                6,
+                24
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4401",
+            "value": [
+                8,
+                24
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none14",
+            "value": [
+                6,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4402",
+            "value": [
+                8,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none16",
+            "value": [
+                6,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none17",
+            "value": [
+                6,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4403",
+            "value": [
+                8,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4404",
+            "value": [
+                8,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none29",
+            "value": [
+                6,
+                32
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4405",
+            "value": [
+                8,
+                32
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u56db\u697c",
+            "value": [
+                6,
+                20
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "none11",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4401"
+        },
+        {
+            "source": "none11",
+            "target": "none14"
+        },
+        {
+            "source": "none14",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4402"
+        },
+        {
+            "source": "none14",
+            "target": "none16"
+        },
+        {
+            "source": "none16",
+            "target": "none17"
+        },
+        {
+            "source": "none16",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4403"
+        },
+        {
+            "source": "none17",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4404"
+        },
+        {
+            "source": "none17",
+            "target": "none29"
+        },
+        {
+            "source": "none29",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u7814\u8ba8\u95f4405"
+        },
+        {
+            "source": "\u697c\u68af4\u4e00",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u56db\u697c"
+        },
+        {
+            "source": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u56db\u697c",
+            "target": "none11"
+        }
+    ]
+}

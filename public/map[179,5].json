@@ -1,0 +1,40 @@
+{
+    "node": [
+        {
+            "name": "\u697c\u68af5\u4e00",
+            "value": [
+                2,
+                20
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u4e94\u697c",
+            "value": [
+                2,
+                22
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "\u697c\u68af5\u4e00",
+            "target": "\u897f\u571f\u57ce\u56fe\u4e66\u9986\u4e94\u697c"
+        }
+    ]
+}

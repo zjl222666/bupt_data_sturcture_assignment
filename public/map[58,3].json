@@ -1,0 +1,230 @@
+{
+    "node": [
+        {
+            "name": "\u697c\u68af3\u4e00",
+            "value": [
+                10,
+                16
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "none12",
+            "value": [
+                10,
+                22
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4301",
+            "value": [
+                12,
+                22
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none21",
+            "value": [
+                10,
+                24
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none22",
+            "value": [
+                10,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none23",
+            "value": [
+                10,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "none24",
+            "value": [
+                10,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4305",
+            "value": [
+                12,
+                30
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4304",
+            "value": [
+                12,
+                28
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4303",
+            "value": [
+                12,
+                26
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4302",
+            "value": [
+                12,
+                24
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c",
+            "value": [
+                10,
+                18
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "none12",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4301"
+        },
+        {
+            "source": "none12",
+            "target": "none21"
+        },
+        {
+            "source": "none21",
+            "target": "none22"
+        },
+        {
+            "source": "none22",
+            "target": "none23"
+        },
+        {
+            "source": "none23",
+            "target": "none24"
+        },
+        {
+            "source": "none24",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4305"
+        },
+        {
+            "source": "none23",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4304"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4303"
+        },
+        {
+            "source": "none21",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u7814\u8ba8\u95f4302"
+        },
+        {
+            "source": "\u697c\u68af3\u4e00",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c"
+        },
+        {
+            "source": "\u6c99\u6cb3\u56fe\u4e66\u9986\u4e09\u697c",
+            "target": "none12"
+        }
+    ]
+}

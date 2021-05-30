@@ -1,0 +1,78 @@
+{
+    "node": [
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e09",
+            "value": [
+                24,
+                8
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u697c\u68af1\u4e00",
+            "value": [
+                14,
+                8
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e8c",
+            "value": [
+                8,
+                8
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e00",
+            "value": [
+                10,
+                12
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e09",
+            "target": "\u697c\u68af1\u4e00"
+        },
+        {
+            "source": "\u697c\u68af1\u4e00",
+            "target": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e8c"
+        },
+        {
+            "source": "\u6c99\u6cb3\u56fe\u4e66\u9986\u95e8\u4e00",
+            "target": "\u697c\u68af1\u4e00"
+        }
+    ]
+}

@@ -56,6 +56,36 @@ export default {
     this.updataCrowd();
   },
   watch: {
+      crowdLinks(newVal) {
+          myChart.setOption({
+              series:[{
+                  id: 'showCrowd',
+                  links: newVal,
+              }]
+          })
+      },
+      crowdNode(newVal) {
+          myChart.setOption({
+              series:[{
+                  id:'showCrowd',
+                  data: newVal,
+              }]
+          })
+      },
+      isLook(newVal) {
+          clearTimeout(this.timeClock)
+          if (newVal==false) {
+              this.crowdLinks=[]
+              this.crowdNode=[]
+          } else {
+              this.updataCrowd();
+          }
+      },
+      mapID(newVal) {
+          clearTimeout(this.timeClock)
+          if(newVal>2)  this.isLook = false
+          if(this.isLook)this.updataCrowd();
+      },
       inGuide(newVal) {
           if(newVal == true) {
               this.startGuide()
@@ -63,7 +93,7 @@ export default {
       },
       myposd(newVal) {
             this.mypos = newVal
-            console.log("I updata!!",newVal[0],newVal[1])
+        //    console.log("I updata!!",newVal[0],newVal[1])
             myChart.setOption({
             series:[
                 {
@@ -106,7 +136,7 @@ export default {
       },
       mapNode(newVal) {
           this.node = newVal
-          console.log(newVal)
+      //    console.log(newVal)
          myChart.setOption({
               series:[{
                   id: 'MapContent',
@@ -162,19 +192,18 @@ export default {
   },
   methods: {
     updataCrowd() {
-        if(this.mapID!=1&&this.mapID!=2){
-            this.isLook = false
-            return
-        }
+        if(this.isLook==false) return
+        console.log("tryget!!")
         this.$http.post(`${this.$BaseUrl}map/map/`,Qs.stringify({
             id: this.mapID
         }))
         .then(res=>{
-            console.log('res=>',res);            
+            this.crowdLinks = res.data.links
+            this.crowdNode = res.data.node           
         })
-        /*setTimeout(() => {
+        this.timeClock = setTimeout(() => {
             this.updataCrowd()
-        }, 10000);*/
+        }, 10000);
     },
     seeCrowd() {
         this.isLook = !this.isLook
@@ -230,14 +259,8 @@ export default {
         myChart.setOption({
         series: [{
             id: "guideContent",
-            type: "graph",
             data: this.searchNode,
             links: this.searchLinks,
-            coordinateSystem: 'cartesian2d',
-            lineStyle: {
-                color: '#FFF',
-                width: 5
-            }
             }]
         })
     },
@@ -257,7 +280,7 @@ export default {
                             color: '#cdd0d5'
                     }]),
                     xAxis: [{
-                        show: true,
+                        show: false,
                         scale: true,
                         min: function (value) {
                             return value.min;
@@ -267,7 +290,7 @@ export default {
                         }
                     }],
                     yAxis: [{
-                        show: true,
+                        show: false,
                         scale: true,
                         min: function (value) {
                             return value.min;
@@ -333,7 +356,7 @@ export default {
                             z: 2,
                             coordinateSystem: 'cartesian2d',
                             lineStyle: {
-                                color: '#FFF',
+                                color: "red",
                                 width: 5
                             }
                         },

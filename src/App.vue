@@ -28,6 +28,11 @@
               :nowCard="nowCard"  
               v-if="cardShow" 
               @closeIt="()=>{nowID=''; cardShow = false;  }"
+              @updataInit="updataInit"
+              @updataDist="updataDist"
+              @intoGuide="intoGuide"
+              :itemsContent="posID"
+              :choosePlace="choosePlace"
               />
           </a-affix>
         </div>
@@ -40,9 +45,9 @@
                 @click="() => (collapsed = !collapsed)"
             />
             </a-col>
-            <a-col span="5"> <sinput  @handleChange1="updataNowID"/> </a-col>
-            <a-col span="2">  <a-button type="link" icon="search" @click="showCard"/>  </a-col>
-            <a-col span="1"> &nbsp; </a-col>
+            <a-col span="8"> <sinput v-model="choosePlace" @handleChange1="updataNowID"/> </a-col>
+            <a-col span="2">  <a-button type="link" icon="search" @click="updataNowID(choosePlace)"/>  </a-col>
+            <a-col span="1"> &nbsp; <a-button type="link" @click="readLog"> 查看日志</a-button>> </a-col>
           </a-row>
         </a-layout-header>
         <a-layout>
@@ -52,34 +57,16 @@
           <div v-if="selected_key[0] == '3'" style="z: 20">
             <span> <strong> 当前选择建筑物 </strong> </span>
             <span> 
-              <a-select v-model="selected_Map" style="width: 120px">
-                <a-select-option value=62>
-                  教学综合实验楼
-                </a-select-option>
-                <a-select-option value=4>
-                  test
-                </a-select-option>
-                <a-select-option value=5>
-                  test
-                </a-select-option>
-                <a-select-option value=6>
-                  test
-                </a-select-option>
-                <a-select-option value=7>
-                  test
-                </a-select-option>
-                <a-select-option value=8>
-                  test
-                </a-select-option>
-                <a-select-option value=9>
-                  test
+              <a-select v-model="selected_Map" style="width: 240px">
+                <a-select-option v-for="items in supportPlace" :key="items" :value="items">
+                  {{items}}
                 </a-select-option>
               </a-select>
             </span>
             <span> <strong> 当前楼层 </strong> </span>
             <span>
-              <a-select v-model="selected_Z" style="width: 120px">
-                <a-select-option v-for="items in 4" :key="items" :value="items">
+              <a-select v-model="selected_Z" style="width: 240px">
+                <a-select-option v-for="items in zNumber[selected_Map]" :key="items" :value="items">
                   {{items}}
                 </a-select-option>
               </a-select>
@@ -157,21 +144,24 @@ export default{
       nowMapID_person: 1,  //现在人所在的地图ID
       nowMapID_person_z: 0, //现在人所在的楼层
       selected_Z: 1, //下拉框选择的楼层
-      selected_Map: 62, //下拉框选择的建筑物ID 
+      selected_Map:"沙河教学综合楼N", //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
       guideOver: true, //模拟导航当前地图是否导航完毕
       inGuide: true, //导航是否处于暂停状态
+      choosePlace: '', //卡片上默认选中的位置
       zNumber: {
-        62: 3,
-        29: 3,
-        71: 3,
-        167: 3,
-        144: 3,
-        58: 5,
-        179: 5
-      }
+        "沙河教学综合楼N": 3,
+       "沙河燕南园S4": 3,
+       "沙河实验楼": 3,
+       "西土城教二楼": 3,
+        "西土城学一公寓": 3,
+        "沙河图书馆": 5,
+        "西土城图书馆": 5
+      },
+      supportPlace: ["沙河教学综合楼N","沙河燕南园S4","沙河实验楼","西土城教二楼","西土城学一公寓","沙河图书馆","西土城图书馆"],
+      PlaceID:{"沙河教学综合楼N": 62,"沙河燕南园S4" :29,"沙河实验楼" :71,"西土城教二楼": 167,"西土城学一公寓": 144,"沙河图书馆":58,"西土城图书馆":179}
     };
   },
   watch: {
@@ -196,11 +186,11 @@ export default{
       }
     },
     selected_Map(newVal) {
-      this.nowMapID_show = newVal
+      this.nowMapID_show = this.PlaceID[newVal]
+      if(this.selected_Z>this.zNumber[newVal]) this.selected_Z = 1
     //  console.log(newVal)
     },
     selected_Z(newVal) {
-      console.log(newVal)
       this.nowMapID_Z = newVal
     },
     selected_key(newVal) {
@@ -215,13 +205,28 @@ export default{
           this.nowMapID_show = 0
           return
         }  
-        this.nowMapID_show = this.selected_Map
+        this.nowMapID_show = this.PlaceID[this.selected_Map]
         this.nowMapID_Z = this.selected_Z
       }
 
     },
   },
   methods: {
+    readLog() {
+
+    },
+    updataInit(val) {
+      this.$refs.guide.initialPlace = val
+    },
+    updataDist(val) {
+      this.$refs.guide.distPlace = val
+    },
+    intoGuide(val) {
+      this.selected_key = ['3']
+      this.selected_Map = val
+      this.selected_Z = 1
+      this.cardShow = false
+    },
     forceStop() {
       this.inGuide = false
       this.guideOrder = null
@@ -297,6 +302,8 @@ export default{
     //  console.log(this.IDtoCard[tmpID.toString()])
       this.nowMapID_person = this.IDtoCard[tmpID.toString()].campus
       this.nowMapID_Z = this.IDtoCard[tmpID.toString()].z
+      this.nowMapID_show = this.nowMapID_person
+      this.nowMapID_Z = this.nowMapID_person_z
       this.updataMypos(this.IDtoCard[tmpID.toString()].x,this.IDtoCard[tmpID.toString()].y)
     },
     updataGuide(val) {

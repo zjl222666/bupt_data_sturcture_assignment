@@ -1,0 +1,553 @@
+{
+    "node": [
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-101",
+            "value": [
+                50,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-102",
+            "value": [
+                100,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-103",
+            "value": [
+                150,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e09",
+            "value": [
+                250,
+                100
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "none5",
+            "value": [
+                250,
+                200
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-108",
+            "value": [
+                300,
+                200
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-107",
+            "value": [
+                200,
+                200
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none8",
+            "value": [
+                250,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-110",
+            "value": [
+                300,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-109",
+            "value": [
+                200,
+                250
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none11",
+            "value": [
+                250,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-112",
+            "value": [
+                300,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-111",
+            "value": [
+                200,
+                300
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none14",
+            "value": [
+                250,
+                350
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-114",
+            "value": [
+                300,
+                350
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-113",
+            "value": [
+                200,
+                350
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none17",
+            "value": [
+                250,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-116",
+            "value": [
+                300,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-115",
+            "value": [
+                200,
+                400
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-104",
+            "value": [
+                350,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-105",
+            "value": [
+                400,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "none22",
+            "value": [
+                250,
+                450
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                0,
+                0
+            ],
+            "x": [],
+            "z": 0,
+            "y": 0
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-117",
+            "value": [
+                200,
+                450
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-118",
+            "value": [
+                300,
+                450
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u697c\u68af1\u4e00",
+            "value": [
+                200,
+                100
+            ],
+            "symbol": "circle",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56edS4-106",
+            "value": [
+                450,
+                100
+            ],
+            "symbol": "rect",
+            "symbolSize": [
+                50,
+                40
+            ],
+            "x": [],
+            "z": 0,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e8c",
+            "value": [
+                500,
+                100
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u56db",
+            "value": [
+                0,
+                100
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        },
+        {
+            "name": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e00",
+            "value": [
+                250,
+                500
+            ],
+            "symbol": "pin",
+            "symbolSize": [
+                50,
+                50
+            ],
+            "x": [],
+            "z": 3,
+            "y": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-101",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-102"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-102",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-103"
+        },
+        {
+            "source": "none5",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-108"
+        },
+        {
+            "source": "none5",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-107"
+        },
+        {
+            "source": "none5",
+            "target": "none8"
+        },
+        {
+            "source": "none8",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-110"
+        },
+        {
+            "source": "none8",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-109"
+        },
+        {
+            "source": "none8",
+            "target": "none11"
+        },
+        {
+            "source": "none11",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-112"
+        },
+        {
+            "source": "none11",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-111"
+        },
+        {
+            "source": "none11",
+            "target": "none14"
+        },
+        {
+            "source": "none14",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-114"
+        },
+        {
+            "source": "none14",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-113"
+        },
+        {
+            "source": "none14",
+            "target": "none17"
+        },
+        {
+            "source": "none17",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-116"
+        },
+        {
+            "source": "none17",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-115"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e09",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-104"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-104",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-105"
+        },
+        {
+            "source": "none17",
+            "target": "none22"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-117"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-118"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e09",
+            "target": "none5"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-103",
+            "target": "\u697c\u68af1\u4e00"
+        },
+        {
+            "source": "\u697c\u68af1\u4e00",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e09"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-105",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56edS4-106"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-106",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e8c"
+        },
+        {
+            "source": "\u6c99\u6cb3\u71d5\u5357\u56edS4-101",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u56db"
+        },
+        {
+            "source": "none22",
+            "target": "\u6c99\u6cb3\u71d5\u5357\u56ed\u95e8\u4e00"
+        }
+    ]
+}
