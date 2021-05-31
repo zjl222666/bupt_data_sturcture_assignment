@@ -9,6 +9,7 @@
     style="width: 100%"
     @change="handleChange"
     :filter-option="filterOption"
+    :disabled="disabled"
   >
     <a-select-option v-for="item in placeSet" :key="item" :value="item">
       {{ item }}
@@ -29,6 +30,9 @@ export default {
       myPlace: {
           type: String,
           default: ''
+      },
+      disabled: {
+        type: Boolean
       }
   },
   methods: {

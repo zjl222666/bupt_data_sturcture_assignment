@@ -77,14 +77,13 @@
             ref="map"
             @showCard="updataNowID2" 
             @updataMypos="updataMypos"
-            @guideOver="()=>{this.guideOver=true}"
+            @guideOver="guideOver"
             :GuideNode="GuideNode[[nowMapID_show,nowMapID_Z]]" 
             :GuideTime="GuideTime[[nowMapID_show,nowMapID_Z]]"
             :mapNode="mapNode[[nowMapID_show,nowMapID_Z]]" 
             :mapLinks="mapLinks[[nowMapID_show,nowMapID_Z]]"
             :mypos_in="(nowMapID_show==nowMapID_person&&nowMapID_person_z==nowMapID_Z)?true:false"
             :myposd="mypos"
-            :inGuide="inGuide"
             :mapID="nowMapID_show"
             />
           </div>
@@ -95,8 +94,8 @@
               @updataGuide="updataGuide"
               @updataMypos="updataMypos2"
               @changeMap="changeMap"
-              @startGuide="()=>{this.inGuide=true; this.startGuide(); }"
-              @endGuide="()=>{this.inGuide=false}"
+              @startGuide="()=>{this.startGuide(); }"
+              @endGuide="()=>{this.forceStop()}"
               @forceStop="forceStop"
               :nowMapID_person="nowMapID_person"
               :nowMapID_person_z="nowMapID_person_z"
@@ -148,9 +147,8 @@ export default{
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
-      guideOver: true, //模拟导航当前地图是否导航完毕
-      inGuide: true, //导航是否处于暂停状态
       choosePlace: '', //卡片上默认选中的位置
+      inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
       zNumber: {
         "沙河教学综合楼N": 3,
        "沙河燕南园S4": 3,
@@ -166,11 +164,6 @@ export default{
     };
   },
   watch: {
-    inGuide(newVal) {
-      if(newVal==true && this.guideOver==false &&this.guideOver!=null) {
-          this.$refs.map.startGuide()
-      }
-    },
     nowID(newVal) {
       this.nowCard = this.IDtoCard[newVal]
       console.log(newVal,this.nowCard)
@@ -230,57 +223,46 @@ export default{
     },
     forceStop() {
       this.inGuide = false
-      this.guideOrder = null
+      this.$refs.map.endGuide()
     },
-    startGuide() {
-      if(this.guideOrder==null) return
-      if(this.guideOrder.length<=1) {
-        if(this.guideOver) {
-            this.guideOrder= null
-            this.GuideNode= []
-            this.$refs.guide.distPlace = ''
-            this.$refs.guide.resultDist = null
-            this.$refs.guide.passby = null
-            this.$success({
-            title: '导航结束啦！',
-            content: '已经将你的位置更新为目的地',
-            okText: '确认',
-          });
-          return
-        } else {
-          setTimeout(() => {
-            this.startGuide()
-          }, 1000);
-        }
+    goBus() {
+      this.guideOver()
+    },
+    guideOver() {      
+      this.inGuide = false
+      this.guideOrder.shift()
+      if(this.guideOrder.length<1) {
+        this.$success({
+          title: "您的导航已结束",
+          description: "已经将您的位置更新到目的地"
+        })
+        this.$refs.guide.resultDist = null
+        this.updataGuide(null)
         return
       }
-      while(this.guideOrder.length>1){
-        if(this.guideOver == true){
-          this.guideOrder.shift()
-          let node = this.guideOrder[0]
-          this.guideOver = false
-          this.nowMapID_person = node[0]
-          this.nowMapID_person_z = node[1]
-          this.nowMapID_show = node[0]
-          this.nowMapID_Z = node[1]
-          this.$refs.map.startGuide()
-          if(this.guideOrder.length == 1) {
-            setTimeout(() => {
-            this.startGuide()
-          }, 1000);
-          }
-
-        }
-        else{
-         // console.log('deng')
-          setTimeout(() => {
-            this.startGuide()
-          }, 1000);
-          return
-        }
+      if(this.guideOrder[0][0] == -1) {
+        this.goBus()
+        return
       }
+      this.nowMapID_show = this.guideOrder[0][0]
+      this.nowMapID_Z = this.guideOrder[0][1]
+      this.nowMapID_person = this.nowMapID_show
+      this.nowMapID_person_z = this.nowMapID_Z
+      this.$refs.map.nowPoint = 0
+      this.inGuide = true
+      this.$refs.map.startGuide()
+    },
+    startGuide() {
+      this.inGuide = true
+      this.$refs.map.startGuide()
     },
     changeMap(newMap,newMapz) {
+      if(this.inGuide) {
+        if(this.newMap!=this.nowMapID_show||this.newMapz!=this.nowMapID_Z) this.$confirm({
+          title: "正在导航中，不支持切换地图哦"
+        })
+        return
+      }
       if(newMap<=2) {
         this.selected_key = [newMap.toString()]
       }
@@ -307,8 +289,7 @@ export default{
     },
     updataGuide(val) {
     //  console.log(this.GuideNode)
-      this.guideOrder = [[1,0]]
-      this.guideOver = true
+      this.guideOrder = []
       this.inGuide = false
       this.stopIt = false
       if(val==null) {
@@ -317,7 +298,10 @@ export default{
           return
       }
       val.forEach(node=>{
-        this.guideOrder.push([node.id,node.z])
+        if(node.type!=2) this.guideOrder.push([node.id,node.z])
+        else {
+          this.guideOrder.push([-1,0])
+        }
         this.$set(this.GuideNode,[node.id,node.z],node.path)
         this.$set(this.GuideTime,[node.id,node.z], node.time)
       })
@@ -364,7 +348,7 @@ export default{
   beforeMount() {
   },
   mounted() {
-      this.mypos = [0,130]
+      this.mypos = [130,0]
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
       this.getMapContent('/Map[29,1].json',29,1)

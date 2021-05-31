@@ -4,42 +4,46 @@
         <div>
             <a-row type="flex" justify="space-around">
                 <a-col span="4"> <a-icon type="environment"/> 起点 </a-col>
-                <a-col span="18"> <sinput :myPlace="initialPlace" @input="(val) => {initialPlace = val}"/> </a-col>
+                <a-col span="18"> <sinput :disabled="resultDist!=null" :myPlace="initialPlace" @input="(val) => {initialPlace = val}"/> </a-col>
             </a-row>
         </div>
         <a-icon type="swap" class="trigger" @click="changeValue"/>
         <div>
             <a-row type="flex" justify="space-around">
                 <a-col span="4"> <a-icon type="environment"/> 终点 </a-col>
-                <a-col span="18"> <sinput :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
+                <a-col span="18"> <sinput :disabled="resultDist!=null" :myPlace="distPlace" @input="(val) => {distPlace = val}"/> </a-col>
             </a-row>
         </div>
     </div>
     <div>
         <a-tabs  :tabBarGutter="1" size="small" tabPosition="top" v-model="selected_Model">
-            <a-tab-pane key="1" tab="距离最短">
+            <a-tab-pane key="1" tab="距离最短" :disabled="selected_Model!='1'&&resultDist!=null" >
                 <div align="center">
-                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+                    <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
+                    <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="时间最短">
+            <a-tab-pane key="2" tab="时间最短"  :disabled="selected_Model!='2'&&resultDist!=null" >
                 <div align="center">
-                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+                   <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
+                    <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
-            <a-tab-pane key="3" tab="自行车最优策略">
+            <a-tab-pane key="3" tab="自行车最优策略"  :disabled="selected_Model!='3'&&resultDist!=null" >
                 <div align="center">
-                    <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button> 
+                    <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
+                    <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
                      <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
-            <a-tab-pane key="4" tab="有途径点策略">
+            <a-tab-pane key="4" tab="有途径点策略"  :disabled="selected_Model!='4'&&resultDist!=null" >
                 <div align="center">
                         <span> 选择途径点：</span>
                         <span> <sinputmuti @handlePassby="handlePassby" /> </span>
-                <a-button type="primary" icon="search"  @click="searchPath" > 规划路径 </a-button>
+               <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
+                    <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
                 <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
                 </div>
             </a-tab-pane>
@@ -115,6 +119,12 @@ export default {
         }
     },
     methods: {
+        clearPath() {
+            this.resultDist = null
+            this.$emit("updataGuide",this.resultDist)   
+            this.initialPlace = '我的位置'
+            this.distPlace = ''    
+        },
         startGuide() {
             this.$emit("startGuide")
         },
@@ -170,23 +180,13 @@ export default {
             this.$emit("updataMypos",this.initialPlace)
         },
         getGuide() {
-                if(this.resultDist != null){
-                    this.$confirm({
-                        title: "本次导航还未到达终点哦",
-                        content: "是否确认更换目的地并重新导航？",
-                        okText: "确认并导航",
-                        okType: 'danger',
-                        cancelText: '取消',
-                        onOk: ()=> {
-                            this.$emit("forceStop")
-                            setTimeout(() => {
-                                this.resultDist = null
-                                this.getGuide()
-                            }, 1500);
-                        }
-                    })
-                }else{
-                    console.log(this.nowMypos,this.nowMapID_person,this.nowMapID_person_z)
+                    console.log("dest:",this.distPlace,
+                            "approach:",this.passBy,
+                            "x:", this.nowMypos[0],
+                            "y:", this.nowMypos[1],
+                            "id:", this.nowMapID_person,
+                            "z:", this.nowMapID_person_z,
+                            "model:", this.selected_Model-1)
                     this.$http.post(`${this.$BaseUrl}map/search-path/`,Qs.stringify({
                             dest: this.distPlace,
                             approach: this.passBy,
@@ -200,9 +200,7 @@ export default {
                         this.resultDist = res.data.solution
                         console.log(res)
                         this.$emit("updataGuide",this.resultDist)        
-                    })
-                }
-                
+                    })      
             },
     }
 

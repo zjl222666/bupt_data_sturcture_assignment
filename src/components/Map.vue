@@ -27,9 +27,6 @@ export default {
     }
   },
   props: {
-       inGuide: {
-           type: Boolean
-       }, //是否正在导航
        mapNode: {
            type: Array
        },
@@ -85,11 +82,6 @@ export default {
           clearTimeout(this.timeClock)
           if(newVal>2)  this.isLook = false
           if(this.isLook)this.updataCrowd();
-      },
-      inGuide(newVal) {
-          if(newVal == true) {
-              this.startGuide()
-          }
       },
       myposd(newVal) {
             this.mypos = newVal
@@ -198,6 +190,7 @@ export default {
             id: this.mapID
         }))
         .then(res=>{
+            console.log(res.data)
             this.crowdLinks = res.data.links
             this.crowdNode = res.data.node           
         })
@@ -208,7 +201,12 @@ export default {
     seeCrowd() {
         this.isLook = !this.isLook
     },
-    startGuide() { //模拟导航函数，开始后若条件允许则会不断回调，可通过inGuide来实现暂停
+    endGuide() {        
+        clearTimeout(this.guideClock)
+        this.$emit("updataMypos",this.mypos[0],this.mypos[1])
+
+    },
+    startGuide() { //模拟导航函数，开始后若条件允许则会不断回调
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
             this.$emit("updataMypos",this.mypos[0],this.mypos[1])
@@ -217,11 +215,12 @@ export default {
             return;
         }
         if(this.nowPoint==0) {
-        //    this.mypos = this.searchNode[0].value;
+            this.mypos = this.searchNode[0].value;
             this.nowPoint++;
         }
         let tmpX = this.searchNode[this.nowPoint].value[0];
         let tmpY = this.searchNode[this.nowPoint].value[1];
+        console.log("目的地",tmpX,tmpY)
         let lastx = this.mypos[0];
         let lastY = this.mypos[1];
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
@@ -247,15 +246,11 @@ export default {
                 }
             ]
         })
-        if((this.mypos[0] - tmpX)*(tmpX - lastx)>=0||(this.mypos[1]-tmpY)*(tmpY-lastY)>=0) this.nowPoint++;
-        if (this.inGuide) {
-            setTimeout(()=>{this.startGuide()}, this.flashTime);
-        }else {
-            this.$emit("updataMypos",this.mypos[0],this.mypos[1])
-        }
+        if(((this.mypos[0] - tmpX)*(tmpX - lastx)>=0&&(tmpX!=lastx))||((this.mypos[1]-tmpY)*(tmpY-lastY)>=0&&(tmpY!=lastY))) this.nowPoint++
+        this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
     },
     drawGuide() {
-        
+        this.nowPoint = 0        
         myChart.setOption({
         series: [{
             id: "guideContent",
