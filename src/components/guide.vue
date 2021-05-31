@@ -198,7 +198,12 @@ export default {
                         }))
                     .then(res=>{
                         this.resultDist = res.data.solution
-                        console.log(res)
+                        if(res.data.solution.length==0) {
+                            this.$confirm({
+                                title: "你已经在目的地附近啦",
+                                content: "请自己找一找附近哦"
+                            })
+                        }
                         this.$emit("updataGuide",this.resultDist)        
                     })      
             },

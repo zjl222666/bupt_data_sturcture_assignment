@@ -1,5 +1,4 @@
 <template>
-
   <div id="app">
     <a-layout>
 <div >
@@ -7,15 +6,15 @@
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <div class="logo"></div>
       <a-menu theme="dark" mode="inline" v-model="selected_key">
-        <a-menu-item key="1">
+        <a-menu-item key="1" :disabled="inGuide">
           <a-icon type="layout" theme="filled" />
           <span>校区一</span>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item key="2" :disabled="inGuide">
           <a-icon type="layout" />
           <span>校区二</span>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="3" :disabled="inGuide">
           <a-icon type="environment" />
           <span>楼内导航</span>
         </a-menu-item>
@@ -45,9 +44,10 @@
                 @click="() => (collapsed = !collapsed)"
             />
             </a-col>
-            <a-col span="8"> <sinput v-model="choosePlace" @handleChange1="updataNowID"/> </a-col>
-            <a-col span="2">  <a-button type="link" icon="search" @click="updataNowID(choosePlace)"/>  </a-col>
-            <a-col span="1"> &nbsp; <a-button type="link" @click="readLog"> 查看日志</a-button>> </a-col>
+            <a-col span="7"> <sinput v-model="choosePlace" @handleChange1="updataNowID"/> </a-col>
+            <a-col span="1">  <a-button type="link" icon="search" @click="updataNowID(choosePlace)"/>  </a-col>
+            <a-col span="3"> <a-button @click="seeMyplace"> 更多功能 </a-button> </a-col>
+            <a-col span="2"> <a-button  @click="readLog"> 查看日志</a-button> </a-col>
           </a-row>
         </a-layout-header>
         <a-layout>
@@ -131,6 +131,7 @@ export default{
       selected_key: ['1'], //现在选择的左边侧边栏的key数组
       cardShow: false, //卡片是否显示
       posID: {}, //存储物理位置（逻辑位置）对应的信息
+      itemsPos: {},//存储物理位置（逻辑位置）对应的位置
       nowID: "", //card显示的id
       IDtoCard: {}, //建筑物id对应的信息
       nowCard: {}, //当前卡片显示的内容
@@ -160,7 +161,7 @@ export default{
       },
       supportPlace: ["沙河教学综合楼N","沙河燕南园S4","沙河实验楼","西土城教二楼","西土城学一公寓","沙河图书馆","西土城图书馆"],
       PlaceID:{"沙河教学综合楼N": 62,"沙河燕南园S4" :29,"沙河实验楼" :71,"西土城教二楼": 167,"西土城学一公寓": 144,"沙河图书馆":58,"西土城图书馆":179},
-      IDplace:{62: "沙河教学综合楼N" ,29: "沙河燕南园S4" ,71: "沙河实验楼",167: "西土城教二楼",144: "西土城学一公寓",58: "沙河图书馆",179: "西土城图书馆"}
+      IDplace:{62: "沙河教学综合楼N",29: "沙河燕南园S4" ,71: "沙河实验楼",167: "西土城教二楼",144: "西土城学一公寓",58: "沙河图书馆",179: "西土城图书馆"}
     };
   },
   watch: {
@@ -182,6 +183,7 @@ export default{
     selected_Map(newVal) {
       this.nowMapID_show = this.PlaceID[newVal]
       if(this.selected_Z>this.zNumber[newVal]) this.selected_Z = 1
+      this.selected_key = ['3']
     //  console.log(newVal)
     },
     selected_Z(newVal) {
@@ -225,8 +227,18 @@ export default{
       this.inGuide = false
       this.$refs.map.endGuide()
     },
+    jishi() {
+
+    },
     goBus() {
-      this.guideOver()
+      this.$info({
+        title: "正在前往另一个校区~" ,
+        content: () => <div><a-spin /> </div>,
+        okText: "跳过",
+        onOk: ()=> {
+            this.guideOver()
+        }
+      })
     },
     guideOver() {      
       this.inGuide = false
@@ -234,7 +246,7 @@ export default{
       if(this.guideOrder.length<1) {
         this.$success({
           title: "您的导航已结束",
-          description: "已经将您的位置更新到目的地"
+          content: "已经将您的位置更新到目的地"
         })
         this.$refs.guide.resultDist = null
         this.updataGuide(null)
@@ -245,15 +257,20 @@ export default{
         return
       }
       this.nowMapID_show = this.guideOrder[0][0]
+      if(this.guideOrder[0][0]>2) this.selected_Map = this.IDplace[this.guideOrder[0][0]]
       this.nowMapID_Z = this.guideOrder[0][1]
       this.nowMapID_person = this.nowMapID_show
       this.nowMapID_person_z = this.nowMapID_Z
-      this.$refs.map.nowPoint = 0
+      console.log("??",this.GuideNode[this.guideOrder[0]][0])
+      this.updataMypos(this.GuideNode[this.guideOrder[0]][0][0],this.GuideNode[this.guideOrder[0]][1][1])
       this.inGuide = true
-      this.$refs.map.startGuide()
+      this.$refs.map.nowPoint = 0
+      setTimeout( ()=>{this.$refs.map.startGuide()}, 1000)
     },
     startGuide() {
       this.inGuide = true
+      this.nowMapID_show = this.nowMapID_person
+      this.nowMapID_Z = this.nowMapID_person_z
       this.$refs.map.startGuide()
     },
     changeMap(newMap,newMapz) {
@@ -279,17 +296,17 @@ export default{
     //  console.log("ceshi2",this.mypos)
     },
     updataMypos2(val){
-      let tmpID = this.posID[val].id
-    //  console.log(this.IDtoCard[tmpID.toString()])
-      this.nowMapID_person = this.IDtoCard[tmpID.toString()].campus
-      this.nowMapID_Z = this.IDtoCard[tmpID.toString()].z
+      console.log(this.posID[val])
+      this.nowMapID_person = this.itemsPos[val].id
+      this.nowMapID_Z = this.itemsPos[val].pos[2]
       this.nowMapID_show = this.nowMapID_person
       this.nowMapID_Z = this.nowMapID_person_z
-      this.updataMypos(this.IDtoCard[tmpID.toString()].x,this.IDtoCard[tmpID.toString()].y)
+      this.updataMypos(this.itemsPos[val].pos[0],this.itemsPos[val].pos[1])
     },
     updataGuide(val) {
     //  console.log(this.GuideNode)
       this.guideOrder = []
+      this.$refs.map.nowPoint = 0
       this.inGuide = false
       this.stopIt = false
       if(val==null) {
@@ -327,6 +344,11 @@ export default{
     getID(){
       this.$http.get('/ItemsContent.json').then(res => {
         this.posID = res.data
+      })
+    },
+    getpos(){
+       this.$http.get('/itemsPos.json').then(res => {
+        this.itemsPos = res.data
       })
     },
     getCard(){
@@ -380,6 +402,7 @@ export default{
       this.getMapContent('/Map[179,5].json',179,5)
       this.getID();
       this.getCard();
+      this.getpos();
   }
 }
 </script>
@@ -391,7 +414,6 @@ export default{
   cursor: pointer;
   transition: color 0.3s;
 }
-
 .trigger:hover {
   color: #1890ff;
 }

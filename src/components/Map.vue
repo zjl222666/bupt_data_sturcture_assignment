@@ -16,14 +16,15 @@ export default {
       links: [], //地图边
       searchNode: [], //导航路径被加载的点
       searchLinks: [], //导航路径被加载的边
-      nowPoint: 0, //模拟导航当前走到的点
       mypos:[], //我的位置
       rate: 1, //导航的速率
-      flashTime: 100, //地图导航刷新时间间隔
+      flashTime: 50, //地图导航刷新时间间隔
       mapID: 1, //当前的地图编号
       isLook: false, //当前是否正在查看道路拥挤度
+      nowPoint: 0,
       crowdLinks: [],
       crowdNode: [],
+      wucha: 2
     }
   },
   props: {
@@ -209,20 +210,13 @@ export default {
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
-            this.$emit("updataMypos",this.mypos[0],this.mypos[1])
-            this.nowPoint = 0
+            this.endGuide()
             this.$emit("guideOver");
             return;
         }
-        if(this.nowPoint==0) {
-            this.mypos = this.searchNode[0].value;
-            this.nowPoint++;
-        }
         let tmpX = this.searchNode[this.nowPoint].value[0];
         let tmpY = this.searchNode[this.nowPoint].value[1];
-        console.log("目的地",tmpX,tmpY)
-        let lastx = this.mypos[0];
-        let lastY = this.mypos[1];
+        console.log(this.mypos,tmpX,tmpY)
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
         if(Math.abs(tmpX-this.mypos[0])>this.rate){
             this.mypos[0] += this.rate * (tmpX>this.mypos[0]?1:-1);
@@ -230,7 +224,6 @@ export default {
         } else {
             this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
         }
-       // console.log(this.mypos,this.nowPoint)  
        myChart.setOption({
             series:[
                 {
@@ -246,11 +239,11 @@ export default {
                 }
             ]
         })
-        if(((this.mypos[0] - tmpX)*(tmpX - lastx)>=0&&(tmpX!=lastx))||((this.mypos[1]-tmpY)*(tmpY-lastY)>=0&&(tmpY!=lastY))) this.nowPoint++
+        if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=this.wucha) this.nowPoint++
         this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
     },
-    drawGuide() {
-        this.nowPoint = 0        
+    drawGuide() {      
+        console.log('hua',this.searchNode)
         myChart.setOption({
         series: [{
             id: "guideContent",
@@ -380,6 +373,12 @@ export default {
 .showYJ{
     position: absolute;
     left: 60%;
+    top: 10%;
+    z-index: 100;
+}
+.showMypos{
+    position: absolute;
+    left: 50%;
     top: 10%;
     z-index: 100;
 }
