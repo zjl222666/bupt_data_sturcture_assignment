@@ -1,5 +1,39 @@
 <template>
   <div id="app">
+    <a-drawer
+      title="更多功能"
+      placement="right"
+      :visible="moreShow"
+      :width="600"
+      @close="()=>{this.moreShow = false}"
+    >
+      <a-card title="我的位置">
+        <template slot="extra">
+          <a-button type="link" @click="locateMypos">定位到我的位置</a-button>
+        </template>
+          所在校区: {{nowMapID_person_in}}
+          所在坐标: {{mypos}}
+          <div>
+            我的周边:
+
+          </div>
+      </a-card>
+      <a-divider/>
+      <a-card title="食堂负载均衡">
+        <template slot="extra">
+            <a-button type="link" @click="flashCrowd">刷新</a-button>
+        </template>
+            <a-table :columns="cantinCom" :data-source="CantinData">
+              <span slot="action" slot-scope="text,record">
+                <a-button slot="action" @click="updataDist(record.name)"> 设为目的地</a-button> 
+              </span>
+            </a-table>
+      </a-card>
+       <a-divider/>
+      <a-card title="跨校区乘车表">
+
+      </a-card>
+    </a-drawer>
     <a-layout>
 <div >
   <a-layout id="components-layout-demo-custom-trigger">
@@ -46,7 +80,7 @@
             </a-col>
             <a-col span="7"> <sinput v-model="choosePlace" @handleChange1="updataNowID"/> </a-col>
             <a-col span="1">  <a-button type="link" icon="search" @click="updataNowID(choosePlace)"/>  </a-col>
-            <a-col span="3"> <a-button @click="seeMyplace"> 更多功能 </a-button> </a-col>
+            <a-col span="3"> <a-button @click="()=>{this.moreShow = true}"> 更多功能 </a-button> </a-col>
             <a-col span="2"> <a-button  @click="readLog"> 查看日志</a-button> </a-col>
           </a-row>
         </a-layout-header>
@@ -143,6 +177,8 @@ export default{
       nowMapID_Z: 0, //现在显示的楼层，若为校区地图则为0
       nowMapID_person: 1,  //现在人所在的地图ID
       nowMapID_person_z: 0, //现在人所在的楼层
+      nowMapID_person_in: 1, //现在人所在的校区
+      Person_cloes:[], //我的附近
       selected_Z: 1, //下拉框选择的楼层
       selected_Map:"沙河教学综合楼N", //下拉框选择的建筑物ID 
       mypos_in: false, //人是否在当前加载的地图中
@@ -150,6 +186,44 @@ export default{
       guideOrder: [], //模拟导航地图加载的顺序
       choosePlace: '', //卡片上默认选中的位置
       inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
+      moreShow: false, //更多功能抽屉展示
+      cantinCom:[
+        {
+          dataIndex: 'name',
+          key: 'name',
+          title: '食堂名称',
+        },
+        {
+          dataIndex: 'crowd',
+          key: 'crowd',
+          title: '当前流量(人次)',
+        },
+        {
+          dataIndex: 'action',
+          key: 'action',
+          title: '操作',
+          scopedSlots: { customRender: 'action' },
+        },
+      ],
+      CantinData: [ 
+        {
+          key: '1',
+          name: '西土城教工食堂',
+          crowd: 100
+        },{
+          key: '2',
+          name: '西土城学生食堂',
+          crowd: 100
+        },{
+          key: '3',
+          name: '沙河学生食堂',
+          crowd: 100
+        },{
+          key: '4',
+          name: '沙河教工食堂',
+          crowd: 100
+        }
+      ],
       zNumber: {
         "沙河教学综合楼N": 3,
        "沙河燕南园S4": 3,
@@ -165,6 +239,15 @@ export default{
     };
   },
   watch: {
+    moreShow(newVal) {
+      if(newVal) {
+        this.flashCrowd()
+      }
+    },
+    nowMapID_person(newVal){
+      if(newVal<=2) this.nowMapID_person_in = newVal
+      else this.nowMapID_person_in = this.IDtoCard[this.nowMapID_person].campus
+    },
     nowID(newVal) {
       this.nowCard = this.IDtoCard[newVal]
       console.log(newVal,this.nowCard)
@@ -211,10 +294,21 @@ export default{
     readLog() {
 
     },
+    flashCrowd() {
+      for(let i=0;i<4;i++) {
+        this.CantinData[i].crowd += Math.ceil(Math.random()>0.5?10:-10*Math.random())
+      }
+    },
+    locateMypos() {
+      this.nowMapID_show = this.nowMapID_person
+      this.nowMapID_Z = this.nowMapID_person_z
+      this.moreShow = false
+    },
     updataInit(val) {
       this.$refs.guide.initialPlace = val
     },
     updataDist(val) {
+      this.moreShow = false
       this.$refs.guide.distPlace = val
     },
     intoGuide(val) {
@@ -226,9 +320,6 @@ export default{
     forceStop() {
       this.inGuide = false
       this.$refs.map.endGuide()
-    },
-    jishi() {
-
     },
     goBus() {
       this.$info({
@@ -366,6 +457,9 @@ export default{
         this.$set(this.mapLinks,[id,z],(res.data.links))
       })
     },
+    getClosed() {
+      
+    }
   },
   beforeMount() {
   },
