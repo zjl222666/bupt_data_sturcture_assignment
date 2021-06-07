@@ -3,9 +3,8 @@
     class="container" align="center"
   >
     <h3> 共<strong> {{data.length}} </strong>部分导航</h3>
-    <span> <a-button :disabled="inGuide" @click="startGuide"> 开始模拟导航 </a-button></span>
+    <span> <a-button type="primary" :disabled="inGuide" @click="startGuide"> 开始模拟导航 </a-button></span>
     &nbsp; &nbsp;&nbsp;
-    <span> <a-button :disabled="!inGuide" type="danger" @click="endGuide"> 暂停模拟导航 </a-button></span>
     <a-list :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-list-item-meta>
@@ -75,10 +74,6 @@ export default {
             this.inGuide = true
             this.$emit("startGuide")
         },
-      endGuide() {
-            this.inGuide = false
-            this.$emit("endGuide")
-      },
       changeMap(Type,model,Map,Mapz){
      //   console.log(Map,Mapz)
         if(Type==2) {

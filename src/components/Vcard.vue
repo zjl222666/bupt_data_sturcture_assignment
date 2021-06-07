@@ -23,7 +23,7 @@
                 <template slot="description">
                     <div> <strong> 所在校区: </strong> 
                     {{nowCard.campus}} </div>
-                    <strong> 当前物理位置</strong>
+                    <strong> 选择建筑物内物理位置</strong>
                     <a-select 
                         v-model="selected_Place" 
                         style="width: 240px"
@@ -112,7 +112,8 @@ export default{
             else this.logic_place = []
         }
     },
-    beforeMount() {
+    mounted() {
+        this.selected_Place = this.nowCard.items[0]
     }
 }
 </script>

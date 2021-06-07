@@ -17,14 +17,14 @@ export default {
       searchNode: [], //导航路径被加载的点
       searchLinks: [], //导航路径被加载的边
       mypos:[], //我的位置
-      rate: 1, //导航的速率
+      ratex: 1, //导航的速率
+      ratey: 1,
       flashTime: 50, //地图导航刷新时间间隔
       mapID: 1, //当前的地图编号
       isLook: false, //当前是否正在查看道路拥挤度
       nowPoint: 0,
       crowdLinks: [],
       crowdNode: [],
-      wucha: 2
     }
   },
   props: {
@@ -128,8 +128,18 @@ export default {
           }
       },
       mapNode(newVal) {
-          this.node = newVal
-      //    console.log(newVal)
+        this.node = newVal
+        let minx = 1e9,maxx = -1e9
+        let miny = 1e9,maxy = -1e9
+        this.node.forEach(node=>{
+            minx = Math.min(node.value[0], minx)
+            maxx = Math.max(node.value[0], maxx)
+            miny = Math.min(node.value[1], miny)
+            maxy = Math.max(node.value[1], maxy)
+        })
+        this.ratex = (maxx-minx)/900
+        this.ratey = (maxy-miny)/900
+        console.log(this.ratex,this.ratey)
          myChart.setOption({
               series:[{
                   id: 'MapContent',
@@ -195,9 +205,9 @@ export default {
             this.crowdLinks = res.data.links
             this.crowdNode = res.data.node           
         })
-        this.timeClock = setTimeout(() => {
-            this.updataCrowd()
-        }, 10000);
+        for (let i = 0; i < this.crowdLinks.length; i++) {
+            this.crowdLinks[i].value = Math.round(this.crowdLinks[i].value * 100) / 100
+        }
     },
     seeCrowd() {
         this.isLook = !this.isLook
@@ -205,7 +215,6 @@ export default {
     endGuide() {        
         clearTimeout(this.guideClock)
         this.$emit("updataMypos",this.mypos[0],this.mypos[1])
-
     },
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调
         if(this.nowPoint>=this.searchNode.length) {
@@ -216,13 +225,13 @@ export default {
         }
         let tmpX = this.searchNode[this.nowPoint].value[0];
         let tmpY = this.searchNode[this.nowPoint].value[1];
-        console.log(this.mypos,tmpX,tmpY)
+     //   console.log(this.mypos,tmpX,tmpY)
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
-        if(Math.abs(tmpX-this.mypos[0])>this.rate){
-            this.mypos[0] += this.rate * (tmpX>this.mypos[0]?1:-1);
-            this.mypos[1] += this.rate * (tmpX>this.mypos[0]?1:-1) * slope;
+        if(Math.abs(tmpX-this.mypos[0])>this.ratex){
+            this.mypos[0] += this.ratex * (tmpX>this.mypos[0]?1:-1);
+            this.mypos[1] += Math.min(this.ratey,this.ratex * slope) * (tmpX>this.mypos[0]?1:-1);
         } else {
-            this.mypos[1] += this.rate * (tmpY>this.mypos[1]?1:-1)
+            this.mypos[1] += this.ratey * (tmpY>this.mypos[1]?1:-1)
         }
        myChart.setOption({
             series:[
@@ -239,11 +248,11 @@ export default {
                 }
             ]
         })
-        if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=this.wucha) this.nowPoint++
+        if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=2*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)) this.nowPoint++
         this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
     },
     drawGuide() {      
-        console.log('hua',this.searchNode)
+     //   console.log('hua',this.searchNode)
         myChart.setOption({
         series: [{
             id: "guideContent",

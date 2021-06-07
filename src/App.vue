@@ -11,11 +11,10 @@
         <template slot="extra">
           <a-button type="link" @click="locateMypos">定位到我的位置</a-button>
         </template>
-          所在校区: {{nowMapID_person_in}}
+          所在位置: {{nowMapID_person_in > 2 ? IDtoCard[nowMapID_person_in.toString()].name : "校区"+nowMapID_person_in.toString()}}
           所在坐标: {{mypos}}
           <div>
             我的周边:
-
           </div>
       </a-card>
       <a-divider/>
@@ -57,7 +56,8 @@
     <a-layout>
         <div  class="card">
           <a-affix  :offset-top="100">
-            <vcard               
+            <vcard      
+              ref="card"         
               :nowCard="nowCard"  
               v-if="cardShow" 
               @closeIt="()=>{nowID=''; cardShow = false;  }"
@@ -129,8 +129,6 @@
               @updataMypos="updataMypos2"
               @changeMap="changeMap"
               @startGuide="()=>{this.startGuide(); }"
-              @endGuide="()=>{this.forceStop()}"
-              @forceStop="forceStop"
               :nowMapID_person="nowMapID_person"
               :nowMapID_person_z="nowMapID_person_z"
               :nowMypos="mypos"
@@ -239,6 +237,9 @@ export default{
     };
   },
   watch: {
+    mypos(newVal) {
+      console.log("!!!!!",newVal)
+    },
     moreShow(newVal) {
       if(newVal) {
         this.flashCrowd()
@@ -317,10 +318,6 @@ export default{
       this.selected_Z = 1
       this.cardShow = false
     },
-    forceStop() {
-      this.inGuide = false
-      this.$refs.map.endGuide()
-    },
     goBus() {
       this.$info({
         title: "正在前往另一个校区~" ,
@@ -339,7 +336,7 @@ export default{
           title: "您的导航已结束",
           content: "已经将您的位置更新到目的地"
         })
-        this.$refs.guide.resultDist = null
+        this.$refs.guide.clearPath()
         this.updataGuide(null)
         return
       }
@@ -352,8 +349,8 @@ export default{
       this.nowMapID_Z = this.guideOrder[0][1]
       this.nowMapID_person = this.nowMapID_show
       this.nowMapID_person_z = this.nowMapID_Z
-      console.log("??",this.GuideNode[this.guideOrder[0]][0])
-      this.updataMypos(this.GuideNode[this.guideOrder[0]][0][0],this.GuideNode[this.guideOrder[0]][1][1])
+     // console.log("??",this.GuideNode[this.guideOrder[0]][0])
+      this.updataMypos(this.GuideNode[this.guideOrder[0]][0][0],this.GuideNode[this.guideOrder[0]][0][1])
       this.inGuide = true
       this.$refs.map.nowPoint = 0
       setTimeout( ()=>{this.$refs.map.startGuide()}, 1000)
@@ -484,7 +481,7 @@ export default{
       this.getMapContent('/Map[71,2].json',71,2)
       this.getMapContent('/Map[71,3].json',71,3)
       this.getMapContent('/Map[144,1].json',144,1)
-      this.getMapContent('/Map[144,2].json',144,1)
+      this.getMapContent('/Map[144,2].json',144,2)
       this.getMapContent('/Map[144,3].json',144,3)
       this.getMapContent('/Map[167,1].json',167,1)
       this.getMapContent('/Map[167,2].json',167,2)

@@ -21,21 +21,21 @@
                 <div align="center">
                     <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
                     <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
-                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
+                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" />
                 </div>
             </a-tab-pane>
             <a-tab-pane key="2" tab="时间最短"  :disabled="selected_Model!='2'&&resultDist!=null" >
                 <div align="center">
                    <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
                     <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
-                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
+                    <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide"/>
                 </div>
             </a-tab-pane>
             <a-tab-pane key="3" tab="自行车最优策略"  :disabled="selected_Model!='3'&&resultDist!=null" >
                 <div align="center">
                     <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
                     <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
-                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
+                     <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" />
                 </div>
             </a-tab-pane>
             <a-tab-pane key="4" tab="有途径点策略"  :disabled="selected_Model!='4'&&resultDist!=null" >
@@ -44,7 +44,7 @@
                         <span> <sinputmuti @handlePassby="handlePassby" /> </span>
                <a-button type="primary" :disabled="resultDist!=null" @click="searchPath" > 规划路径 </a-button>
                     <a-button type="danger" :disabled="resultDist==null" @click="clearPath">退出导航 </a-button>
-                <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide" @endGuide="endGuide"/>
+                <guidecontent v-if="showGuide" :data="resultDist" @changeMap="changeMap" @startGuide="startGuide"/>
                 </div>
             </a-tab-pane>
         </a-tabs>
@@ -90,33 +90,6 @@ export default {
             if(newVal == null) this.showGuide = false
             else this.showGuide = true
         },
-        selected_Model(newVal,oldVal) {
-            if(this.showGuide == true) this.showGuide = false
-            else  if(this.resultDist != null){
-                this.showGuide = true
-                return
-            }
-            if(this.resultDist != null){
-                    this.$confirm({
-                        title: "本次导航还未到达终点哦",
-                        content: "是否确认切换导航策略并重新导航？",
-                        okText: "确认并导航",
-                        okType: 'danger',
-                        cancelText: '取消',
-                        onOk: ()=> {
-                            this.$emit("forceStop")
-                            setTimeout(() => {
-                                this.resultDist = null
-                                this.$emit("updataGuide",this.resultDist)
-                            }, 1500);
-                        },
-                        onCancel: () => {
-                            console.log(newVal,oldVal)
-                            this.selected_Model = oldVal
-                        }
-                    })
-                }
-        }
     },
     methods: {
         clearPath() {
@@ -127,9 +100,6 @@ export default {
         },
         startGuide() {
             this.$emit("startGuide")
-        },
-        endGuide() {
-            this.$emit("endGuide")
         },
         changeMap(nowMap,nowMapz) {
             this.$emit("changeMap",nowMap,nowMapz)
@@ -197,14 +167,16 @@ export default {
                             model: this.selected_Model-1
                         }))
                     .then(res=>{
-                        this.resultDist = res.data.solution
-                        if(res.data.solution.length==0) {
+                        if(res.data.solution.length == 0) {
                             this.$confirm({
                                 title: "你已经在目的地附近啦",
                                 content: "请自己找一找附近哦"
                             })
-                        }
-                        this.$emit("updataGuide",this.resultDist)        
+                            this.clearPath()
+                        } else {
+                            this.resultDist = res.data.solution
+                            this.$emit("updataGuide",this.resultDist)
+                        }        
                     })      
             },
     }
