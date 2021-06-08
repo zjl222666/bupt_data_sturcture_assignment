@@ -15,6 +15,11 @@
           所在地图坐标: {{mypos}}
           <div>
             我的周边:
+            <a-table :columns="FujinCom" :data-source="FujinData">
+              <span slot="action" slot-scope="text,record">
+                <a-button slot="action" @click="updataDist(record.name)"> 设为目的地</a-button> 
+              </span>
+            </a-table>
           </div>
       </a-card>
       <a-divider/>
@@ -30,7 +35,13 @@
       </a-card>
        <a-divider/>
       <a-card title="跨校区乘车表">
-
+        <template slot="extra">
+            当前时间: {{now_Time}} <a-button type="link" @click="flashTime">刷新</a-button>
+        </template>
+        <img
+          slot="cover"
+          src="@/assets/Bus.png"
+        />
       </a-card>
     </a-drawer>
     <a-layout>
@@ -186,6 +197,26 @@ export default{
       choosePlace: '', //卡片上默认选中的位置
       inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
       moreShow: false, //更多功能抽屉展示
+      now_Time: "06：60", //当前的系统时间
+      FujinData: [],
+      FujinCom: [
+        {
+          dataIndex: 'name',
+          key: 'name',
+          title: '名称',
+        },
+        {
+          dataIndex: 'dist',
+          key: 'dist',
+          title: '与我的距离',
+        },
+        {
+          dataIndex: 'action',
+          key: 'action',
+          title: '操作',
+          scopedSlots: { customRender: 'action' },
+        },
+      ],
       cantinCom:[
         {
           dataIndex: 'name',
@@ -198,6 +229,11 @@ export default{
           title: '当前流量(人次)',
         },
         {
+          dataIndex: 'dist',
+          key: 'dist',
+          title: '与我的距离',
+        },
+        {
           dataIndex: 'action',
           key: 'action',
           title: '操作',
@@ -208,19 +244,23 @@ export default{
         {
           key: '1',
           name: '西土城教工食堂',
-          crowd: 100
+          crowd: 100,
+          dist: 1
         },{
           key: '2',
           name: '西土城学生食堂',
-          crowd: 100
+          crowd: 100,
+          dist: 1
         },{
           key: '3',
           name: '沙河学生食堂',
-          crowd: 100
+          crowd: 100,
+          dist: 1
         },{
           key: '4',
           name: '沙河教工食堂',
-          crowd: 100
+          crowd: 100,
+          dist: 1
         }
       ],
       zNumber: {
@@ -247,6 +287,7 @@ export default{
       if(newVal) {
         this.flashCrowd()
         this.getFujin()
+        this.flashTime()
       }
     },
     nowID(newVal) {
@@ -300,6 +341,9 @@ export default{
             console.log(res);   
             this.download('log.txt',res.data.log)            
           })  
+    },
+    flashTime() {
+
     },
     getFujin() {
 
