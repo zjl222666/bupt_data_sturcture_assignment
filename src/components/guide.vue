@@ -93,6 +93,9 @@ export default {
     },
     methods: {
         clearPath() {
+            this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
+                log: "导航已结束"
+            }))
             this.resultDist = null
             this.$emit("updataGuide",this.resultDist)   
             this.initialPlace = '我的位置'
@@ -159,7 +162,9 @@ export default {
                             if(i != this.passBy.length-1) tmpPassby = tmpPassby + ","
                         }
                     } 
-                    
+                    this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
+                        log: "进行前往" + this.distPlace + "的导航"
+                    }))
                     console.log("dest:",this.distPlace,
                             "approach:",tmpPassby,
                             "x:", this.nowMypos[0],

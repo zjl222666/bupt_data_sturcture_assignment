@@ -149,6 +149,8 @@ import Vguide from './components/guide.vue'
 import Vcard from './components/Vcard.vue'
 import sinput from './components/searchInput.vue'
 import mymap from './components/Map.vue'
+import Qs from 'qs'
+
 export default{
   components: {
     Vfooter,
@@ -237,7 +239,9 @@ export default{
   },
   watch: {
     mypos(newVal) {
-      console.log("!!!!!",newVal)
+      this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
+                log: "我的位置更新至" + (this.nowMapID_person <= 2?"校区"+this.nowMapID_person:this.IDplace[this.nowMapID_person]+this.nowMapID_person_z+ "层") + "坐标为" + newVal
+      }))
     },
     moreShow(newVal) {
       if(newVal) {
@@ -264,7 +268,7 @@ export default{
     },
     selected_Map(newVal) {
       this.nowMapID_show = this.PlaceID[newVal]
-      if(this.selected_Z>this.zNumber[newVal]) this.selected_Z = 1
+      if(this.selected_Z>this.zNumber[newVal]||this.selected_Z<1) this.selected_Z = 1
       this.selected_key = ['3']
     //  console.log(newVal)
     },
@@ -281,11 +285,8 @@ export default{
         this.nowMapID_show = now
         this.nowMapID_Z = 0
       }
-      else {
-        if(this.selected_Map == null) {
-          this.nowMapID_show = 0
-          return
-        }  
+      else { 
+        this.selected_Z = 1
         this.nowMapID_show = this.PlaceID[this.selected_Map]
         this.nowMapID_Z = this.selected_Z
       }
@@ -404,6 +405,9 @@ export default{
     //  console.log("ceshi2",this.mypos)
     },
     updataMypos2(val){
+      this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
+            log: "将我的位置更新至"+val
+      }))
       console.log("ooo",this.itemsPos[val])
       this.nowMapID_person = this.itemsPos[val].id
       this.nowMapID_person_z = this.itemsPos[val].pos[2]
