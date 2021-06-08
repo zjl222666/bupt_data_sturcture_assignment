@@ -71,7 +71,6 @@ export default {
           })
       },
       isLook(newVal) {
-          clearTimeout(this.timeClock)
           if (newVal==false) {
               this.crowdLinks=[]
               this.crowdNode=[]
@@ -80,7 +79,6 @@ export default {
           }
       },
       mapID(newVal) {
-          clearTimeout(this.timeClock)
           if(newVal>2)  this.isLook = false
           if(this.isLook)this.updataCrowd();
       },
@@ -139,7 +137,7 @@ export default {
         })
         this.ratex = (maxx-minx)/900
         this.ratey = (maxy-miny)/900
-        console.log(this.ratex,this.ratey)
+     //   console.log(this.ratex,this.ratey)
          myChart.setOption({
               series:[{
                   id: 'MapContent',
@@ -203,11 +201,11 @@ export default {
         .then(res=>{
             console.log(res.data)
             this.crowdLinks = res.data.links
-            this.crowdNode = res.data.node           
+            this.crowdNode = res.data.node  
+            for (let i = 0; i < this.crowdLinks.length; i++) {
+                this.crowdLinks[i].value = Math.round(this.crowdLinks[i].value * 100) / 100
+            }         
         })
-        for (let i = 0; i < this.crowdLinks.length; i++) {
-            this.crowdLinks[i].value = Math.round(this.crowdLinks[i].value * 100) / 100
-        }
     },
     seeCrowd() {
         this.isLook = !this.isLook

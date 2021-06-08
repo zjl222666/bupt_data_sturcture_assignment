@@ -138,7 +138,9 @@ export default {
                     onOk: ()=> {
                         this.updataMypos()
                         this.initialPlace = '我的位置'
-                        this.getGuide()
+                        setTimeout(() => {
+                            this.getGuide()
+                        }, 1500); 
                     }
                 });
             }
@@ -150,8 +152,16 @@ export default {
             this.$emit("updataMypos",this.initialPlace)
         },
         getGuide() {
+                    let tmpPassby = ""
+                    if(this.passBy != null){
+                        for(let i = 0; i < this.passBy.length; i++ ) {
+                            tmpPassby = tmpPassby + this.passBy[i]
+                            if(i != this.passBy.length-1) tmpPassby = tmpPassby + ","
+                        }
+                    } 
+                    
                     console.log("dest:",this.distPlace,
-                            "approach:",this.passBy,
+                            "approach:",tmpPassby,
                             "x:", this.nowMypos[0],
                             "y:", this.nowMypos[1],
                             "id:", this.nowMapID_person,
@@ -159,7 +169,7 @@ export default {
                             "model:", this.selected_Model-1)
                     this.$http.post(`${this.$BaseUrl}map/search-path/`,Qs.stringify({
                             dest: this.distPlace,
-                            approach: this.passBy,
+                            approach: tmpPassby,
                             x: this.nowMypos[0],
                             y: this.nowMypos[1],
                             id: this.nowMapID_person,
@@ -167,6 +177,7 @@ export default {
                             model: this.selected_Model-1
                         }))
                     .then(res=>{
+                        console.log(res)
                         if(res.data.solution.length == 0) {
                             this.$confirm({
                                 title: "你已经在目的地附近啦",
@@ -175,7 +186,7 @@ export default {
                             this.clearPath()
                         } else {
                             this.resultDist = res.data.solution
-                            this.$emit("updataGuide",this.resultDist)
+                            this.$emit("updataGuide", this.resultDist)
                         }        
                     })      
             },

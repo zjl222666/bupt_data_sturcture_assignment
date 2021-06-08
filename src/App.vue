@@ -11,8 +11,8 @@
         <template slot="extra">
           <a-button type="link" @click="locateMypos">定位到我的位置</a-button>
         </template>
-          所在位置: {{nowMapID_person_in > 2 ? IDtoCard[nowMapID_person_in.toString()].name : "校区"+nowMapID_person_in.toString()}}
-          所在坐标: {{mypos}}
+          <h3>所在位置: {{nowMapID_person > 2 ? IDtoCard[nowMapID_person.toString()].name : "校区"+nowMapID_person.toString()}}</h3>
+          所在地图坐标: {{mypos}}
           <div>
             我的周边:
           </div>
@@ -81,7 +81,7 @@
             <a-col span="7"> <sinput v-model="choosePlace" @handleChange1="updataNowID"/> </a-col>
             <a-col span="1">  <a-button type="link" icon="search" @click="updataNowID(choosePlace)"/>  </a-col>
             <a-col span="3"> <a-button @click="()=>{this.moreShow = true}"> 更多功能 </a-button> </a-col>
-            <a-col span="2"> <a-button  @click="readLog"> 查看日志</a-button> </a-col>
+            <a-col span="2"> <a-button  @click="readLog"> 下载日志</a-button> </a-col>
           </a-row>
         </a-layout-header>
         <a-layout>
@@ -175,7 +175,6 @@ export default{
       nowMapID_Z: 0, //现在显示的楼层，若为校区地图则为0
       nowMapID_person: 1,  //现在人所在的地图ID
       nowMapID_person_z: 0, //现在人所在的楼层
-      nowMapID_person_in: 1, //现在人所在的校区
       Person_cloes:[], //我的附近
       selected_Z: 1, //下拉框选择的楼层
       selected_Map:"沙河教学综合楼N", //下拉框选择的建筑物ID 
@@ -243,11 +242,8 @@ export default{
     moreShow(newVal) {
       if(newVal) {
         this.flashCrowd()
+        this.getFujin()
       }
-    },
-    nowMapID_person(newVal){
-      if(newVal<=2) this.nowMapID_person_in = newVal
-      else this.nowMapID_person_in = this.IDtoCard[this.nowMapID_person].campus
     },
     nowID(newVal) {
       this.nowCard = this.IDtoCard[newVal]
@@ -262,6 +258,8 @@ export default{
       }
       else{
         this.selected_key = ['3']
+        this.selected_Map = this.IDplace[newVal]
+        this.selected_Z = this.nowMapID_Z
       }
     },
     selected_Map(newVal) {
@@ -272,6 +270,9 @@ export default{
     },
     selected_Z(newVal) {
       this.nowMapID_Z = newVal
+    },
+    nowMapID_Z(newVal) {
+      this.selected_Z = newVal
     },
     selected_key(newVal) {
     //  console.log(newVal)
@@ -293,7 +294,26 @@ export default{
   },
   methods: {
     readLog() {
+       this.$http.post(`${this.$BaseUrl}map/read-log/`,null)
+          .then(res=>{
+            console.log(res);   
+            this.download('log.txt',res.data.log)            
+          })  
+    },
+    getFujin() {
 
+    },
+    download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+      } else {
+        pom.click();
+      }
     },
     flashCrowd() {
       for(let i=0;i<4;i++) {
@@ -384,9 +404,10 @@ export default{
     //  console.log("ceshi2",this.mypos)
     },
     updataMypos2(val){
-      console.log(this.posID[val])
+      console.log("ooo",this.itemsPos[val])
       this.nowMapID_person = this.itemsPos[val].id
-      this.nowMapID_Z = this.itemsPos[val].pos[2]
+      this.nowMapID_person_z = this.itemsPos[val].pos[2]
+      console.log(this.nowMapID_person, this.nowMapID_person_z)
       this.nowMapID_show = this.nowMapID_person
       this.nowMapID_Z = this.nowMapID_person_z
       this.updataMypos(this.itemsPos[val].pos[0],this.itemsPos[val].pos[1])
@@ -448,17 +469,16 @@ export default{
     getMapContent(path,id,z){
       this.$http.get(path).then(res =>{
         for(let i = 0;i < res.data.node.length; i++) {
-          if(res.data.node[i].x>=2) res.data.node[i].label = {show: true}
+          if(res.data.node[i].y>0) res.data.node[i].label = {show: true}
+        }
+        for(let i = 0;i < res.data.links.length; i++) {
+          if(res.data.links[i].value>0) res.data.links[i].lineStyle = {width: 7, color: "green"}
+          else res.data.links[i].lineStyle = {width: 5}
         }
         this.$set(this.mapNode,[id,z],(res.data.node))
         this.$set(this.mapLinks,[id,z],(res.data.links))
       })
     },
-    getClosed() {
-      
-    }
-  },
-  beforeMount() {
   },
   mounted() {
       this.mypos = [130,0]
