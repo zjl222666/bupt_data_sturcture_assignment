@@ -29,7 +29,7 @@
         </template>
             <a-table :columns="cantinCom" :data-source="CantinData">
               <span slot="action" slot-scope="text,record">
-                <a-button slot="action" @click="updataDist(record.name)"> 设为目的地</a-button> 
+                <a-button slot="action" @click="updataDist(record.name+'门一')"> 设为目的地</a-button> 
               </span>
             </a-table>
       </a-card>
@@ -194,6 +194,7 @@ export default{
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
+      nowOrder: 0,
       choosePlace: '', //卡片上默认选中的位置
       inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
       moreShow: false, //更多功能抽屉展示
@@ -288,6 +289,7 @@ export default{
         this.flashCrowd()
         this.getFujin()
         this.flashTime()
+        this.flashDist()
       }
     },
     nowID(newVal) {
@@ -314,10 +316,8 @@ export default{
     //  console.log(newVal)
     },
     selected_Z(newVal) {
+      console.log("zchuangeto",newVal)
       this.nowMapID_Z = newVal
-    },
-    nowMapID_Z(newVal) {
-      this.selected_Z = newVal
     },
     selected_key(newVal) {
     //  console.log(newVal)
@@ -327,9 +327,8 @@ export default{
         this.nowMapID_Z = 0
       }
       else { 
-        this.selected_Z = 1
+        if(this.selected_Z>this.zNumber[newVal]||this.selected_Z<1) this.selected_Z = 1
         this.nowMapID_show = this.PlaceID[this.selected_Map]
-        this.nowMapID_Z = this.selected_Z
       }
 
     },
@@ -342,11 +341,45 @@ export default{
             this.download('log.txt',res.data.log)            
           })  
     },
+    flashDist() {
+      this.$http.post(`${this.$BaseUrl}map/canteen/`,Qs.stringify({
+            x: this.mypos[0],
+            y: this.mypos[1],
+            z: this.nowMapID_person_z,
+            id: this.nowMapID_person 
+      }))
+        .then(res=>{
+          for(let i = 0; i < 4; i++) {
+            if(res.data.points[i].dist > 0) {
+              this.CantinData[i].dist = res.data.points[i].dist
+            } else {
+              this.CantinData[i].dist = "不在同一校区"
+            }
+          }
+        })
+    },
     flashTime() {
-
+        this.$http.post(`${this.$BaseUrl}map/gettime/`,null)
+          .then(res=> {
+            this.now_Time = res.data.time
+          })
     },
     getFujin() {
-
+        this.$http.post(`${this.$BaseUrl}map/around/`,Qs.stringify({
+            x: this.mypos[0],
+            y: this.mypos[1],
+            z: this.nowMapID_person_z,
+            id: this.nowMapID_person 
+      }))
+        .then(res=>{
+          this.FujinData = []
+          let count = 0
+          if(res.data.points != null) {
+            res.data.points.forEach(node=> {
+              this.FujinData.push({key: ++count, name: node.name, dist: node.dist})
+            })
+          }
+        })
     },
     download(filename, text) {
     var pom = document.createElement('a');
@@ -395,8 +428,8 @@ export default{
     },
     guideOver() {      
       this.inGuide = false
-      this.guideOrder.shift()
-      if(this.guideOrder.length<1) {
+      this.nowOrder++
+      if(this.nowOrder >= this.guideOrder.length) {
         this.$success({
           title: "您的导航已结束",
           content: "已经将您的位置更新到目的地"
@@ -405,28 +438,29 @@ export default{
         this.updataGuide(null)
         return
       }
-      if(this.guideOrder[0][0] == -1) {
+      if(this.guideOrder[this.nowOrder].type == 2) {
         this.goBus()
         return
       }
-      this.nowMapID_show = this.guideOrder[0][0]
-      if(this.guideOrder[0][0]>2) this.selected_Map = this.IDplace[this.guideOrder[0][0]]
-      this.nowMapID_Z = this.guideOrder[0][1]
+      this.nowMapID_show = this.guideOrder[this.nowOrder].id
+      if(this.guideOrder[this.nowOrder].id>2) this.selected_Map = this.IDplace[this.guideOrder[this.nowOrder].id]
+      this.nowMapID_Z = this.guideOrder[this.nowOrder].z
       this.nowMapID_person = this.nowMapID_show
       this.nowMapID_person_z = this.nowMapID_Z
      // console.log("??",this.GuideNode[this.guideOrder[0]][0])
-      this.updataMypos(this.GuideNode[this.guideOrder[0]][0][0],this.GuideNode[this.guideOrder[0]][0][1])
       this.inGuide = true
       this.$refs.map.nowPoint = 0
-      setTimeout( ()=>{this.$refs.map.startGuide()}, 1000)
+      this.updataGuideShow()
+      setTimeout( ()=>{this.$refs.map.startGuide()}, 500)
     },
     startGuide() {
       this.inGuide = true
       this.nowMapID_show = this.nowMapID_person
       this.nowMapID_Z = this.nowMapID_person_z
-      this.$refs.map.startGuide()
+      this.nowOrder = -1
+      this.guideOver()
     },
-    changeMap(newMap,newMapz) {
+    changeMap(newMap,newMapz,num) {
       if(this.inGuide) {
         if(this.newMap!=this.nowMapID_show||this.newMapz!=this.nowMapID_Z) this.$confirm({
           title: "正在导航中，不支持切换地图哦"
@@ -441,6 +475,8 @@ export default{
         this.selected_Z = newMapz
         this.selected_key = ['3']
       }
+      this.nowOrder = num
+      this.updataGuideShow()
     },
     updataMypos(val1,val2) {
    //   console.log("ceshi",val1,val2)
@@ -460,25 +496,32 @@ export default{
       this.nowMapID_Z = this.nowMapID_person_z
       this.updataMypos(this.itemsPos[val].pos[0],this.itemsPos[val].pos[1])
     },
+    updataGuideShow() {
+      this.$set(this.GuideNode, [this.guideOrder[this.nowOrder].id, this.guideOrder[this.nowOrder].z], this.guideOrder[this.nowOrder].path)
+    },
     updataGuide(val) {
     //  console.log(this.GuideNode)
       this.guideOrder = []
-      this.$refs.map.nowPoint = 0
       this.inGuide = false
-      this.stopIt = false
       if(val==null) {
           this.GuideNode = []
           this.GuideTime = []
           return
       }
-      val.forEach(node=>{
+      this.guideOrder = val
+      console.log(this.guideOrder)
+      this.nowOrder = 0
+      this.updataGuideShow()
+      this.nowMapID_show = this.guideOrder[0].id
+      this.nowMapID_Z = this.guideOrder[0].z
+      /*val.forEach(node=>{
         if(node.type!=2) this.guideOrder.push([node.id,node.z])
         else {
           this.guideOrder.push([-1,0])
         }
         this.$set(this.GuideNode,[node.id,node.z],node.path)
         this.$set(this.GuideTime,[node.id,node.z], node.time)
-      })
+      }) */
     //  console.log(this.GuideNode)
     },
     updataNowID2(val) {

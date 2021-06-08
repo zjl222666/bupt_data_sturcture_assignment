@@ -104,8 +104,8 @@ export default {
         startGuide() {
             this.$emit("startGuide")
         },
-        changeMap(nowMap,nowMapz) {
-            this.$emit("changeMap",nowMap,nowMapz)
+        changeMap(nowMap,nowMapz,num) {
+            this.$emit("changeMap",nowMap,nowMapz,num)
         },
         handlePassby(val) {
             this.passBy = val

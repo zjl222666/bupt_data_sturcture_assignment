@@ -19,7 +19,7 @@ export default {
       mypos:[], //我的位置
       ratex: 1, //导航的速率
       ratey: 1,
-      flashTime: 50, //地图导航刷新时间间隔
+      flashTime: 40, //地图导航刷新时间间隔
       mapID: 1, //当前的地图编号
       isLook: false, //当前是否正在查看道路拥挤度
       nowPoint: 0,
@@ -215,6 +215,7 @@ export default {
         this.$emit("updataMypos",this.mypos[0],this.mypos[1])
     },
     startGuide() { //模拟导航函数，开始后若条件允许则会不断回调
+       // console.log("intoGuide")
         if(this.nowPoint>=this.searchNode.length) {
             console.log("over!");
             this.endGuide()
@@ -223,6 +224,12 @@ export default {
         }
         let tmpX = this.searchNode[this.nowPoint].value[0];
         let tmpY = this.searchNode[this.nowPoint].value[1];
+        if(this.nowPoint == 0) {
+            this.mypos = [tmpX, tmpY]
+            this.nowPoint ++
+            this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
+            return 
+        }
      //   console.log(this.mypos,tmpX,tmpY)
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
         if(Math.abs(tmpX-this.mypos[0])>this.ratex){

@@ -15,7 +15,7 @@
           </template>
           <template slot="title">{{ item.type==2?"跨校区":arhName[[item.id,item.z]] }}-部分</template>
         </a-list-item-meta>
-        <div><a-button type="link" @click="changeMap(item.type,item.move_model,item.id,item.z)"> 查看路线 </a-button></div>
+        <div><a-button type="link" @click="changeMap(item.type,item.move_model,item.id,item.z,item)"> 查看路线 </a-button></div>
       </a-list-item>
     </a-list>
   </div>
@@ -74,7 +74,7 @@ export default {
             this.inGuide = true
             this.$emit("startGuide")
         },
-      changeMap(Type,model,Map,Mapz){
+      changeMap(Type,model,Map,Mapz,item){
      //   console.log(Map,Mapz)
         if(Type==2) {
           this.$info({
@@ -83,7 +83,8 @@ export default {
           })
           return
         }
-        this.$emit("changeMap",Map,Mapz)
+        console.log(Map,Mapz)
+        this.$emit("changeMap",Map,Mapz,this.data.findIndex(items=>{return items==item}))
       }
 
     },
