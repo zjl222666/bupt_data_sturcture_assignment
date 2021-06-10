@@ -371,6 +371,11 @@ export default{
           })
     },
     getFujin() {
+        console.log("postFujin",
+        "x",this.mypos[0],
+        "y",this.mypos[1],
+        "z",this.nowMapID_person_z,
+        "id",this.nowMapID_person)
         this.$http.post(`${this.$BaseUrl}map/around/`,Qs.stringify({
             x: this.mypos[0],
             y: this.mypos[1],
@@ -453,7 +458,7 @@ export default{
       this.selected_Z = this.guideOrder[this.nowOrder].z
 
       this.nowMapID_person = this.nowMapID_show
-      this.nowMapID_person_z = this.nowMapID_Z
+      this.nowMapID_person_z = this.selected_Z
      // console.log("??",this.GuideNode[this.guideOrder[0]][0])
       this.inGuide = true
       this.$refs.map.nowPoint = 0

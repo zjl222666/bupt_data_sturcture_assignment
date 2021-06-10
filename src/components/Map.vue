@@ -231,7 +231,7 @@ export default {
         }
      //   console.log(this.mypos,tmpX,tmpY)
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
-        if(Math.abs(tmpX-this.mypos[0])>this.ratex){
+        if(Math.abs(tmpX-this.mypos[0])>1.5*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)){
             this.mypos[0] += this.ratex * (tmpX>this.mypos[0]?1:-1);
             this.mypos[1] += Math.min(this.ratey,this.ratex * slope) * (tmpX>this.mypos[0]?1:-1);
         } else {
@@ -258,7 +258,7 @@ export default {
         } 
         if(this.model[this.nowPoint - 1] == 1) this.flashTime = 20
         else this.flashTime = 80
-        console.log(this.flashTime)
+      //  console.log(this.flashTime)
         this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
     },
     drawGuide() {      
