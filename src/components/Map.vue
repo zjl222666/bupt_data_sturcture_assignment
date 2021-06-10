@@ -234,7 +234,7 @@ export default {
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
         if(Math.abs(tmpX-this.mypos[0])>1.5*this.ratex){
             this.mypos[0] += this.ratex * (tmpX>this.mypos[0]?1:-1);
-            this.mypos[1] += Math.min(this.ratey,this.ratex * slope) * (tmpX>this.mypos[0]?1:-1);
+            this.mypos[1] += Math.min(this.ratey, this.ratex * slope) * (tmpX>this.mypos[0]?1:-1);
         } else {
             this.mypos[1] += this.ratey * (tmpY>this.mypos[1]?1:-1)
         }
