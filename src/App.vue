@@ -17,7 +17,7 @@
             我的周边:
             <a-table :columns="FujinCom" :data-source="FujinData">
               <span slot="action" slot-scope="text,record">
-                <a-button slot="action" @click="updataDist(record.name)"> 设为目的地</a-button> 
+                <a-button slot="action" :disabled="inGuide" @click="updataDist(record.name)"> 设为目的地</a-button> 
               </span>
             </a-table>
           </div>
@@ -29,7 +29,7 @@
         </template>
             <a-table :columns="cantinCom" :data-source="CantinData">
               <span slot="action" slot-scope="text,record">
-                <a-button slot="action" @click="updataDist(record.name+'门一')"> 设为目的地</a-button> 
+                <a-button slot="action" :disabled="guideOrder!=null&&guideOrder!=undefined" @click="updataDist(record.name+'门一')"> 设为目的地</a-button> 
               </span>
             </a-table>
       </a-card>
