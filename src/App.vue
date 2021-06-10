@@ -498,7 +498,7 @@ export default{
       this.updataMypos(this.itemsPos[val].pos[0],this.itemsPos[val].pos[1])
     },
     updataGuideShow() {
-      this.$refs.map.model = this.guideOrder[this.nowOrder].move_model
+      this.$refs.map.model = this.guideOrder[this.nowOrder].time
       this.$set(this.GuideNode, [this.guideOrder[this.nowOrder].id, this.guideOrder[this.nowOrder].z], this.guideOrder[this.nowOrder].path)
     },
     updataGuide(val) {

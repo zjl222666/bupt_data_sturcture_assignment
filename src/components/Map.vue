@@ -251,7 +251,7 @@ export default {
             ]
         })
         if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=2*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)) this.nowPoint++
-        if(this.model == "自行车") this.flashTime = 20
+        if(this.model[this.nowPoint - 1] == 1) this.flashTime = 20
         else this.flashTime = 80
         console.log(this.flashTime)
         this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
