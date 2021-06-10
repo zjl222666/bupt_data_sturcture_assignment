@@ -124,7 +124,6 @@
             @updataMypos="updataMypos"
             @guideOver="guideOver"
             :GuideNode="GuideNode[[nowMapID_show,nowMapID_Z]]" 
-            :GuideTime="GuideTime[[nowMapID_show,nowMapID_Z]]"
             :mapNode="mapNode[[nowMapID_show,nowMapID_Z]]" 
             :mapLinks="mapLinks[[nowMapID_show,nowMapID_Z]]"
             :mypos_in="(nowMapID_show==nowMapID_person&&nowMapID_person_z==nowMapID_Z)?true:false"
@@ -317,7 +316,6 @@ export default{
     //  console.log(newVal)
     },
     selected_Z(newVal) {
-      console.log("zchuangeto",newVal)
       this.nowMapID_Z = newVal
     },
     selected_key(newVal) {
@@ -446,7 +444,8 @@ export default{
       }
       this.nowMapID_show = this.guideOrder[this.nowOrder].id
       if(this.guideOrder[this.nowOrder].id>2) this.selected_Map = this.IDplace[this.guideOrder[this.nowOrder].id]
-      this.nowMapID_Z = this.guideOrder[this.nowOrder].z
+      this.selected_Z = this.guideOrder[this.nowOrder].z
+
       this.nowMapID_person = this.nowMapID_show
       this.nowMapID_person_z = this.nowMapID_Z
      // console.log("??",this.GuideNode[this.guideOrder[0]][0])
@@ -499,6 +498,7 @@ export default{
       this.updataMypos(this.itemsPos[val].pos[0],this.itemsPos[val].pos[1])
     },
     updataGuideShow() {
+      this.$refs.map.model = this.guideOrder[this.nowOrder].move_model
       this.$set(this.GuideNode, [this.guideOrder[this.nowOrder].id, this.guideOrder[this.nowOrder].z], this.guideOrder[this.nowOrder].path)
     },
     updataGuide(val) {
@@ -507,7 +507,6 @@ export default{
       this.inGuide = false
       if(val==null) {
           this.GuideNode = []
-          this.GuideTime = []
           return
       }
       this.guideOrder = val

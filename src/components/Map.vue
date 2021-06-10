@@ -25,6 +25,7 @@ export default {
       nowPoint: 0,
       crowdLinks: [],
       crowdNode: [],
+      model: "步行"
     }
   },
   props: {
@@ -43,10 +44,7 @@ export default {
        }, //人是否在这张地图中
        myposd: {
            type: Array,
-       },
-       GuideTime:{
-            type: Array
-        },
+       }
   },
   mounted(){
     myChart = this.$echarts.init(document.getElementById('myChart'));
@@ -157,7 +155,6 @@ export default {
           })
       },
       GuideNode(newVal) {
-        //  console.log("JIINLAI!!",newVal)
           if(newVal == undefined){
               this.searchNode = []
               this.searchLinks = []
@@ -254,6 +251,9 @@ export default {
             ]
         })
         if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=2*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)) this.nowPoint++
+        if(this.model == "自行车") this.flashTime = 20
+        else this.flashTime = 80
+        console.log(this.flashTime)
         this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
     },
     drawGuide() {      
