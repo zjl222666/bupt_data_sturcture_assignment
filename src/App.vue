@@ -487,6 +487,8 @@ export default{
     },
     updataMypos(val1,val2) {
    //   console.log("ceshi",val1,val2)
+      this.flashDist()
+      this.getFujin()
       this.$set(this.mypos,[0],val1)
       this.$set(this.mypos,[1],val2)
     //  console.log("ceshi2",this.mypos)
