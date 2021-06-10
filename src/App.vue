@@ -193,14 +193,14 @@ export default{
       mypos_in: false, //人是否在当前加载的地图中
       mypos: [], //当前人的坐标
       guideOrder: [], //模拟导航地图加载的顺序
-      nowOrder: 0,
+      nowOrder: 0, //当前加载到的导航的次序
       choosePlace: '', //卡片上默认选中的位置
       inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
       moreShow: false, //更多功能抽屉展示
-      now_Timeh: 6, //当前的系统时间
-      now_Timem: 30,
-      FujinData: [],
-      FujinCom: [
+      now_Timeh: 6, //当前的系统时间-小时
+      now_Timem: 30, //当前的系统时间-分钟
+      FujinData: [], //获取到的附近的地点
+      FujinCom: [  
         {
           dataIndex: 'name',
           key: 'name',
@@ -264,6 +264,9 @@ export default{
           dist: 1
         }
       ],
+
+
+      /* 支持室内导航的map映射 */
       zNumber: {
         "沙河教学综合楼N": 3,
        "沙河燕南园S4": 3,
@@ -279,6 +282,8 @@ export default{
     };
   },
   watch: {
+
+
     mypos(newVal) {
       this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
                 log: "我的位置更新至" + (this.nowMapID_person <= 2?"校区"+this.nowMapID_person:this.IDplace[this.nowMapID_person]+this.nowMapID_person_z+ "层") + "坐标为" + newVal
@@ -331,6 +336,7 @@ export default{
       }
 
     },
+
   },
   methods: {
     readLog() {
@@ -572,8 +578,10 @@ export default{
       })
     },
   },
+
+  /* 初始化后应读取文件 */
   mounted() {
-      this.mypos = [130,0]
+      this.mypos = [130,0] //初始化自己的位置
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
       this.getMapContent('/Map[29,1].json',29,1)
@@ -609,6 +617,8 @@ export default{
   }
 }
 </script>
+
+
 <style>
 .trigger {
   font-size: 18px;

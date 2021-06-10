@@ -6,6 +6,8 @@
     </div>
 </template>
 <script>
+//地图组件
+
 import echarts from 'echarts';
 import Qs from 'qs'
 let myChart = null
@@ -19,13 +21,13 @@ export default {
       mypos:[], //我的位置
       ratex: 1, //导航的速率
       ratey: 1,
-      flashTime: 40, //地图导航刷新时间间隔
+      flashTime: 80, //地图导航刷新时间间隔
       mapID: 1, //当前的地图编号
       isLook: false, //当前是否正在查看道路拥挤度
-      nowPoint: 0,
-      crowdLinks: [],
-      crowdNode: [],
-      model: "步行"
+      nowPoint: 0, //当前的导航点
+      crowdLinks: [], //显示拥挤度需要加载的边
+      crowdNode: [], //显示拥挤度需要加载的点
+      model: [] //当前的行进方式，决定速率
     }
   },
   props: {
