@@ -492,10 +492,10 @@ export default{
     },
     updataMypos(val1,val2) {
    //   console.log("ceshi",val1,val2)
-      this.flashDist()
-      this.getFujin()
       this.$set(this.mypos,[0],val1)
       this.$set(this.mypos,[1],val2)
+      this.getFujin()
+      this.flashDist()
     //  console.log("ceshi2",this.mypos)
     },
     updataMypos2(val){
@@ -504,7 +504,8 @@ export default{
       }))
       console.log("ooo",this.itemsPos[val])
       this.nowMapID_person = this.itemsPos[val].id
-      this.nowMapID_person_z = this.itemsPos[val].pos[2]
+      this.selected_Z = this.itemsPos[val].pos[2]
+      this.nowMapID_person_z = this.selected_Z
       console.log(this.nowMapID_person, this.nowMapID_person_z)
       this.nowMapID_show = this.nowMapID_person
       this.nowMapID_Z = this.nowMapID_person_z

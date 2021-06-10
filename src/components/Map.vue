@@ -135,8 +135,8 @@ export default {
             miny = Math.min(node.value[1], miny)
             maxy = Math.max(node.value[1], maxy)
         })
-        this.ratex = (maxx-minx)/900
-        this.ratey = (maxy-miny)/900
+        this.ratex = (maxx-minx)/800
+        this.ratey = (maxy-miny)/800
      //   console.log(this.ratex,this.ratey)
          myChart.setOption({
               series:[{
@@ -163,7 +163,7 @@ export default {
               this.drawGuide()
               return
           }
-          if(newVal.length<=1) {
+          if(newVal.length <= 1) {
               this.searchNode = []
               this.searchLinks = []
               this.drawGuide()
@@ -193,7 +193,7 @@ export default {
   methods: {
     updataCrowd() {
         if(this.isLook==false) return
-        console.log("tryget!!")
+        console.log("tryget!!",this.mapID)
         this.$http.post(`${this.$BaseUrl}map/map/`,Qs.stringify({
             id: this.mapID
         }))
@@ -225,13 +225,14 @@ export default {
         let tmpY = this.searchNode[this.nowPoint].value[1];
         if(this.nowPoint == 0) {
             this.mypos = [tmpX, tmpY]
+            this.$emit("updataMypos",this.mypos[0],this.mypos[1])
             this.nowPoint ++
             this.guideClock = setTimeout(()=>{this.startGuide()}, this.flashTime);
             return 
         }
      //   console.log(this.mypos,tmpX,tmpY)
         let slope = (tmpY - this.mypos[1]) / (tmpX - this.mypos[0]); 
-        if(Math.abs(tmpX-this.mypos[0])>1.5*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)){
+        if(Math.abs(tmpX-this.mypos[0])>Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)){
             this.mypos[0] += this.ratex * (tmpX>this.mypos[0]?1:-1);
             this.mypos[1] += Math.min(this.ratey,this.ratex * slope) * (tmpX>this.mypos[0]?1:-1);
         } else {
@@ -252,7 +253,7 @@ export default {
                 }
             ]
         })
-        if((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY)<=2*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)){
+        if(Math.sqrt((this.mypos[0]-tmpX)*(this.mypos[0]-tmpX)+(this.mypos[1]-tmpY)*(this.mypos[1]-tmpY))<=2*Math.sqrt(this.ratex*this.ratex+this.ratey*this.ratey)){
             this.$emit("updataMypos",this.mypos[0],this.mypos[1])
             this.nowPoint++
         } 
