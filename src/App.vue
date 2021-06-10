@@ -581,7 +581,7 @@ export default{
 
   /* 初始化后应读取文件 */
   mounted() {
-      this.mypos = [130,0] //初始化自己的位置
+      this.mypos = [0,130] //初始化自己的位置
       this.getMapContent('/Map.json',1,0)
       this.getMapContent('/Map1.json',2,0)
       this.getMapContent('/Map[29,1].json',29,1)
