@@ -36,7 +36,7 @@
        <a-divider/>
       <a-card title="跨校区乘车表">
         <template slot="extra">
-            当前时间: {{now_Time}} <a-button type="link" @click="flashTime">刷新</a-button>
+            当前时间: {{now_Timeh}}:{{now_Timem}} <a-button type="link" @click="flashTime">刷新</a-button>
         </template>
         <img
           slot="cover"
@@ -198,7 +198,8 @@ export default{
       choosePlace: '', //卡片上默认选中的位置
       inGuide: false, //记录是否正在导航（用于一些控件的阻止访问）
       moreShow: false, //更多功能抽屉展示
-      now_Time: "06：60", //当前的系统时间
+      now_Timeh: 6, //当前的系统时间
+      now_Timem: 30,
       FujinData: [],
       FujinCom: [
         {
@@ -361,7 +362,8 @@ export default{
     flashTime() {
         this.$http.post(`${this.$BaseUrl}map/gettime/`,null)
           .then(res=> {
-            this.now_Time = res.data.time
+            this.now_Timeh = res.data.h
+            this.now_Timem = res.data.m
           })
     },
     getFujin() {

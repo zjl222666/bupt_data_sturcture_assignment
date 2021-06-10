@@ -9,8 +9,8 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <a-list-item-meta>
           <template slot="description">
-              <h4>预计使用时间：{{item.type==2?Math.round(item.time):Math.round(item.total_time)}} min</h4>
-              <h4 v-if="item.type!=2">距离：{{Math.round(item.dist)}}</h4>
+              <h4>预计使用时间：{{item.type==2?Math.ceil(item.time):Math.ceil(item.total_time)}} min</h4>
+              <h4 v-if="item.type!=2">距离：{{Math.ceil(item.dist)}}</h4>
               <h4>交通方式：{{item.move_model}}</h4>
           </template>
           <template slot="title">{{ item.type==2?"跨校区":arhName[[item.id,item.z]] }}-部分</template>

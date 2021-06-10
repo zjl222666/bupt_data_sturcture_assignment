@@ -6,10 +6,10 @@
                 0.0,
                 130.0
             ],
-            "symbol": "pin",
+            "symbol": "circle",
             "symbolSize": [
-                5,
-                5
+                10,
+                10
             ],
             "x": 3,
             "itemStyle": {
