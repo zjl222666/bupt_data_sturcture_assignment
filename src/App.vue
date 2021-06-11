@@ -12,7 +12,7 @@
           <a-button type="link" @click="locateMypos">定位到我的位置</a-button>
         </template>
           <h3>所在位置: {{nowMapID_person > 2 ? IDtoCard[nowMapID_person.toString()].name : "校区"+nowMapID_person.toString()}}</h3>
-          所在地图坐标: {{mypos}}
+          所在地图坐标: {{Math.ceil(mypos[0]*100)/100}}, {{Math.ceil(mypos[1]*100)/100}}
           <div>
             我的周边:
             <a-table :columns="FujinCom" :data-source="FujinData">
@@ -286,7 +286,9 @@ export default{
 
     mypos(newVal) {
       this.$http.post(`${this.$BaseUrl}map/write-log/`,Qs.stringify({
-                log: "我的位置更新至" + (this.nowMapID_person <= 2?"校区"+this.nowMapID_person:this.IDplace[this.nowMapID_person]+this.nowMapID_person_z+ "层") + "坐标为" + newVal
+                log: "我的位置更新至" + (this.nowMapID_person <= 2?"校区"
+                + this.nowMapID_person:this.IDplace[this.nowMapID_person]+this.nowMapID_person_z+ "层") + 
+                "坐标为" + Math.ceil(newVal[0]*100)/100 + ',' +Math.ceil(newVal[1]*100)
       }))
     },
     moreShow(newVal) {
